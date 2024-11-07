@@ -1,10 +1,10 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0" version="24.8.4" pages="2">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Tilgangspakker">
-    <mxGraphModel dx="4396" dy="4344" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3711" dy="4013" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
-        <mxCell id="DEHq9UDAF1vgOj-FFHBF-15" value="&lt;h1 style=&quot;text-align: center;&quot;&gt;Provisjonering av tilgangspakker for samhanhandling&lt;/h1&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="DEHq9UDAF1vgOj-FFHBF-15" value="&lt;h1 style=&quot;text-align: center;&quot;&gt;Provisjonering av tilgangspakker for samhandling&lt;/h1&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-203.5" y="-2137" width="672" height="150" as="geometry" />
         </mxCell>
         <mxCell id="IadJBfK-lafikD0Q0_Xw-240" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="IadJBfK-lafikD0Q0_Xw-10" target="IadJBfK-lafikD0Q0_Xw-131" edge="1">
