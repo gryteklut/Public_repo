@@ -1,0 +1,10 @@
+[
+    {
+        "GroupName": "PIM - INT - Helpdesk - Tier 0",
+        "RoleNames": ["User Administrator", "Azure AD Joined Device Local Administrator"]
+    },
+    {
+        "GroupName": "PIM - INT - Helpdesk - Tier 1",
+        "RoleNames": ["User Administrator", "Azure AD Joined Device Local Administrator", "Intune Administrator"]
+    }
+]
