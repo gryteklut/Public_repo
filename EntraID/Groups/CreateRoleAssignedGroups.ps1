@@ -20,7 +20,7 @@ foreach ($group in $groups) {
         continue
     }
 
-    Write-Output "Created group '$groupName' with ID: $($newGroup.Id)"
+    Write-Output "`r`nCreated group '$groupName' with ID: $($newGroup.Id)"
 
     # Retrieve all roles
     $roles = Get-MgRoleManagementDirectoryRoleDefinition
