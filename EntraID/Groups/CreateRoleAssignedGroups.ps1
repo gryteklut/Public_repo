@@ -1,5 +1,5 @@
 param (
-    [string]$JsonFilePath = "C:\PIMgroupExample.json" # Path to the JSON file
+    [string]$JsonFilePath = "C:\JSONimport\PIMgroupExample.json" # Path to the JSON file
 )
 
 # Connect to Microsoft Graph with the required scopes
@@ -41,7 +41,7 @@ foreach ($group in $groups) {
         }
 
         try {
-            New-MgRoleManagementDirectoryRoleAssignment -BodyParameter $assignment
+            New-MgRoleManagementDirectoryRoleAssignment -BodyParameter $assignment | Out-Null
             Write-Output "Assigned role '$($role.DisplayName)' to group '$groupName'."
         } catch {
             Write-Error "Failed to assign role '$($role.DisplayName)' to group '$groupName'."
