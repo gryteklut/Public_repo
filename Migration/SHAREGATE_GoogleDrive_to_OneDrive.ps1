@@ -1,4 +1,7 @@
 Import-Module Sharegate
+#And import Sharepoint module
+#On cut-over change to incremental and uncomment Remove-sitecollectionAdministrator
+#Not neccesary to add as sitecollectionadmin in GUI. Set-SPOUser does instead
 
 #Set Runtime Parameters
 $AdminSiteURL="https://COMPANY-admin.sharepoint.com/"
