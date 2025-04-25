@@ -1,27 +1,28 @@
-#Use Entra group ID and reset the password of the users in the group.
-
-
 #Get-Module -Name Microsoft.Entra -ListAvailable
 #Install-Module -Name Microsoft.Entra -Repository PSGallery -Scope CurrentUser -Force -AllowClobber
 #Connect-Entra -Scopes 'Directory.AccessAsUser.All'
 
 $groupid = "9a01c262-c222-4bc9-b729-e29dd3722a72" #ObjectID of the group
 
+#$csvfile = "C:\migration\Retail_2025-4-25.csv"
+#$users = Import-Csv $csvfile -Delimiter ","
+
 $users = Get-MgGroupMember -GroupId $groupId
+
 foreach ($user in $users) {
     $user = get-mguser -UserId $user.id
     $userupn = $user.userPrincipalName
     write-host $userupn
 
-    #Create random password
     $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#-?".ToCharArray()
-    $randomString = ""
+    $num  = "123456789".ToCharArray()
+    $getnum = $num | Get-Random -Count 2
+    $randomString = -join $getnum
      for ($i = 0; $i -lt 24; $i++) {
      $randomChar = $chars | Get-Random
      $randomString += $randomChar
      }
-
-    #Write-Host $randomString #Uncomment to show password
+    Write-Host $randomString
 
 
     # Create the password profile with the generated password
