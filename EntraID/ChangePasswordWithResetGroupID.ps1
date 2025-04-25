@@ -15,8 +15,7 @@ foreach ($user in $users) {
     $NewPassword = [System.Web.Security.Membership]::GeneratePassword(24, 3)
 
     #Write-Host $NewPassword #Uncomment to view new password
-
-
+    
     # Create the password profile with the generated password
     $passwordprofile = @{
         Password = $NewPassword
