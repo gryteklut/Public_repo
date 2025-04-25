@@ -12,7 +12,9 @@ foreach ($user in $users) {
 
     #Generate random password
     $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#-?".ToCharArray()
-    $randomString = ""
+    $num  = "123456789".ToCharArray()
+    $getnum = $num | Get-Random -Count 2
+    $randomString = -join $getnum
      for ($i = 0; $i -lt 24; $i++) {
      $randomChar = $chars | Get-Random
      $randomString += $randomChar
