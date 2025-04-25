@@ -19,7 +19,7 @@ foreach ($user in $users) {
      $randomChar = $chars | Get-Random
      $randomString += $randomChar
      }
-    Write-Host $randomString
+    #Write-Host $randomString #Uncomment if you want to see the password
 
 
     # Create the password profile with the generated password
