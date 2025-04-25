@@ -10,6 +10,7 @@ foreach ($user in $users) {
     $userupn = $user.userPrincipalName
     write-host $userupn
 
+    #Generate random password
     $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#-?".ToCharArray()
     $randomString = ""
      for ($i = 0; $i -lt 24; $i++) {
