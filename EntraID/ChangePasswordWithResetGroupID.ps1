@@ -4,9 +4,6 @@
 
 $groupid = "9a01c262-c222-4bc9-b729-e29dd3722a72" #ObjectID of the group
 
-#$csvfile = "C:\migration\Retail_2025-4-25.csv"
-#$users = Import-Csv $csvfile -Delimiter ","
-
 $users = Get-MgGroupMember -GroupId $groupId
 
 foreach ($user in $users) {
