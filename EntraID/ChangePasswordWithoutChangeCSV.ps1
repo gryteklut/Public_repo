@@ -10,25 +10,18 @@ foreach ($user in $users) {
     $userupn = $user.userPrincipalName
     write-host $userupn
 
-    #Generate random password
-    $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#-?".ToCharArray()
-    $num  = "123456789".ToCharArray()
-    $getnum = $num | Get-Random -Count 2
-    $randomString = -join $getnum
-     for ($i = 0; $i -lt 24; $i++) {
-     $randomChar = $chars | Get-Random
-     $randomString += $randomChar
-     }
-    Write-Host $randomString
+    #Create a new password
+    Add-Type -AssemblyName 'System.Web'
+    $NewPassword = [System.Web.Security.Membership]::GeneratePassword(24, 3)
 
-
+    #Write-Host $NewPassword #Uncomment to view new password
+    
     # Create the password profile with the generated password
     $passwordprofile = @{
-        Password = $randomString
+        Password = $NewPassword
         forceChangePasswordNextSignIn = $False
         forceChangePasswordNextSignInWithMfa = $False
     }
-
     # Set the user's password using MgUser
     Update-MgUser -UserId $userupn -PasswordProfile $passwordprofile
 }
