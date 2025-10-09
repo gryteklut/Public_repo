@@ -18,8 +18,8 @@ The PIM design consists of **dedicated groups in Entra ID** that are granted acc
     
 *   The entire concept is built on a user always being **"eligible"** to become a member of a group, and the group having **"active"** assignments of one or more roles.
 
+<img width="696" height="462" alt="image" src="https://github.com/user-attachments/assets/4b3adaeb-2504-4b0d-8352-5749a67264ea" />
 
-![image.png](/.attachments/image-feb94f4d-58f0-405d-8985-15a3ce317c23.png)
 
 ### Eligible vs. Active
 
