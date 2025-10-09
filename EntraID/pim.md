@@ -94,7 +94,7 @@ The naming standard for PIM groups is **`%company% - pim - role`**.
   
 *   Assignment is eligible for 1 year
 
-###Role Activation and MFA Requirements
+### Role Activation and MFA Requirements
 * All roles require phish resistant MFA
 * Most privileged roles can be active for 2 hours, regular roles can be active up to 4 hours.
 
