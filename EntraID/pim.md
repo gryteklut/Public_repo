@@ -14,7 +14,7 @@ Privileged Identity Management (PIM)
 
 The PIM design consists of **dedicated groups in Entra ID** that are granted access to **privileged roles** in Entra ID.
 
-*   A group can provide access to one or more roles, and a role can be accessed by one or more groups6.
+*   A group can provide access to one or more roles, and a role can be accessed by one or more groups.
     
 *   The entire concept is built on a user always being **"eligible"** to become a member of a group, and the group having **"active"** assignments of one or more roles.
 
@@ -31,7 +31,7 @@ The design relies on two key concepts:
 
 ### 2.1 PIM Groups
 
-A **PIM group** in Microsoft Entra ID is a dedicated group that can be assigned roles with special permissions to manage access to sensitive resources14.
+A **PIM group** in Microsoft Entra ID is a dedicated group that can be assigned roles with special permissions to manage access to sensitive resources.
 
 *   This group enables **just-in-time** access, meaning members only activate their roles when necessary and for a limited period. This reduces the risk of privileged misuse and strengthens security by ensuring critical permissions are only available when needed16.
     
