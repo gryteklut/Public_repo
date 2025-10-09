@@ -33,7 +33,7 @@ The design relies on two key concepts:
 
 A **PIM group** in Microsoft Entra ID is a dedicated group that can be assigned roles with special permissions to manage access to sensitive resources.
 
-*   This group enables **just-in-time** access, meaning members only activate their roles when necessary and for a limited period. This reduces the risk of privileged misuse and strengthens security by ensuring critical permissions are only available when needed16.
+*   This group enables **just-in-time** access, meaning members only activate their roles when necessary and for a limited period. This reduces the risk of privileged misuse and strengthens security by ensuring critical permissions are only available when needed.
     
 *   Groups have **fixed assignments** of one or more roles ("active").
     
@@ -81,7 +81,7 @@ Setting up and changing PIM configuration requires the roles **"Privileged Role 
 
 The naming standard for PIM groups is **`%company% - pim - role`**.
     
-*   The description can describe single roles or a collection of roles for a function38.
+*   The description can describe single roles or a collection of roles for a function.
     
 *   **Examples:**
     *   `%company%-pim-global admin` is for  grants access to the Global Administrator role
