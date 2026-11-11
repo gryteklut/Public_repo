@@ -1,0 +1,133 @@
+---
+day: 8
+title: Agents and Agent 365
+moduleTitle: "Implement, manage, and govern agents"
+moduleId: d8-agents
+minutes: 60
+practice: false
+summary: "Pure AB-650-new. Expect scenario questions on identity, ownership, registry approval, and securing agent access."
+focus: "Entra Agent ID, registry lifecycle, owners, access packages/CA for agents, tools, and Agent 365 governance."
+tags:
+  - AB-650-new
+resources:
+  - { label: Microsoft Agent 365 overview, url: "https://learn.microsoft.com/en-us/microsoft-agent-365/", kind: learn }
+  - { label: Entra Agent ID concepts, url: "https://learn.microsoft.com/en-us/entra/agent-id/overview", kind: learn }
+  - { label: AB-650 agent skills measured, url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650", kind: learn }
+  - { label: "Skills: implement, manage & govern agents", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650", kind: skillsup }
+  - { label: Official course AB-650T00, url: "https://learn.microsoft.com/en-us/training/courses/ab-650t00", kind: skillsup }
+  - { label: Certification overview, url: "https://learn.microsoft.com/en-us/credentials/certifications/microsoft-365-and-ai-services-administrator-associate/", kind: skillsup }
+videos:
+  - label: "AB-650: Implement and manage agents in Microsoft 365 and Agent 365"
+    action: watch
+    lectures:
+      - "Identify how agents perform Researcher, Analyst, and custom agent roles"
+      - Configure user access to agents
+      - Configure a license for Agent 365
+      - Configure an agent
+      - Manage agent approval as an administrator
+      - Manage the lifecycle workflows for agent identities by using MS Entra Agent ID
+      - "Secure agent access, including access packages and conditional access"
+      - Manage agent owners
+  - label: "AB-650: Secure and govern agents by using Agent 365"
+    action: watch
+    lectures:
+      - Monitor agent activity by using Agent 365
+      - Protect sensitive data by using Agent 365
+      - Evaluate compliance gaps by using Agent 365
+lab:
+  - Read Entra Agent ID lifecycle docs and sketch owner vs sponsor vs agent identity.
+  - "In whatever admin experiences your E5/Frontier licensing exposes, locate agent registry / Agent 365 blades — note gaps if SKU-limited."
+  - Map Conditional Access / access package ideas onto agent identities (conceptually if UI unavailable).
+tldr:
+  - Agents are not just bots in a gallery — they have identities.
+  - "Treat the agent registry as the inventory and control plane: what agents exist, what is pending approval, what is published, what is bloc…"
+  - "Combine identity governance (access packages, reviews) with Conditional Access targeted at agent identities."
+  - "Beyond build/publish: operate agents."
+trap: "Exam trap: Copilot/agent wording is precise — readiness, oversharing, and governance are different skills."
+videoTip: Watch both AB-650 agent sections. This is pure net-new vs classic MS-102.
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+Learn the topic, then prove it with the knowledge checks below.
+
+<Quiz id="d8q1" title="Microsoft Entra Agent ID is primarily about:">
+Microsoft Entra Agent ID is primarily about:
+
+- [x] Giving agents identities with lifecycle workflows you can manage like other identities needing ownership and access control
+- [ ] Replacing MX records for email delivery
+- [ ] A Safe Attachments policy template
+- [ ] A SharePoint hub site template
+
+Manage lifecycle workflows for agent identities using Microsoft Entra Agent ID is a first-class AB-650 skill.
+
+[Source: Microsoft Entra Agent ID overview](https://learn.microsoft.com/en-us/entra/agent-id/overview)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Agents are not just bots in a gallery — they have identities. Manage lifecycle (create, own, sponsor, retire), secure access with access packages and Conditional Access, and manage owners. When an owner leaves, governance must cover transfer/disable patterns.
+
+</details>
+
+<Quiz id="d8q2" title="The agent registry is used to:">
+The agent registry is used to:
+
+- [x] Discover, review, publish/reject, install, block, or control access to Microsoft and third-party agents (including uploading custom agents)
+- [ ] Store only DNS PTR records
+- [ ] Replace Purview audit logs
+- [ ] Host Exchange hybrid free/busy only
+
+AB-650 lists discover/manage agents in the registry, review requests, publish/reject, install/block/control access, and upload custom agents.
+
+[Source: AB-650 study guide — agent registry skills](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Treat the agent registry as the inventory and control plane: what agents exist, what is pending approval, what is published, what is blocked, and who can use them. Also configure agent settings: allowed agent types, sharing, templates, and user access.
+
+</details>
+
+<Quiz id="d8q3" title="Securing agent access with access packages and Conditional Access implies agents">
+Securing agent access with access packages and Conditional Access implies agents are treated as:
+
+- [x] Identities that can be granted least-privilege, time-bound, policy-governed access to resources
+- [ ] Unmanageable external websites that cannot be governed
+- [ ] Only physical devices in Autopilot
+- [ ] Only shared mailboxes
+
+Skills measured explicitly include securing agent access with access packages and Conditional Access.
+
+[Source: Entitlement management / access packages overview](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-overview)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Combine identity governance (access packages, reviews) with Conditional Access targeted at agent identities. Think: just enough access, auditable assignments, and policy enforcement similar in spirit to human privileged access — adapted to agents.
+
+</details>
+
+<Quiz id="d8q4" title="Agent 365 governance skills include monitoring activity, protecting sensitive da">
+Agent 365 governance skills include monitoring activity, protecting sensitive data, and:
+
+- [x] Evaluating compliance gaps using Agent 365
+- [ ] Disabling Microsoft Graph permanently for all humans
+- [ ] Removing all sensitivity labels tenant-wide
+- [ ] Turning off MFA for Global Administrators
+
+Secure and govern agents by using Agent 365 includes monitor activity, protect sensitive data, and evaluate compliance gaps.
+
+[Source: Microsoft Agent 365](https://learn.microsoft.com/en-us/microsoft-agent-365/)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Beyond build/publish: operate agents. Monitor agent activity, apply data protection, evaluate compliance gaps, and manage tools available to agents in Agent 365. This is governance/ops, not just enablement.
+
+</details>
+

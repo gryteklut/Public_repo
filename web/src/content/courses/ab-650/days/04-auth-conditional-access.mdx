@@ -1,0 +1,130 @@
+---
+day: 4
+title: Authentication and Conditional Access
+moduleTitle: Implement and manage authentication and access
+moduleId: d4-auth
+minutes: 60
+practice: false
+summary: Classic MS-102-core strength. Be sharp on CA policy logic and auth method strength.
+focus: "Auth methods, Password Protection, SSPR, troubleshooting, Conditional Access, MFA, and ID Protection."
+tags:
+  - MS-102-core
+resources:
+  - { label: Conditional Access overview, url: "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview", kind: learn }
+  - { label: Authentication methods, url: "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-authentication-methods", kind: learn }
+  - { label: SSPR, url: "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-howitworks", kind: learn }
+  - { label: "Skills: authentication & Conditional Access", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650", kind: skillsup }
+  - { label: Official course AB-650T00, url: "https://learn.microsoft.com/en-us/training/courses/ab-650t00", kind: skillsup }
+  - { label: Certification overview, url: "https://learn.microsoft.com/en-us/credentials/certifications/microsoft-365-and-ai-services-administrator-associate/", kind: skillsup }
+videos:
+  - label: Implement and manage authentication and access in Microsoft Entra
+    action: watch
+    lectures:
+      - Implement and manage authentication methods
+      - Implement and manage self-service password reset (SSPR)
+      - Implement and manage Microsoft Entra Password Protection
+      - Investigate and resolve authentication issues
+      - Plan for identity protection
+      - Implement and manage Microsoft Entra ID Protection
+      - Plan Conditional Access policies
+      - Implement and manage Conditional Access policies
+      - Concepts of multi-factor authentication (MFA)
+      - Implement multi-factor authentication (MFA) by using conditional access policies
+lab:
+  - Review Authentication methods policy in Entra.
+  - Confirm SSPR registration and reset portal behavior for a test user.
+  - Create a report-only Conditional Access policy requiring MFA for admins.
+  - Review Identity Protection risk detections at a high level.
+tldr:
+  - "AB-650 includes implementing Conditional Access policies, including Microsoft Entra ID Protection and multifactor authentication."
+  - "Configure SSPR: who is in scope, which authentication methods are required for reset, registration campaign, and writeback considerations…"
+  - "Implement and manage Microsoft Entra Password Protection: global banned password list, custom banned passwords, and how it applies to cha…"
+  - "Investigate and resolve authentication issues using Entra sign-in logs, authentication methods registration, CA “What If” / report-only r…"
+trap: "Exam trap: read the AB-650 skill stem carefully for “Authentication and Conditional Access” — distractors often mix MS-102-only tasks."
+videoTip: Full watch — this section maps cleanly to AB-650 authentication and Conditional Access skills.
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+Learn the topic, then prove it with the knowledge checks below.
+
+<Quiz id="d4q1" title="Which statement best describes Microsoft Entra Conditional Access?">
+Which statement best describes Microsoft Entra Conditional Access?
+
+- [x] It evaluates signals and enforces controls such as MFA or blocking access based on policy conditions
+- [ ] It is a Purview retention label type
+- [ ] It replaces DNS verification for custom domains
+- [ ] It is only available for on-premises Active Directory Domain Services
+
+Conditional Access is the policy engine that uses conditions (user, app, location, risk, device) to grant, require MFA, or block.
+
+[Source: What is Conditional Access?](https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+AB-650 includes implementing Conditional Access policies, including Microsoft Entra ID Protection and multifactor authentication. Master assignments (users/groups/roles), cloud apps, conditions, grant controls, session controls, and report-only mode. Know how ID Protection risk states feed CA.
+
+</details>
+
+<Quiz id="d4q2" title="Users must reset forgotten passwords without a helpdesk ticket. Which capability">
+Users must reset forgotten passwords without a helpdesk ticket. Which capability do you configure?
+
+- [x] Self-service password reset (SSPR)
+- [ ] Microsoft 365 Backup restore
+- [ ] Attack simulation training
+- [ ] SharePoint site exclusions
+
+SSPR lets users reset passwords after registering authentication methods — an explicit AB-650 objective.
+
+[Source: How it works: Microsoft Entra self-service password reset](https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-howitworks)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Configure SSPR: who is in scope, which authentication methods are required for reset, registration campaign, and writeback considerations if hybrid existed (remember hybrid is de-emphasized on AB-650). Also know how to investigate authentication issues from sign-in logs.
+
+</details>
+
+<Quiz id="d4q3" title="Microsoft Entra Password Protection helps primarily by:">
+Microsoft Entra Password Protection helps primarily by:
+
+- [x] Blocking banned/weak passwords and enforcing custom banned password lists
+- [ ] Encrypting SharePoint files at rest with customer keys automatically
+- [ ] Assigning Copilot licenses via groups
+- [ ] Publishing agents in the agent registry
+
+Password Protection detects and blocks known weak/banned passwords for cloud (and optionally hybrid) scenarios.
+
+[Source: Eliminate bad passwords using Microsoft Entra Password Protection](https://learn.microsoft.com/en-us/entra/identity/authentication/concept-password-ban-bad)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Implement and manage Microsoft Entra Password Protection: global banned password list, custom banned passwords, and how it applies to change/reset flows. This is a discrete bullet under authentication skills.
+
+</details>
+
+<Quiz id="d4q4" title="A user cannot complete MFA. Which admin artifact is most useful first when inves">
+A user cannot complete MFA. Which admin artifact is most useful first when investigating authentication issues?
+
+- [x] Microsoft Entra sign-in logs for the user (failure reason / MFA detail)
+- [ ] SharePoint site usage reports only
+- [ ] Exchange message trace for a week-old newsletter
+- [ ] Copilot adoption reports by workload
+
+Sign-in logs provide failure reasons, CA results, and MFA details needed to troubleshoot authentication issues.
+
+[Source: Sign-in logs in Microsoft Entra ID](https://learn.microsoft.com/en-us/entra/identity/monitoring-health/concept-sign-ins)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Investigate and resolve authentication issues using Entra sign-in logs, authentication methods registration, CA “What If” / report-only results, and MFA prompt errors. Exam questions often describe a symptom and expect the correct diagnostic location.
+
+</details>
+

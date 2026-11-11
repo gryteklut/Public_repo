@@ -14,7 +14,8 @@ import { cn } from "@/lib/utils";
 
 const ITEMS = [
   { label: "Hub", href: "/" },
-  { label: "AB-650", href: "/AB-650/" },
+  { label: "Courses", href: "/courses/" },
+  { label: "AB-650", href: "/courses/ab-650/" },
 ];
 
 export const Navbar = () => {
@@ -65,9 +66,9 @@ export const Navbar = () => {
 
         <div className="flex items-center gap-2.5">
           <ThemeToggle />
-          <a href={withBase("/AB-650/")} className="max-lg:hidden">
+          <a href={withBase("/courses/")} className="max-lg:hidden">
             <Button variant="outline">
-              <span className="relative z-10">Study portal</span>
+              <span className="relative z-10">Courses</span>
             </Button>
           </a>
           <a

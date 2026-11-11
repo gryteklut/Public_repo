@@ -2,6 +2,7 @@
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
+import pagefind from "astro-pagefind";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
@@ -10,9 +11,13 @@ export default defineConfig({
   site: "https://gryteklut.github.io",
   base: "/Public_repo",
   trailingSlash: "always",
-  integrations: [mdx(), sitemap(), react()],
+  integrations: [mdx(), sitemap(), react(), pagefind()],
   output: "static",
   vite: {
     plugins: [tailwindcss()],
+  },
+  redirects: {
+    "/AB-650": "/courses/ab-650/",
+    "/AB-650/": "/courses/ab-650/",
   },
 });
