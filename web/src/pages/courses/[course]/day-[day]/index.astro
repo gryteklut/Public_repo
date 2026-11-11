@@ -3,6 +3,7 @@ import DefaultLayout from "@/layouts/DefaultLayout.astro";
 import { CompletionBar } from "@/components/courses/CompletionBar";
 import { LabChecklist } from "@/components/courses/LabChecklist";
 import { LessonPlan } from "@/components/courses/LessonPlan";
+import { SourceToggle } from "@/components/courses/SourceToggle";
 import { WatchChecklist } from "@/components/courses/WatchChecklist";
 import { render } from "astro:content";
 import {
@@ -46,6 +47,8 @@ const code = course.data.code;
 const watchLabels = d.videos
   .filter((v) => v.action === "watch")
   .map((v) => v.label);
+const msResources = d.resources.filter((r) => r.kind !== "skillsup");
+const skillsResources = d.resources.filter((r) => r.kind === "skillsup");
 ---
 
 <DefaultLayout title={`${d.moduleTitle} · ${code}`} description={d.summary}>
@@ -93,6 +96,8 @@ const watchLabels = d.videos
         </div>
       </header>
 
+      <SourceToggle client:only="react" code={code} day={d.day} />
+
       <div
         class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_360px]"
       >
@@ -102,8 +107,8 @@ const watchLabels = d.videos
             <ol class="mt-3 grid gap-2 sm:grid-cols-2">
               {
                 [
-                  "Read resources / Learn links",
-                  "Do the watch checklist",
+                  "Read Microsoft Learn resources / courses",
+                  "Do the Udemy watch checklist",
                   "Review TL;DR + exam trap",
                   "Prove with knowledge check",
                 ].map((step, i) => (
@@ -123,34 +128,68 @@ const watchLabels = d.videos
 
           {
             d.videos.length > 0 && (
-              <WatchChecklist
-                client:only="react"
-                code={code}
-                day={d.day}
-                tip={d.videoTip}
-                sections={d.videos}
-              />
+              <div data-source="udemy">
+                <WatchChecklist
+                  client:only="react"
+                  code={code}
+                  day={d.day}
+                  tip={d.videoTip}
+                  sections={d.videos}
+                />
+              </div>
             )
           }
 
-          <section class="course-card p-5 shadow-xs md:p-6">
-            <h2 class="text-xl font-semibold">Study resources</h2>
-            <ul class="mt-3 space-y-2">
-              {
-                d.resources.map((link) => (
-                  <li>
-                    <a
-                      class="text-sm font-medium underline-offset-4 hover:underline"
-                      href={link.url}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))
-              }
-            </ul>
+          <section class="course-card p-5 shadow-xs md:p-6" data-source="microsoft">
+            <h2 class="text-xl font-semibold">Study resources · Microsoft</h2>
+            {
+              msResources.length > 0 ? (
+                <ul class="mt-3 space-y-2">
+                  {msResources.map((link) => (
+                    <li>
+                      <a
+                        class="text-sm font-medium underline-offset-4 hover:underline"
+                        href={link.url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {link.kind === "course" ? (
+                          <span class="course-pill mr-2 inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold">
+                            Course
+                          </span>
+                        ) : null}
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p class="text-muted-foreground mt-3 text-sm">
+                  No Microsoft Learn links for this day.
+                </p>
+              )
+            }
+            {
+              skillsResources.length > 0 && (
+                <>
+                  <h3 class="mt-6 font-semibold">SkillsUp</h3>
+                  <ul class="mt-2 space-y-2">
+                    {skillsResources.map((link) => (
+                      <li>
+                        <a
+                          class="text-sm font-medium underline-offset-4 hover:underline"
+                          href={link.url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {link.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )
+            }
             {
               d.lab.length > 0 && (
                 <>
@@ -229,6 +268,9 @@ const watchLabels = d.videos
         </div>
 
         <LessonPlan
+          client:only="react"
+          code={code}
+          day={d.day}
           focus={d.focus}
           videoLabels={watchLabels}
           resources={d.resources}

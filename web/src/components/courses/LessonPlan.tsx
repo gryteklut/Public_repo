@@ -1,4 +1,12 @@
+import { useEffect, useState } from "react";
 import { BookOpen, ExternalLink, GraduationCap } from "lucide-react";
+import {
+  DEFAULT_DAY_SOURCES,
+  SOURCES_EVENT,
+  getDaySources,
+  loadCourseProgress,
+  type DaySources,
+} from "@/lib/courseProgress";
 
 type Resource = { label: string; url: string; kind?: string };
 
@@ -39,14 +47,32 @@ function LinkList({
 }
 
 export function LessonPlan({
+  code,
+  day,
   focus,
   videoLabels,
   resources,
 }: {
+  code: string;
+  day: number;
   focus: string;
   videoLabels: string[];
   resources: Resource[];
 }) {
+  const [sources, setSources] = useState<DaySources>(DEFAULT_DAY_SOURCES);
+
+  useEffect(() => {
+    setSources(getDaySources(loadCourseProgress(code), String(day)));
+    const onChange = (e: Event) => {
+      const detail = (e as CustomEvent<{ day: number; sources: DaySources }>)
+        .detail;
+      if (!detail || detail.day !== day) return;
+      setSources(detail.sources);
+    };
+    window.addEventListener(SOURCES_EVENT, onChange);
+    return () => window.removeEventListener(SOURCES_EVENT, onChange);
+  }, [code, day]);
+
   const courses = resources.filter((r) => r.kind === "course");
   const learn = resources.filter(
     (r) => r.kind !== "skillsup" && r.kind !== "course",
@@ -68,7 +94,7 @@ export function LessonPlan({
               {focus}
             </p>
           </li>
-          {videoLabels.length > 0 && (
+          {sources.udemy && videoLabels.length > 0 && (
             <li className="relative">
               <span className="bg-muted-foreground/40 absolute top-1 -left-[21px] size-2.5 rounded-full" />
               <p className="text-sm font-semibold">Udemy companion</p>
@@ -77,22 +103,24 @@ export function LessonPlan({
               </p>
             </li>
           )}
-          {courses.length > 0 && (
+          {sources.microsoft && courses.length > 0 && (
             <li className="relative">
               <span className="course-pill absolute top-1 -left-[21px] size-2.5 rounded-full" />
               <p className="mb-2 text-sm font-semibold">Microsoft Learn course</p>
               <LinkList items={courses} pill />
             </li>
           )}
-          <li className="relative">
-            <span className="bg-muted-foreground/40 absolute top-1 -left-[21px] size-2.5 rounded-full" />
-            <p className="mb-2 flex items-center gap-1.5 text-sm font-semibold">
-              <BookOpen className="size-3.5" />
-              Microsoft Learn
-            </p>
-            <LinkList items={learn} />
-          </li>
-          {skills.length > 0 && (
+          {sources.microsoft && learn.length > 0 && (
+            <li className="relative">
+              <span className="bg-muted-foreground/40 absolute top-1 -left-[21px] size-2.5 rounded-full" />
+              <p className="mb-2 flex items-center gap-1.5 text-sm font-semibold">
+                <BookOpen className="size-3.5" />
+                Microsoft Learn
+              </p>
+              <LinkList items={learn} />
+            </li>
+          )}
+          {sources.microsoft && skills.length > 0 && (
             <li className="relative">
               <span className="course-pill absolute top-1 -left-[21px] size-2.5 rounded-full" />
               <p className="mb-2 text-sm font-semibold">SkillsUp</p>
