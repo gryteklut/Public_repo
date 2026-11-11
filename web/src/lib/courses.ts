@@ -40,3 +40,17 @@ export async function getCourseDay(slug: string, dayNumber: number) {
 export function dayPath(courseSlug: string, dayNumber: number): string {
   return `/courses/${courseSlug}/day-${dayNumber}/`;
 }
+
+export async function getCourseNav(): Promise<{ label: string; href: string }[]> {
+  const courses = await getCourses();
+  return [
+    { label: "Hub", href: "/" },
+    { label: "Courses", href: "/courses/" },
+    ...courses
+      .filter((course) => course.data.status === "live")
+      .map((course) => ({
+        label: course.data.code,
+        href: `/courses/${courseSlugFromId(course.id)}/`,
+      })),
+  ];
+}

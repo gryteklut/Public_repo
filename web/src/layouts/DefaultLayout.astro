@@ -2,8 +2,10 @@
 import BaseHead from '@/components/BaseHead.astro';
 import { Footer } from '@/components/blocks/footer';
 import { Navbar } from '@/components/blocks/navbar';
+import { getCourseNav } from '@/lib/courses';
 
 const { title, description } = Astro.props;
+const nav = await getCourseNav();
 ---
 
 <html lang="en">
@@ -12,8 +14,8 @@ const { title, description } = Astro.props;
     </head>
     <body class={`h-screen antialiased`}
     >
-        <Navbar client:only='react' />
+        <Navbar client:only='react' items={nav} />
         <main><slot /></main>
-        <Footer />
+        <Footer items={nav} />
     </body>
 </html>

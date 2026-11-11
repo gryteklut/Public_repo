@@ -24,11 +24,13 @@ const CODE_DEFAULT = "AB-650";
 
 export function OfficialLabDayPanel({
   code = CODE_DEFAULT,
+  courseSlug = "ab-650",
   day,
   pointers,
   portalTips = [],
 }: {
   code?: string;
+  courseSlug?: string;
   day: number;
   pointers: OfficialLabPointer[];
   portalTips?: string[];
@@ -39,7 +41,7 @@ export function OfficialLabDayPanel({
 
   const resolved = pointers
     .map((p) => {
-      const lab = getOfficialLabById(p.labId);
+      const lab = getOfficialLabById(p.labId, code);
       if (!lab) return null;
       const exercises = p.exerciseIds?.length
         ? lab.exercises.filter((ex) => p.exerciseIds!.includes(ex.id))
@@ -62,8 +64,7 @@ export function OfficialLabDayPanel({
       {resolved.length > 0 && (
         <div className="space-y-3">
           <p className="text-muted-foreground text-sm leading-relaxed">
-            Do the official lab. Check off exercises on the lab page — that
-            progress is the 450-minute total.
+            Do the official lab. Check off each exercise on the lab page.
           </p>
           {resolved.map(({ lab, exercises }) => {
             const doneCount = exercises.filter((ex) =>
@@ -82,7 +83,7 @@ export function OfficialLabDayPanel({
                     <h4 className="mt-1 font-semibold">
                       <a
                         className="hover:text-[var(--ms-accent)]"
-                        href={withBase(`/courses/ab-650/labs/${lab.id}/`)}
+                        href={withBase(`/courses/${courseSlug}/labs/${lab.id}/`)}
                       >
                         {lab.title}
                       </a>
@@ -93,7 +94,7 @@ export function OfficialLabDayPanel({
                     </p>
                   </div>
                   <Button size="sm" asChild>
-                    <a href={withBase(`/courses/ab-650/labs/${lab.id}/`)}>
+                    <a href={withBase(`/courses/${courseSlug}/labs/${lab.id}/`)}>
                       Open lab
                     </a>
                   </Button>
@@ -120,7 +121,7 @@ export function OfficialLabDayPanel({
                         <a
                           className="hover:text-[var(--ms-accent)]"
                           href={withBase(
-                            `/courses/ab-650/labs/${lab.id}/#${ex.id}`,
+                            `/courses/${courseSlug}/labs/${lab.id}/#${ex.id}`,
                           )}
                         >
                           Exercise {ex.number}: {ex.title}{" "}

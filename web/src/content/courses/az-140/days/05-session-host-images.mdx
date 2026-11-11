@@ -1,0 +1,118 @@
+---
+day: 5
+title: Session host images
+moduleTitle: Create and manage session host images
+moduleId: d5-images
+minutes: 90
+practice: false
+summary: "Golden images, custom image templates, and Azure Compute Gallery. Official lab 7 is standalone."
+focus: "Skills measured: create and manage session host images."
+tags:
+  - AZ-140-infra
+resources:
+  - { label: "Create and manage session host images", url: "https://learn.microsoft.com/en-us/training/modules/create-manage-session-host-image/", kind: course }
+  - { label: "Custom image templates", url: "https://learn.microsoft.com/en-us/azure/virtual-desktop/custom-image-templates", kind: learn }
+videos:
+  - label: Create and manage session host images
+    action: watch
+    lectures:
+      - Create a golden image manually
+      - Create a golden image by using Azure VM Image Builder
+      - Modify a session host image
+      - Plan and implement lifecycle management, OS and applications updates for images
+      - Create a session host by using a golden image
+      - Plan and implement image storage
+      - Create and manage Azure Compute Gallery
+officialLabs:
+  - labId: lab-7
+lab: []
+tldr:
+  - "A reusable image is generalized before capture. You then store versions in Azure Compute Gallery."
+  - "Custom image templates use a managed identity and a custom role to build the image without a one-off manual capture."
+  - "An update is a new image version, then new or rebuilt session hosts from that version."
+  - "Lab 7 does not need the host pool from lab 1."
+trap: "Capturing a specialized, domain-joined virtual machine and deploying it as-is leaves duplicate machine identity. Generalize first when the image will be reused."
+videoTip: "Watch the image section, then run lab 7. It is the 90-minute lab."
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="az140-d5-q1">
+You built a Windows 11 multi-session virtual machine and will deploy many session hosts from it. What do you do before you capture the image?
+
+- [x] Generalize it with Sysprep, then capture a version into Azure Compute Gallery
+- [ ] Join it to Entra ID and capture it while it is running
+- [ ] Enable public RDP and snapshot the OS disk as the only copy
+- [ ] Store the VHD on the FSLogix profile share
+
+A golden image that will be cloned is generalized so each new virtual machine gets its own identity. Azure Compute Gallery holds the image definition and versions. A snapshot of a running domain-joined machine is not the reusable image the exam wants.
+
+[Source: Create a custom image](https://learn.microsoft.com/en-us/azure/virtual-desktop/set-up-customize-master-image)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+The manual path is: build the virtual machine, install apps, generalize, deallocate, capture. The gallery image definition describes the operating system, and each build is a version. Session hosts are then created from a chosen version.
+
+</details>
+
+<Quiz id="az140-d5-q2">
+Lab 7 builds the image with a custom image template. Which pieces does that template need?
+
+- [x] A user-assigned managed identity, permissions on the build resources, an Azure Compute Gallery image definition, and a template that you run
+- [ ] Only a scaling plan and a host pool
+- [ ] An FSLogix Cloud Cache location
+- [ ] A public IP address on the gallery
+
+The lab registers providers, creates a managed identity, a custom RBAC role, the gallery and image definition, then the template, and finally builds the image. The identity is what the build uses to read the source and write the version.
+
+[Source: Custom image templates](https://learn.microsoft.com/en-us/azure/virtual-desktop/custom-image-templates)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Azure VM Image Builder is the service behind custom image templates. You do not give the build your personal password. You grant the managed identity the least role that can create the image. The last lab task deploys session hosts from that custom image.
+
+</details>
+
+<Quiz id="az140-d5-q3">
+A line-of-business app on the image must be upgraded. What is the image lifecycle step?
+
+- [x] Produce a new image version and deploy session hosts from that version
+- [ ] Edit the existing gallery version in place and expect running hosts to change
+- [ ] Replace the FSLogix profile container with the new application
+- [ ] Change the host pool load-balancing algorithm
+
+Gallery versions are immutable. You add a version (or build a new one with the template) and point new session hosts at it. Running hosts keep the image they were deployed with until you replace them. Profiles live in FSLogix, so replacing a host does not delete the user profile.
+
+[Source: Azure Compute Gallery](https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Plan replication and end-of-life for old versions. In-place Windows Update on every session host is a different strategy (day 10). The image path is how you keep a known build.
+
+</details>
+
+<Quiz id="az140-d5-q4">
+Where do you store image definitions and versions for the whole organization?
+
+- [x] Azure Compute Gallery
+- [ ] An FSLogix profile container
+- [ ] The host pool RDP properties
+- [ ] A Log Analytics workspace
+
+Azure Compute Gallery (the current name of Shared Image Gallery) stores the definition and its versions and can replicate them. FSLogix stores user data. Log Analytics stores diagnostics. RDP properties configure the session, not the image.
+
+[Source: Store and share images](https://learn.microsoft.com/en-us/azure/virtual-machines/shared-image-galleries)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+RBAC on the gallery controls who can deploy from the image. Lab 7 creates the gallery, the definition, and then a version by running the template. Trusted Launch images must be used with a compatible security type on the session host.
+
+</details>

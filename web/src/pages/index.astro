@@ -2,13 +2,58 @@
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { Background } from "@/components/background";
 import { Hero } from "@/components/blocks/hero";
-import { Tools } from "@/components/blocks/tools";
+import { CourseCard } from "@/components/courses/CourseCard";
 import DefaultLayout from "@/layouts/DefaultLayout.astro";
+import { courseSlugFromId, getCourseDays, getCourses } from "@/lib/courses";
+
+const courses = await getCourses();
+const cards = [];
+for (const course of courses) {
+  const slug = courseSlugFromId(course.id);
+  const days = await getCourseDays(slug);
+  cards.push({
+    slug,
+    code: course.data.code,
+    title: course.data.title,
+    subtitle: course.data.subtitle,
+    status: course.data.status,
+    color: course.data.color,
+    total: days.length,
+    labsHref: course.data.hasLabs ? `/courses/${slug}/labs/` : undefined,
+    external: course.data.external,
+  });
+}
 ---
 
 <DefaultLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
   <Background className="via-muted to-muted/80">
     <Hero />
-    <Tools />
+    <section id="catalog" class="container scroll-mt-28 pb-24 lg:pb-32">
+      <div class="mb-8 max-w-2xl">
+        <h2 class="text-2xl tracking-tight md:text-3xl">Courses</h2>
+        <p class="text-muted-foreground mt-2 text-sm leading-relaxed">
+          Title, companion course, progress on this device, the 10-day plan, and
+          the official labs.
+        </p>
+      </div>
+      <div class="grid gap-4 md:grid-cols-2">
+        {
+          cards.map((card) => (
+            <CourseCard
+              client:only="react"
+              slug={card.slug}
+              code={card.code}
+              title={card.title}
+              subtitle={card.subtitle}
+              status={card.status}
+              color={card.color}
+              total={card.total}
+              labsHref={card.labsHref}
+              external={card.external}
+            />
+          ))
+        }
+      </div>
+    </section>
   </Background>
 </DefaultLayout>

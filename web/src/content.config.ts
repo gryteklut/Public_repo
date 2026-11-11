@@ -15,6 +15,17 @@ const videoSchema = z.object({
   lectures: z.array(z.string()).default([]),
 });
 
+const externalSchema = z.object({
+  provider: z.string(),
+  title: z.string(),
+  url: z.string(),
+  instructor: z.string().default("John Christopher"),
+  instructorUrl: z
+    .string()
+    .default("https://www.udemy.com/user/john-christopher-32/"),
+  note: z.string().optional(),
+});
+
 const courses = defineCollection({
   loader: glob({
     pattern: "*/course.yaml",
@@ -30,6 +41,11 @@ const courses = defineCollection({
     tags: z.array(z.string()).default([]),
     learn: z.array(z.string()).default([]),
     outOfScope: z.string().optional(),
+    /** Non-Microsoft companion (Udemy). Shown on the hub card and course page. */
+    external: externalSchema.optional(),
+    /** Official labs live at /courses/<slug>/labs/ */
+    hasLabs: z.boolean().default(false),
+    studyGuide: z.string().optional(),
   }),
 });
 

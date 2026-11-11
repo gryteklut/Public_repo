@@ -9,3 +9,9 @@ npm run build
 ```
 
 Site base path is `/Public_repo` for GitHub Pages. See root `AGENTS.md`.
+
+## Add a course
+
+`npm run new-course -- <slug> "Title"`, then edit `course.yaml`. The hub lists every course from that file.
+
+`external` is the companion course (Udemy). The default instructor for a new course is John Christopher: https://www.udemy.com/user/john-christopher-32/ . Use the course URL with no coupon query, and put lecture titles in each day's `videos` list.

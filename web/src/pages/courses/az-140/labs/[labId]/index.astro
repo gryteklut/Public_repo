@@ -1,0 +1,33 @@
+---
+import DefaultLayout from "@/layouts/DefaultLayout.astro";
+import { OfficialLabDetail } from "@/components/courses/OfficialLabDetail";
+import { getAllOfficialLabs, getOfficialLabById } from "@/data/officialLabs";
+import { withBase } from "@/lib/base";
+
+export function getStaticPaths() {
+  return getAllOfficialLabs("AZ-140").map((lab) => ({
+    params: { labId: lab.id },
+  }));
+}
+
+const labId = Astro.params.labId!;
+const lab = getOfficialLabById(labId, "AZ-140");
+if (!lab) {
+  return Astro.redirect(withBase("/courses/az-140/labs/"));
+}
+---
+
+<DefaultLayout title={lab.title} description={lab.description}>
+  <div class="course-shell ms-lab-theme container pt-28 pb-20 lg:pt-40">
+    <nav class="text-muted-foreground mb-6 flex flex-wrap gap-2 text-sm">
+      <a class="hover:text-foreground" href={withBase("/courses/")}>Courses</a>
+      <span>/</span>
+      <a class="hover:text-foreground" href={withBase("/courses/az-140/")}>AZ-140</a>
+      <span>/</span>
+      <a class="hover:text-foreground" href={withBase("/courses/az-140/labs/")}>Labs</a>
+      <span>/</span>
+      <span class="text-foreground">Lab {lab.number}</span>
+    </nav>
+    <OfficialLabDetail client:only="react" labId={lab.id} code="AZ-140" />
+  </div>
+</DefaultLayout>

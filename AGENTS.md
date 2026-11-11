@@ -61,7 +61,9 @@ npm run new-course -- md-102 "Endpoint Administrator"
 npm run build
 ```
 
-No route code changes — catalog picks up the folder automatically (`_template` is ignored).
+No route code changes — the hub and `/courses/` read `course.yaml` (`_template` is ignored). Set `hasLabs: true` only when `/courses/<slug>/labs/` exists.
+
+`external` on `course.yaml` is the non-Microsoft intro (shown on the hub card and the course page). Default instructor for a new course is **John Christopher** ([Udemy profile](https://www.udemy.com/user/john-christopher-32/)). Set `provider`, `title`, and the course `url` with no coupon query. Put exact lecture titles in each day's `videos` list for the watch checklist.
 
 Plan / brief: `docs/courses/courses-platform-plan.md`.
 
@@ -96,7 +98,7 @@ Live checks:
 
 1. **Course + days:** `web/src/content/courses/<slug>/`
 2. **Schema:** `web/src/content.config.ts`
-3. **Hub cards:** `web/src/components/blocks/tools.tsx` (+ hero copy in `hero.tsx`)
+3. **Hub cards:** generated from each `course.yaml` (hero copy in `hero.tsx`)
 4. **Theme / chrome:** `web/src/components/blocks/navbar.tsx`, `footer.tsx`
 5. **Tokens / readability:** `web/src/styles/global.css`
 

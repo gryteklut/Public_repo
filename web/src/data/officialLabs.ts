@@ -1,3 +1,4 @@
+import az140LabsJson from "./az140Labs.json";
 import labsJson from "./officialLabs.json";
 
 export type LabTask = {
@@ -51,25 +52,42 @@ export type OfficialLabsCatalog = {
   };
   totalLabs: number;
   totalMinutes: number;
+  /** Short line under the labs title. */
+  summary?: string;
   learningPaths: OfficialLearningPath[];
 };
 
 export const officialLabsCatalog = labsJson as OfficialLabsCatalog;
 
-export const TOTAL_OFFICIAL_LAB_MINUTES = officialLabsCatalog.totalMinutes;
+const catalogs: Record<string, OfficialLabsCatalog> = {
+  "AB-650": officialLabsCatalog,
+  "AZ-140": az140LabsJson as OfficialLabsCatalog,
+};
 
-export function getAllOfficialLabs(): OfficialLab[] {
-  return officialLabsCatalog.learningPaths.flatMap((lp) => lp.labs);
+export function getLabCatalog(code: string): OfficialLabsCatalog | undefined {
+  return catalogs[code];
 }
 
-export function getOfficialLabById(labId: string): OfficialLab | undefined {
-  return getAllOfficialLabs().find((lab) => lab.id === labId);
+export const TOTAL_OFFICIAL_LAB_MINUTES = officialLabsCatalog.totalMinutes;
+
+export function getAllOfficialLabs(code = "AB-650"): OfficialLab[] {
+  return (
+    getLabCatalog(code)?.learningPaths.flatMap((lp) => lp.labs) ?? []
+  );
+}
+
+export function getOfficialLabById(
+  labId: string,
+  code = "AB-650",
+): OfficialLab | undefined {
+  return getAllOfficialLabs(code).find((lab) => lab.id === labId);
 }
 
 export function getLearningPathForLab(
   lab: OfficialLab,
+  code = "AB-650",
 ): OfficialLearningPath | undefined {
-  return officialLabsCatalog.learningPaths.find(
+  return getLabCatalog(code)?.learningPaths.find(
     (lp) => lp.number === lab.learningPath,
   );
 }
