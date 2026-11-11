@@ -40,25 +40,11 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Stage site under /AB-650
+      - name: Stage site under /AB-650 only
         working-directory: .
         run: |
           mkdir -p site/AB-650
           cp -a ab-650-portal/dist/. site/AB-650/
-          cat > site/index.html <<'HTML'
-          <!doctype html>
-          <html lang="en">
-            <head>
-              <meta charset="UTF-8" />
-              <meta http-equiv="refresh" content="0; url=./AB-650/" />
-              <title>Redirecting to AB-650 Study Portal</title>
-              <link rel="canonical" href="./AB-650/" />
-            </head>
-            <body>
-              <p>Redirecting to <a href="./AB-650/">AB-650 Study Portal</a>…</p>
-            </body>
-          </html>
-          HTML
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

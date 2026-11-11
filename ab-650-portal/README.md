@@ -4,6 +4,9 @@ Course portal for Exam **AB-650: Administering Microsoft 365 and AI Services**.
 
 ## Live site (GitHub Pages)
 
+Portal URL only: **https://gryteklut.github.io/Public_repo/AB-650/** (repo root is reserved for a future hub).
+
+
 After the deploy workflow runs on `main`:
 
 **https://gryteklut.github.io/Public_repo/AB-650/**
