@@ -1,18 +1,18 @@
-# Agent notes — `web/` (Astro app)
+# Agent notes — `web/` (Mainline Astro theme)
 
 **Start with the repo-root guide:** [`../AGENTS.md`](../AGENTS.md)
 
-That file covers product rules, URLs, deploy, curriculum edit points, and access notes.
-
 ## This folder
 
-Astro 7 + React islands for the public hub and AB-650 portal.
+Based on [Mainline Astro](https://github.com/shadcnblocks/mainline-astro-template) (shadcn/ui, Tailwind 4, React islands).
 
 | Path | Role |
 | --- | --- |
 | `src/pages/index.astro` | Hub at `/` |
 | `src/pages/AB-650/**` | Portal routes under `/AB-650/` |
-| `src/components/ab650/*` | Interactive React UI |
+| `src/components/blocks/*` | Mainline chrome (navbar, hero, footer, tools) |
+| `src/components/ui/*` | shadcn primitives |
+| `src/components/ab650/*` | Study portal React UI |
 | `src/data/curriculum.ts` | Course + questions |
 | `src/data/udemyMap.ts` | Udemy Watch/Skim/Skip |
 | `astro.config.mjs` | `base: '/Public_repo'`, trailing slash always |
@@ -26,4 +26,4 @@ npm run build
 npm run preview
 ```
 
-Astro docs: https://docs.astro.build
+Use `withBase()` for every internal href.

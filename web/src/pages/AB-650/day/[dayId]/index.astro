@@ -1,17 +1,24 @@
 ---
-import BaseLayout from '../../../../layouts/BaseLayout.astro'
-import Ab650Day from '../../../../components/ab650/Ab650Day'
-import { curriculum } from '../../../../data/curriculum'
-import '../../../../styles/ab650.css'
+import Ab650Day from "@/components/ab650/Ab650Day";
+import { curriculum } from "@/data/curriculum";
+import DefaultLayout from "@/layouts/DefaultLayout.astro";
 
 export function getStaticPaths() {
   return curriculum.map((day) => ({
     params: { dayId: day.id },
-  }))
+    props: { dayId: day.id },
+  }));
 }
 
-const { dayId } = Astro.params
+const { dayId } = Astro.props;
+const day = curriculum.find((d) => d.id === dayId);
 ---
-<BaseLayout title={`AB-650 Day — ${dayId}`} description="AB-650 study day">
-  <Ab650Day client:load dayId={dayId!} />
-</BaseLayout>
+
+<DefaultLayout
+  title={day ? `Day ${day.dayNumber}: ${day.title}` : "AB-650 Day"}
+  description={day?.focus ?? "AB-650 study day"}
+>
+  <div class="container pt-28 pb-16 lg:pt-40">
+    <Ab650Day client:load dayId={dayId} />
+  </div>
+</DefaultLayout>

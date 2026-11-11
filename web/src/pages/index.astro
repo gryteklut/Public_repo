@@ -1,28 +1,14 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
-const base = import.meta.env.BASE_URL
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { Background } from "@/components/background";
+import { Hero } from "@/components/blocks/hero";
+import { Tools } from "@/components/blocks/tools";
+import DefaultLayout from "@/layouts/DefaultLayout.astro";
 ---
-<BaseLayout
-  title="Public repo hub"
-  description="Hub for public learning tools and admin references."
->
-  <section class="hub-hero">
-    <p class="hub-kicker">gryteklut / Public_repo</p>
-    <h1>Public tools hub</h1>
-    <p>
-      Static GitHub Pages hub. Study tools and references live under their own
-      paths so the root can grow without breaking existing links.
-    </p>
-  </section>
 
-  <section class="hub-grid">
-    <a class="hub-card" href={`${base}AB-650/`}>
-      <p class="hub-kicker">Certification</p>
-      <h2>AB-650 Study Portal</h2>
-      <p>
-        10-day learn-first course portal for Administering Microsoft 365 and AI
-        Services, with Udemy watch maps and gated control questions.
-      </p>
-    </a>
-  </section>
-</BaseLayout>
+<DefaultLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+  <Background className="via-muted to-muted/80">
+    <Hero />
+    <Tools />
+  </Background>
+</DefaultLayout>

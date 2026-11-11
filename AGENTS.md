@@ -6,7 +6,7 @@ Read this first before changing the site.
 
 Public GitHub Pages site for Kim (`gryteklut`):
 
-- **Hub (Astro):** `https://gryteklut.github.io/Public_repo/`
+- **Hub (Astro + Mainline theme):** `https://gryteklut.github.io/Public_repo/`
 - **AB-650 study portal:** `https://gryteklut.github.io/Public_repo/AB-650/`
 - Root `/` is reserved for a growing hub. Do **not** put a redirect from `/` to AB-650.
 - Other folders (`EntraID/`, `Intune/`, `Migration/`) are reference material, not part of the Pages build.
@@ -15,10 +15,12 @@ Public GitHub Pages site for Kim (`gryteklut`):
 
 | Piece | Location | Notes |
 | --- | --- | --- |
-| Astro site | `web/` | Astro 7 + `@astrojs/react` |
+| Astro site | `web/` | **Mainline** theme (shadcnblocks) + Astro + React + Tailwind 4 + shadcn/ui |
+| Theme upstream | [mainline-astro-template](https://github.com/shadcnblocks/mainline-astro-template) | MIT; keep attribution in footer |
 | Base path | `web/astro.config.mjs` | `base: '/Public_repo'`, `site: 'https://gryteklut.github.io'`, `trailingSlash: 'always'` |
-| Hub page | `web/src/pages/index.astro` | Static hub listing tools |
-| AB-650 UI | `web/src/components/ab650/*` | React islands (`client:load`) |
+| Hub page | `web/src/pages/index.astro` | Mainline Hero + Tools cards |
+| Theme chrome | `web/src/components/blocks/*` | Navbar, Footer, Hero, Tools |
+| AB-650 UI | `web/src/components/ab650/*` | React islands (`client:load`) on shadcn primitives |
 | Curriculum | `web/src/data/curriculum.ts` | Official AB-650 skills-oriented content |
 | Udemy map | `web/src/data/udemyMap.ts` | Watch / Skim / Skip for ms100course |
 | Progress | `web/src/lib/progress.ts` + `useProgress` | `localStorage` key `ab650-portal-progress-v1` |
@@ -50,11 +52,11 @@ npm run build
 npm run preview
 ```
 
+Always prefix internal links with `withBase()` from `web/src/lib/base.ts`.
+
 ## Deploy
 
-Push/merge to `main` triggers Pages deploy when `web/**` or the workflow file changes.
-
-One-time Pages setting (already done): Source = **GitHub Actions**.
+Push/merge to `main` triggers Pages deploy when `web/**` or the workflow file changes. Manual run: **Deploy Public_repo hub (Astro)** (`workflow_dispatch`).
 
 Live checks:
 
@@ -65,8 +67,9 @@ Live checks:
 
 1. **Curriculum / questions:** `web/src/data/curriculum.ts`
 2. **Udemy section map:** `web/src/data/udemyMap.ts` (keyed by module id)
-3. **Hub cards:** `web/src/pages/index.astro`
-4. **Styles:** hub in `BaseLayout.astro`; portal in `web/src/styles/ab650.css`
+3. **Hub cards:** `web/src/components/blocks/tools.tsx` (+ hero copy in `hero.tsx`)
+4. **Theme / chrome:** `web/src/components/blocks/navbar.tsx`, `footer.tsx`
+5. **Tokens:** `web/src/styles/global.css` (Mainline / shadcn CSS variables)
 
 Every question should keep `studyContent`, `explanation`, `sourceUrl`, `sourceLabel`.
 
@@ -81,9 +84,10 @@ Every question should keep `studyContent`, `explanation`, `sourceUrl`, `sourceLa
 - LearnHouse / Docker LMS (needs a server; not GitHub Pages)
 - Shared multi-user progress DB
 - Scraping Udemy course content
+- Paid shadcnblocks All Access templates (Mainline free MIT is enough)
 
 ## Suggested next improvements
 
-- Grow hub with more cards/tools under new paths
-- Optionally convert study text to MDX content collections
+- Add more hub tool cards under new paths
+- Optionally pull extra blocks via shadcn CLI from shadcnblocks
 - Keep AB-650 interactive bits as React islands

@@ -1,11 +1,15 @@
-import { useState } from 'react'
-import type { Day, Module, Question } from '../../types'
-import { useProgress } from '../../hooks/useProgress'
+import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { useProgress } from "@/hooks/useProgress";
+import type { Day, Module, Question } from "@/types";
 
 type Props = {
-  day: Day
-  module: Module
-}
+  day: Day;
+  module: Module;
+};
 
 export function Quiz({ day, module }: Props) {
   const {
@@ -15,26 +19,26 @@ export function Quiz({ day, module }: Props) {
     isModuleComplete,
     setCompleted,
     clearModule,
-  } = useProgress()
+  } = useProgress();
 
-  const questionIds = module.questions.map((q) => q.id)
-  const unlocked = allQuestionsCorrect(module.id, questionIds)
-  const completed = isModuleComplete(module.id)
+  const questionIds = module.questions.map((q) => q.id);
+  const unlocked = allQuestionsCorrect(module.id, questionIds);
+  const completed = isModuleComplete(module.id);
 
   return (
-    <section className="quiz-section">
-      <div className="section-heading-row">
-        <div>
-          <h2>{day.isPracticeDay ? 'Practice questions' : 'Learn, then check'}</h2>
-          <p className="muted">
-            {day.isPracticeDay
-              ? 'Quiz-first practice day. Expand “Study this topic” only if you need a refresher.'
-              : 'Expand the study panel above each question to learn the topic, then answer. Pure drilling is Day 10.'}
-          </p>
-        </div>
+    <section className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-semibold tracking-tight">
+          {day.isPracticeDay ? "Practice questions" : "Learn, then check"}
+        </h2>
+        <p className="text-muted-foreground mt-1 text-sm">
+          {day.isPracticeDay
+            ? "Quiz-first practice day. Expand “Study this topic” only if you need a refresher."
+            : "Expand the study panel above each question to learn the topic, then answer. Pure drilling is Day 10."}
+        </p>
       </div>
 
-      <ol className="question-list">
+      <ol className="space-y-4">
         {module.questions.map((question, index) => (
           <QuestionCard
             key={question.id}
@@ -55,39 +59,37 @@ export function Quiz({ day, module }: Props) {
         ))}
       </ol>
 
-      <div className="completion-gate">
-        <label
-          className={`done-check ${unlocked ? '' : 'locked'}`}
-          title={
-            unlocked
-              ? 'Mark this module complete'
-              : 'Answer every question correctly to unlock'
-          }
-        >
-          <input
-            type="checkbox"
+      <div className="bg-card flex flex-col gap-4 rounded-2xl border p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-start gap-3">
+          <Checkbox
+            id={`complete-${module.id}`}
             checked={completed}
             disabled={!unlocked && !completed}
-            onChange={(e) => {
-              if (!unlocked && e.target.checked) return
-              setCompleted(module.id, e.target.checked)
+            onCheckedChange={(checked) => {
+              if (!unlocked && checked) return;
+              setCompleted(module.id, checked === true);
             }}
           />
-          <span>
+          <Label
+            htmlFor={`complete-${module.id}`}
+            className={!unlocked && !completed ? "text-muted-foreground" : ""}
+          >
             Mark module complete
-            {!unlocked && !completed ? ' (locked until all answers are correct)' : ''}
-          </span>
-        </label>
-        <button
+            {!unlocked && !completed
+              ? " (locked until all answers are correct)"
+              : ""}
+          </Label>
+        </div>
+        <Button
           type="button"
-          className="btn btn-ghost"
+          variant="ghost"
           onClick={() => clearModule(module.id)}
         >
           Reset module answers
-        </button>
+        </Button>
       </div>
     </section>
-  )
+  );
 }
 
 function QuestionCard({
@@ -98,42 +100,52 @@ function QuestionCard({
   alreadyCorrect,
   onSubmit,
 }: {
-  moduleId: string
-  question: Question
-  index: number
-  practiceMode: boolean
-  alreadyCorrect: boolean
-  onSubmit: (selectedIndex: number) => boolean
+  moduleId: string;
+  question: Question;
+  index: number;
+  practiceMode: boolean;
+  alreadyCorrect: boolean;
+  onSubmit: (selectedIndex: number) => boolean;
 }) {
-  const [selected, setSelected] = useState<number | null>(null)
-  const [revealed, setRevealed] = useState(alreadyCorrect)
-  const [wasCorrect, setWasCorrect] = useState(alreadyCorrect)
-  const [studyOpen, setStudyOpen] = useState(!practiceMode)
+  const [selected, setSelected] = useState<number | null>(null);
+  const [revealed, setRevealed] = useState(alreadyCorrect);
+  const [wasCorrect, setWasCorrect] = useState(alreadyCorrect);
+  const [studyOpen, setStudyOpen] = useState(!practiceMode);
 
   const handleSubmit = () => {
-    if (selected === null) return
-    const correct = onSubmit(selected)
-    setWasCorrect(correct)
-    setRevealed(true)
-  }
+    if (selected === null) return;
+    const correct = onSubmit(selected);
+    setWasCorrect(correct);
+    setRevealed(true);
+  };
 
   return (
-    <li className={`question-card ${alreadyCorrect ? 'is-correct' : ''}`}>
-      <div className="question-top">
-        <span className="q-index">Question {index + 1}</span>
-        {alreadyCorrect && <span className="pill success">Correct</span>}
+    <li
+      className={`bg-card rounded-2xl border p-5 shadow-xs ${alreadyCorrect ? "border-foreground/25" : ""}`}
+    >
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+          Question {index + 1}
+        </span>
+        {alreadyCorrect && (
+          <span className="bg-muted rounded-full px-2.5 py-1 text-xs font-medium">
+            Correct
+          </span>
+        )}
       </div>
 
       <details
-        className="study-panel"
+        className="bg-muted/40 mb-4 rounded-xl border p-3"
         open={studyOpen}
         onToggle={(e) => setStudyOpen((e.target as HTMLDetailsElement).open)}
       >
-        <summary>Study this topic</summary>
-        <div className="study-body">
-          <p>{question.studyContent}</p>
+        <summary className="cursor-pointer text-sm font-medium">
+          Study this topic
+        </summary>
+        <div className="mt-3 space-y-2 text-sm">
+          <p className="leading-relaxed">{question.studyContent}</p>
           <a
-            className="learn-link"
+            className="font-medium underline-offset-4 hover:underline"
             href={question.sourceUrl}
             target="_blank"
             rel="noreferrer"
@@ -143,50 +155,65 @@ function QuestionCard({
         </div>
       </details>
 
-      <p className="prompt">{question.prompt}</p>
+      <p className="font-medium leading-relaxed">{question.prompt}</p>
 
-      <div className="choices" role="radiogroup" aria-label={`Answers for question ${index + 1}`}>
+      <div
+        className="mt-4 space-y-2"
+        role="radiogroup"
+        aria-label={`Answers for question ${index + 1}`}
+      >
         {question.choices.map((choice, choiceIndex) => {
-          const id = `${moduleId}-${question.id}-${choiceIndex}`
+          const id = `${moduleId}-${question.id}-${choiceIndex}`;
           return (
-            <label key={id} className="choice">
+            <label
+              key={id}
+              className={`hover:bg-muted/50 flex cursor-pointer items-start gap-3 rounded-xl border p-3 text-sm ${
+                selected === choiceIndex ? "border-foreground/40" : ""
+              }`}
+            >
               <input
                 type="radio"
+                className="mt-1"
                 name={`${moduleId}-${question.id}`}
                 value={choiceIndex}
                 checked={selected === choiceIndex}
                 disabled={alreadyCorrect}
                 onChange={() => {
-                  setSelected(choiceIndex)
-                  setRevealed(false)
+                  setSelected(choiceIndex);
+                  setRevealed(false);
                 }}
               />
               <span>{choice}</span>
             </label>
-          )
+          );
         })}
       </div>
 
-      <div className="question-actions">
-        <button
+      <div className="mt-4">
+        <Button
           type="button"
-          className="btn btn-primary"
           disabled={selected === null || alreadyCorrect}
           onClick={handleSubmit}
         >
-          {alreadyCorrect ? 'Answered' : 'Check answer'}
-        </button>
+          {alreadyCorrect ? "Answered" : "Check answer"}
+        </Button>
       </div>
 
       {revealed && (
-        <div className={`feedback ${wasCorrect ? 'ok' : 'bad'}`}>
-          <strong>{wasCorrect ? 'Correct' : 'Not yet'}</strong>
-          <p>{question.explanation}</p>
-          <p className="feedback-answer">
+        <div
+          className={`mt-4 rounded-xl border p-4 text-sm ${
+            wasCorrect
+              ? "bg-muted/60"
+              : "border-destructive/30 bg-destructive/5"
+          }`}
+        >
+          <strong>{wasCorrect ? "Correct" : "Not yet"}</strong>
+          <p className="mt-2 leading-relaxed">{question.explanation}</p>
+          <p className="text-muted-foreground mt-2">
             Correct answer: {question.choices[question.correctIndex]}
           </p>
           <a
-            className="learn-link"
+            className="mt-2 inline-block font-medium underline-offset-4 hover:underline"
             href={question.sourceUrl}
             target="_blank"
             rel="noreferrer"
@@ -196,5 +223,5 @@ function QuestionCard({
         </div>
       )}
     </li>
-  )
+  );
 }
