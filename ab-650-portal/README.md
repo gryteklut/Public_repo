@@ -6,7 +6,7 @@ Course portal for Exam **AB-650: Administering Microsoft 365 and AI Services**.
 
 After the deploy workflow runs on `main`:
 
-**https://gryteklut.github.io/Public_repo/**
+**https://gryteklut.github.io/Public_repo/AB-650/**
 
 One-time repo setup (if Pages is not enabled yet): GitHub → **Settings** → **Pages** → Build and deployment → Source: **GitHub Actions**.
 
