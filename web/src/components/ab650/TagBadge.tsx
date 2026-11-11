@@ -1,12 +1,13 @@
-import { TAG_LABELS } from '../../data/curriculum'
-import type { ContentTag } from '../../types'
+import { Badge } from "@/components/ui/badge";
+import { TAG_LABELS } from "@/data/curriculum";
+import type { ContentTag } from "@/types";
 
-const CLASS_MAP: Record<ContentTag, string> = {
-  'MS-102-core': 'tag tag-core',
-  'MS-102-updated': 'tag tag-updated',
-  'AB-650-new': 'tag tag-new',
-}
+const VARIANT: Record<ContentTag, "default" | "secondary" | "outline"> = {
+  "MS-102-core": "secondary",
+  "MS-102-updated": "outline",
+  "AB-650-new": "default",
+};
 
 export function TagBadge({ tag }: { tag: ContentTag }) {
-  return <span className={CLASS_MAP[tag]}>{TAG_LABELS[tag]}</span>
+  return <Badge variant={VARIANT[tag]}>{TAG_LABELS[tag]}</Badge>;
 }

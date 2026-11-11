@@ -1,11 +1,18 @@
 // @ts-check
-import { defineConfig } from 'astro/config'
-import react from '@astrojs/react'
+import mdx from "@astrojs/mdx";
+import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "astro/config";
 
-// https://gryteklut.github.io/Public_repo/
+// https://astro.build/config
 export default defineConfig({
-  site: 'https://gryteklut.github.io',
-  base: '/Public_repo',
-  integrations: [react()],
-  trailingSlash: 'always',
-})
+  site: "https://gryteklut.github.io",
+  base: "/Public_repo",
+  trailingSlash: "always",
+  integrations: [mdx(), sitemap(), react()],
+  output: "static",
+  vite: {
+    plugins: [tailwindcss()],
+  },
+});
