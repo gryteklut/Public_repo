@@ -1,22 +1,29 @@
-## Development
+# Agent notes — `web/` (Astro app)
 
-When starting the dev server, use background mode:
+**Start with the repo-root guide:** [`../AGENTS.md`](../AGENTS.md)
 
+That file covers product rules, URLs, deploy, curriculum edit points, and access notes.
+
+## This folder
+
+Astro 7 + React islands for the public hub and AB-650 portal.
+
+| Path | Role |
+| --- | --- |
+| `src/pages/index.astro` | Hub at `/` |
+| `src/pages/AB-650/**` | Portal routes under `/AB-650/` |
+| `src/components/ab650/*` | Interactive React UI |
+| `src/data/curriculum.ts` | Course + questions |
+| `src/data/udemyMap.ts` | Udemy Watch/Skim/Skip |
+| `astro.config.mjs` | `base: '/Public_repo'`, trailing slash always |
+
+## Commands
+
+```bash
+npm ci
+npm run dev
+npm run build
+npm run preview
 ```
-astro dev --background
-```
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
-
-## Documentation
-
-Full documentation: https://docs.astro.build
-
-Consult these guides before working on related tasks:
-
-- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
-- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
-- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
-- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
-- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+Astro docs: https://docs.astro.build
