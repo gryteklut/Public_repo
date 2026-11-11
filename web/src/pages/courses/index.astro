@@ -18,6 +18,7 @@ for (const c of courses) {
     color: c.data.color,
     total: days.length,
     weeks: weeksIn(days),
+    format: c.data.format ?? "days",
     labsHref: c.data.hasLabs ? `/courses/${slug}/labs/` : undefined,
     external: c.data.external,
   });
@@ -59,6 +60,7 @@ for (const c of courses) {
             color={card.color}
             total={card.total}
             weeks={card.weeks}
+            format={card.format}
             labsHref={card.labsHref}
             external={card.external}
           />

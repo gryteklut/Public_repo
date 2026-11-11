@@ -27,6 +27,7 @@ if (!course) {
 const days = await getCourseDays(slug);
 const { data } = course;
 const labs = data.hasLabs ? getLabCatalog(data.code) : undefined;
+const format = data.format ?? "days";
 ---
 
 <DefaultLayout title={data.title} description={data.subtitle}>
@@ -104,7 +105,11 @@ const labs = data.hasLabs ? getLabCatalog(data.code) : undefined;
             >
               {data.external.instructor}
             </a>
-            . Each session has a one-hour budget. Lecture titles that are not on the exam sit in Optional / deeper dive.
+            {
+              format === "sessions"
+                ? " Each session has a one-hour budget. Lecture titles that are not on the exam sit in Optional / deeper dive."
+                : " Each day has a watch checklist of lecture titles from this course."
+            }
             Microsoft Learn and the official labs stay the primary material.
           </p>
           {data.external.note && (
@@ -139,22 +144,27 @@ const labs = data.hasLabs ? getLabCatalog(data.code) : undefined;
 
         <section>
           <h2 class="mb-3 text-xl font-semibold">
-            {weeksIn(days)} weeks · 1 hour each weekday
+            {
+              format === "sessions"
+                ? `${weeksIn(days)} weeks · 1 hour each weekday`
+                : "10-day plan"
+            }
           </h2>
           <CurriculumAccordion
             client:only="react"
             code={data.code}
             courseSlug={slug}
+            format={format}
             sessions={days.map((d) => ({
-              session: d.data.session,
-              week: d.data.week,
+              session: d.data.session ?? d.data.day ?? 0,
+              week: format === "sessions" ? d.data.week : undefined,
               title: d.data.title,
               minutes: d.data.minutes,
-              kind: d.data.kind,
+              kind: format === "sessions" ? d.data.kind : undefined,
             }))}
           />
           {
-            Array.from(new Set(days.map((d) => d.data.week))).map((week) => {
+            format === "sessions" && Array.from(new Set(days.map((d) => d.data.week))).map((week) => {
               const notes = days
                 .filter((d) => d.data.week === week)
                 .flatMap((d) => d.data.optional);
@@ -182,6 +192,7 @@ const labs = data.hasLabs ? getLabCatalog(data.code) : undefined;
           courseSlug={slug}
           code={data.code}
           totalDays={days.length}
+          format={format}
         />
       </div>
     </div>

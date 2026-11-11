@@ -22,8 +22,10 @@ export async function getStaticPaths() {
   const paths = [];
   for (const c of courses) {
     const slug = courseSlugFromId(c.id);
+    if (c.data.format !== "sessions") continue;
     const sessions = await getCourseDays(slug);
     for (const session of sessions) {
+      if (session.data.session == null) continue;
       paths.push({
         params: { course: slug, session: String(session.data.session) },
       });

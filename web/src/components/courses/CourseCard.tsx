@@ -22,6 +22,7 @@ export function CourseCard({
   color,
   total = 0,
   weeks = 1,
+  format = "days",
   labsHref,
   external,
 }: {
@@ -33,6 +34,7 @@ export function CourseCard({
   color: string;
   total?: number;
   weeks?: number;
+  format?: "days" | "sessions";
   labsHref?: string;
   external?: CourseExternal;
 }) {
@@ -45,7 +47,8 @@ export function CourseCard({
         Boolean,
       ).length
     : 0;
-  const finish = estimateFinishDate(Math.max(0, total - done));
+  const hourly = format === "sessions";
+  const finish = hourly ? estimateFinishDate(Math.max(0, total - done)) : null;
   const planHref = withBase(`/courses/${slug}/`);
 
   return (
@@ -100,10 +103,14 @@ export function CourseCard({
       )}
       {!soon && total > 0 && (
         <div className="text-muted-foreground mt-3 space-y-1 text-xs">
-          <p>~{weeks} weeks at 1 h/workday</p>
+          <p>{hourly ? `~${weeks} weeks at 1 h/workday` : `${total} days`}</p>
           <p>
-            {done}/{total} sessions
-            {finish ? ` · finish ${formatFinishDate(finish)}` : " · finished"}
+            {done}/{total} {hourly ? "sessions" : "days"}
+            {hourly
+              ? finish
+                ? ` · finish ${formatFinishDate(finish)}`
+                : " · finished"
+              : ""}
           </p>
         </div>
       )}
@@ -116,7 +123,7 @@ export function CourseCard({
           <>
             <Button asChild>
               <a href={planHref}>
-                Sessions
+                {hourly ? "Sessions" : "10-day plan"}
                 <ArrowRight className="size-4" />
               </a>
             </Button>

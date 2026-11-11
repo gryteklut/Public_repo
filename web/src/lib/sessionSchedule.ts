@@ -1,17 +1,19 @@
 /** Old 10-day plans → the session that now holds that topic. */
+/** Sessions that were written over AB-650 days, mapped back to the original day. */
+export const AB650_SESSION_TO_DAY: Record<string, string> = {
+  "1": "1",
+  "2": "2",
+  "3": "3",
+  "4": "4",
+  "6": "5",
+  "7": "6",
+  "8": "7",
+  "9": "8",
+  "11": "9",
+  "15": "10",
+};
+
 export const LEGACY_DAY_TO_SESSION: Record<string, Record<string, string>> = {
-  "AB-650": {
-    "1": "1",
-    "2": "2",
-    "3": "3",
-    "4": "4",
-    "5": "6",
-    "6": "7",
-    "7": "8",
-    "8": "9",
-    "9": "11",
-    "10": "15",
-  },
   "AZ-140": {
     "1": "1",
     "2": "4",

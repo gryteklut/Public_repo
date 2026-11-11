@@ -41,7 +41,10 @@ await page.waitForSelector("text=AB-650 labs");
 assert("labs-page", (await page.locator("article").count()) >= 7, `n=${await page.locator("article").count()}`);
 
 await page.goto(`${base}/courses/ab-650/day-1/`, { waitUntil: "networkidle" });
-assert("ab-day-redirect", page.url().includes("/session-1/"));
+assert(
+  "ab-day-stays",
+  page.url().includes("/day-1/") && !page.url().includes("/session-"),
+);
 await page.waitForTimeout(600);
 assert(
   "day1-official-pointer",
@@ -78,7 +81,8 @@ assert(
 );
 assert(
   "hub-plan-and-labs",
-  (await page.locator("a", { hasText: "Sessions" }).count()) >= 2 &&
+  (await page.locator("a", { hasText: "10-day plan" }).count()) >= 1 &&
+    (await page.locator("a", { hasText: "Sessions" }).count()) >= 1 &&
     (await page.locator("a", { hasText: "Official labs" }).count()) >= 2,
 );
 assert(
@@ -152,16 +156,16 @@ await page.evaluate(() => {
 });
 await page.goto(`${base}/`, { waitUntil: "networkidle" });
 await page.waitForTimeout(800);
-const progressText = await page.locator("text=/\\d+\\/15 sessions/").allTextContents();
+const progressText = await page.locator("body").innerText();
 assert(
   "progress-keys-isolated",
-  progressText.some((t) => t.includes("1/15")) &&
-    progressText.some((t) => t.includes("0/15")),
-  progressText.join(" | "),
+  progressText.includes("1/10 days") && progressText.includes("0/15 sessions"),
+  progressText.slice(0, 500),
 );
 assert(
   "hub-weeks",
-  (await page.locator("text=~3 weeks at 1 h/workday").count()) >= 2,
+  progressText.includes("10 days") &&
+    progressText.includes("~3 weeks at 1 h/workday"),
 );
 
 await page.setViewportSize({ width: 1280, height: 900 });
