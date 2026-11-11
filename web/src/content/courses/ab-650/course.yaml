@@ -1,0 +1,16 @@
+code: AB-650
+title: Administering Microsoft 365 and AI Services
+subtitle: Ten 60-minute days built on retrieval practice and successive relearning.
+level: Intermediate
+status: live
+color: "#0f5c63"
+tags:
+  - MS-102-core
+  - MS-102-updated
+  - AB-650-new
+learn:
+  - Run tenant, licensing and workload admin with Copilot in mind
+  - Govern Entra identities, authentication and Conditional Access
+  - Secure collaboration with Defender for Office 365 and Purview
+  - Enable Copilot, govern agents with Agent 365, and monitor AI usage
+outOfScope: Skip hybrid Entra Connect sync troubleshooting and broad Defender XDR admin across Endpoint / Identity / Cloud Apps.

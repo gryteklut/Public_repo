@@ -1,13 +1,4 @@
 ---
-import Ab650Home from "@/components/ab650/Ab650Home";
-import DefaultLayout from "@/layouts/DefaultLayout.astro";
+import { withBase } from "@/lib/base";
+return Astro.redirect(withBase("/courses/ab-650/"), 301);
 ---
-
-<DefaultLayout
-  title="AB-650 Study Portal"
-  description="10-day learn-first AB-650 course portal with Udemy maps and gated questions."
->
-  <div class="container pt-28 pb-16 lg:pt-40">
-    <Ab650Home client:load />
-  </div>
-</DefaultLayout>

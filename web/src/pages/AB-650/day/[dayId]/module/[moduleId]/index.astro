@@ -1,27 +1,16 @@
 ---
-import Ab650Module from "@/components/ab650/Ab650Module";
 import { curriculum } from "@/data/curriculum";
-import DefaultLayout from "@/layouts/DefaultLayout.astro";
+import { withBase } from "@/lib/base";
 
 export function getStaticPaths() {
   return curriculum.flatMap((day) =>
     day.modules.map((mod) => ({
       params: { dayId: day.id, moduleId: mod.id },
-      props: { dayId: day.id, moduleId: mod.id },
+      props: { dayNumber: day.dayNumber },
     })),
   );
 }
 
-const { dayId, moduleId } = Astro.props;
-const day = curriculum.find((d) => d.id === dayId);
-const mod = day?.modules.find((m) => m.id === moduleId);
+const { dayNumber } = Astro.props;
+return Astro.redirect(withBase(`/courses/ab-650/day-${dayNumber}/`), 301);
 ---
-
-<DefaultLayout
-  title={mod?.title ?? "AB-650 Module"}
-  description={mod?.summary ?? "AB-650 study module"}
->
-  <div class="container pt-28 pb-16 lg:pt-40">
-    <Ab650Module client:load dayId={dayId} moduleId={moduleId} />
-  </div>
-</DefaultLayout>

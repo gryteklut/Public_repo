@@ -1,0 +1,140 @@
+---
+day: 3
+title: Entra identities
+moduleTitle: Manage identities in Microsoft Entra
+moduleId: d3-identity
+minutes: 60
+practice: false
+summary: Strong MS-102 overlap. Focus on cloud identity — skip hybrid sync deep dives.
+focus: "Cloud identity governance: users, guests, groups, roles/PIM, administrative units, contacts, Graph PowerShell bulk ops."
+tags:
+  - MS-102-core
+  - MS-102-updated
+resources:
+  - { label: Microsoft Entra ID governance overview, url: "https://learn.microsoft.com/en-us/entra/id-governance/identity-governance-overview", kind: learn }
+  - { label: Privileged Identity Management, url: "https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-configure", kind: learn }
+  - { label: Administrative units, url: "https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/administrative-units", kind: learn }
+  - { label: "Skills: manage identities in Microsoft Entra", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650", kind: skillsup }
+  - { label: Official course AB-650T00, url: "https://learn.microsoft.com/en-us/training/courses/ab-650t00", kind: skillsup }
+  - { label: Certification overview, url: "https://learn.microsoft.com/en-us/credentials/certifications/microsoft-365-and-ai-services-administrator-associate/", kind: skillsup }
+videos:
+  - label: Manage identities in Microsoft Entra
+    action: watch
+    lectures:
+      - Concepts of identities in Azure/Microsoft 365/Entra ID
+      - Create and manage Microsoft 365 users
+      - Create and manage external users in Microsoft Entra
+      - Create and manage contacts in the Microsoft 365 admin center
+      - Concepts of Groups in Azure/Microsoft 365/Entra ID
+      - "Create and manage groups, including Microsoft 365 groups and shared mailboxes"
+      - Concepts of roles in Microsoft 365 and Microsoft Entra
+      - Implement and manage roles in Microsoft Entra
+      - Concepts of delegation by administrative units
+      - Manage delegation by using administrative units
+      - Understanding privileged identity management (PIM)
+      - Manage Microsoft Entra roles in Entra privileged identity management (PIM)
+      - Perform bulk user management
+      - Concepts of using Microsoft Graph with PowerShell management
+      - "Create and manage users and groups, as well as bulk management with PowerShell"
+  - label: "MS-102: Implement and manage identity synchronization with Microsoft Entra tenant"
+    action: skip
+    note: Hybrid Entra Connect / Cloud Sync is MS-102-oriented and largely out of AB-650 scope.
+lab:
+  - "Create a user, a Microsoft 365 group, and a security group."
+  - Invite a guest and review External collaboration settings.
+  - Create an administrative unit and assign a scoped role if licensing allows.
+  - Open PIM and review an eligible role assignment workflow.
+outOfScopeNote: Hybrid identity / Entra Connect sync troubleshooting is largely out of AB-650 scope compared with classic MS-102.
+tldr:
+  - Administrative units (AUs) partition a tenant for delegated administration.
+  - "AB-650 includes managing roles for Microsoft 365, including PIM."
+  - "AB-650 expects familiarity with Microsoft Graph PowerShell for bulk identity operations (create users, update attributes, group membership)."
+  - "Manage guest users and external access settings: invitation redemption, cross-tenant access, guest permissions (what guests can do), and …"
+trap: "Exam trap: read the AB-650 skill stem carefully for “Entra identities” — distractors often mix MS-102-only tasks."
+videoTip: Deep-dive Entra identities/roles/PIM/Graph. Skip the whole hybrid sync section for AB-650.
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+Learn the topic, then prove it with the knowledge checks below.
+
+<Quiz id="d3q1" title="You need helpdesk staff to manage only users in the Norway division. Which Entra">
+You need helpdesk staff to manage only users in the Norway division. Which Entra feature best scopes their admin rights?
+
+- [x] Administrative units with scoped role assignments
+- [ ] A single Global Administrator account shared by helpdesk
+- [ ] Disabling PIM for all roles
+- [ ] Assigning Exchange Online-only licenses
+
+Administrative units let you scope role permissions to a subset of users/groups/devices — a measured AB-650 identity skill.
+
+[Source: Administrative units in Microsoft Entra ID](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/administrative-units)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Administrative units (AUs) partition a tenant for delegated administration. Combine AUs with scoped directory roles so operators can manage only their population. This is preferred over over-privileged global roles.
+
+</details>
+
+<Quiz id="d3q2" title="Why is Microsoft Entra Privileged Identity Management (PIM) important for Micros">
+Why is Microsoft Entra Privileged Identity Management (PIM) important for Microsoft 365 admin roles on AB-650?
+
+- [x] It enables just-in-time eligible role activation with controls instead of standing privileged access
+- [ ] It replaces Conditional Access entirely
+- [ ] It is only used for guest B2B redemption
+- [ ] It automatically verifies custom domains
+
+PIM provides eligible, time-bound activation of privileged roles — core to governing Microsoft 365 admin roles.
+
+[Source: What is Microsoft Entra Privileged Identity Management?](https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-configure)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+AB-650 includes managing roles for Microsoft 365, including PIM. Know eligible vs permanent assignments, activation, approval, MFA on activation, and access reviews as governance patterns for privileged roles.
+
+</details>
+
+<Quiz id="d3q3" title="You must create 500 users from a CSV with consistent attributes. Which approach ">
+You must create 500 users from a CSV with consistent attributes. Which approach matches the bulk management objective?
+
+- [x] Use Microsoft Graph PowerShell (or Graph APIs) for bulk create/update operations
+- [ ] Create each user only from the Teams mobile app
+- [ ] Use Purview DLP to provision identities
+- [ ] Enable Copilot Cowork to create Entra users automatically without Graph
+
+Bulk management including Microsoft Graph PowerShell is an explicit skills-measured bullet under Entra identity management.
+
+[Source: Microsoft Graph PowerShell overview](https://learn.microsoft.com/en-us/powershell/microsoftgraph/overview)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+AB-650 expects familiarity with Microsoft Graph PowerShell for bulk identity operations (create users, update attributes, group membership). Practice Connect-MgGraph, least-privilege Graph permissions, and batching patterns at a conceptual level.
+
+</details>
+
+<Quiz id="d3q4" title="External contractors need access to a Teams-connected site. Which identity const">
+External contractors need access to a Teams-connected site. Which identity construct is the usual starting point?
+
+- [x] Guest users with external access / B2B collaboration settings governed appropriately
+- [ ] Always create permanent Global Administrator accounts for contractors
+- [ ] Disable all Conditional Access for guests by policy requirement
+- [ ] Store contractor passwords in a SharePoint list for shared login
+
+Guest/B2B users plus external collaboration settings are the standard model; AB-650 calls out managing guest users and external access settings.
+
+[Source: B2B collaboration overview](https://learn.microsoft.com/en-us/entra/external-id/what-is-b2b)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Manage guest users and external access settings: invitation redemption, cross-tenant access, guest permissions (what guests can do), and how guests appear in groups/Teams. Pair with Conditional Access for guests when securing access.
+
+</details>
+

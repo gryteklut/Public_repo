@@ -5,11 +5,19 @@ import { withBase } from "@/lib/base";
 
 const tools = [
   {
-    kicker: "Certification",
-    title: "AB-650 Study Portal",
+    kicker: "Learning",
+    title: "Courses",
     description:
-      "10-day learn-first course for Administering Microsoft 365 and AI Services, with Udemy watch maps and gated control questions.",
-    href: "/AB-650/",
+      "Reusable study courses with soft-contrast day players, Udemy watch checklists, Microsoft Learn / SkillsUp, and gated knowledge checks.",
+    href: "/courses/",
+    icon: GraduationCap,
+  },
+  {
+    kicker: "Certification",
+    title: "AB-650",
+    description:
+      "Administering Microsoft 365 and AI Services — ten 60-minute days on the courses platform.",
+    href: "/courses/ab-650/",
     icon: GraduationCap,
   },
 ];

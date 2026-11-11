@@ -1,0 +1,133 @@
+---
+day: 5
+title: Defender for Office 365
+moduleTitle: Secure Microsoft 365 workloads
+moduleId: d5-defender
+minutes: 60
+practice: false
+summary: "MS-102-updated: AB-650 focuses Defender coverage on Office 365 rather than full XDR admin across every Defender workload."
+focus: "Threat protection narrowed to email and collaboration: alerts, policies, investigation, attack simulation."
+tags:
+  - MS-102-updated
+resources:
+  - { label: Microsoft Defender for Office 365, url: "https://learn.microsoft.com/en-us/defender-office-365/mdo-about", kind: learn }
+  - { label: Threat policies, url: "https://learn.microsoft.com/en-us/defender-office-365/protect-against-threats", kind: learn }
+  - { label: Attack simulation training, url: "https://learn.microsoft.com/en-us/defender-office-365/attack-simulation-training-get-started", kind: learn }
+  - { label: "Skills: secure workloads (Defender for Office 365)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650", kind: skillsup }
+  - { label: Official course AB-650T00, url: "https://learn.microsoft.com/en-us/training/courses/ab-650t00", kind: skillsup }
+  - { label: Certification overview, url: "https://learn.microsoft.com/en-us/credentials/certifications/microsoft-365-and-ai-services-administrator-associate/", kind: skillsup }
+videos:
+  - label: Secure Microsoft 365 workloads
+    action: watch
+    lectures:
+      - Understanding Defender for Office 365
+      - Implement policies and rules in Defender for Office 365
+      - Review and respond to threats identified in Defender for Office 365
+      - "Create and run campaigns, such as attack simulation"
+  - label: "MS-102: Review & respond to security reports & alerts by Microsoft Defender XDR"
+    action: skim
+    note: Useful context only — AB-650 does not weight full XDR admin the way MS-102 did.
+  - label: "MS-102: Implement & manage endpoint protection by using MS Defender for Endpoint"
+    action: skip
+    note: MS-102-oriented. Do not spend AB-650 study time here.
+  - label: "MS-102: Implement and manage Microsoft Defender for Cloud Apps"
+    action: skip
+    note: MS-102-oriented. Out of AB-650 focus.
+lab:
+  - "In Defender portal, review Email & collaboration alerts."
+  - Inspect preset security policies vs custom anti-phishing / safe links / safe attachments.
+  - Open Attack simulation training and review campaign concepts.
+outOfScopeNote: "Deep configuration of Defender for Endpoint, Identity, and Cloud Apps as separate MS-102 XDR domains is not the AB-650 focus. Know XDR exists; configure for Office 365 threats."
+tldr:
+  - "Secure Microsoft 365 workloads on AB-650 means: manage alerts in Defender for Office 365; configure threat policies and rules; investigat…"
+  - "Threat policies include anti-phishing, anti-spam, anti-malware, Safe Links, Safe Attachments, and related presets."
+  - "Configure and manage attack simulations, including training campaigns: select payloads, target groups, schedule simulations, and assign t…"
+  - "Investigate and respond using alerts, incidents (where correlated), Email entity pages, Threat Explorer/Real-time detections (Plan depend…"
+trap: "Exam trap: read the AB-650 skill stem carefully for “Defender for Office 365” — distractors often mix MS-102-only tasks."
+videoTip: AB-650 centers on Defender for Office 365. Skim XDR reports lightly; skip Endpoint and Cloud Apps sections.
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+Learn the topic, then prove it with the knowledge checks below.
+
+<Quiz id="d5q1" title="Compared with classic MS-102, how is security coverage framed on AB-650?">
+Compared with classic MS-102, how is security coverage framed on AB-650?
+
+- [x] Threat protection objectives center on Defender for Office 365 for email and collaboration
+- [ ] You must exclusively configure Defender for Endpoint onboarding policies
+- [ ] Security is removed entirely from the exam
+- [ ] Only on-premises antimalware is tested
+
+AB-650 skills measured list Defender for Office 365 alerts, threat policies, investigation, and attack simulations — not the full prior XDR breadth.
+
+[Source: Microsoft Defender for Office 365](https://learn.microsoft.com/en-us/defender-office-365/mdo-about)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Secure Microsoft 365 workloads on AB-650 means: manage alerts in Defender for Office 365; configure threat policies and rules; investigate/respond to email and collaboration threats; configure attack simulations including training campaigns. Broad Defender XDR literacy helps contextually, but exam bullets are Office 365-centric.
+
+</details>
+
+<Quiz id="d5q2" title="Safe Links and Safe Attachments are examples of:">
+Safe Links and Safe Attachments are examples of:
+
+- [x] Defender for Office 365 threat protection policies
+- [ ] Purview retention label settings
+- [ ] Entra administrative unit templates
+- [ ] Copilot connector authentication methods
+
+Safe Links/Safe Attachments are core Defender for Office 365 threat policies protecting email and collaboration content.
+
+[Source: Safe Attachments in Microsoft Defender for Office 365](https://learn.microsoft.com/en-us/defender-office-365/safe-attachments-about)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Threat policies include anti-phishing, anti-spam, anti-malware, Safe Links, Safe Attachments, and related presets. Know who policies apply to, priority/order concepts at a high level, and how overrides/allow/block lists can affect outcomes.
+
+</details>
+
+<Quiz id="d5q3" title="Security team wants to measure user susceptibility to phishing and assign traini">
+Security team wants to measure user susceptibility to phishing and assign training. Which capability fits?
+
+- [x] Attack simulation training campaigns in Defender for Office 365
+- [ ] Microsoft 365 Backup restore jobs
+- [ ] SharePoint hub site association
+- [ ] Entra company branding themes
+
+Attack simulation training (including campaigns) is an explicit AB-650 Defender for Office 365 objective.
+
+[Source: Get started using Attack simulation training](https://learn.microsoft.com/en-us/defender-office-365/attack-simulation-training-get-started)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Configure and manage attack simulations, including training campaigns: select payloads, target groups, schedule simulations, and assign training based on results. This is both a security control and a measured exam skill.
+
+</details>
+
+<Quiz id="d5q4" title="An alert indicates a user clicked a malicious link in email. Where do you primar">
+An alert indicates a user clicked a malicious link in email. Where do you primarily investigate email/collaboration threats?
+
+- [x] Microsoft Defender portal — email & collaboration investigation / alerts / Explorer (as licensed)
+- [ ] Only the Word desktop File menu
+- [ ] Only DNS TXT records for the tenant domain
+- [ ] Only the Copilot Studio topic designer
+
+Investigation and response for email/collaboration threats is done in the Defender portal experiences for Office 365.
+
+[Source: Email security in Microsoft Defender](https://learn.microsoft.com/en-us/defender-office-365/email-security-in-microsoft-defender)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Investigate and respond using alerts, incidents (where correlated), Email entity pages, Threat Explorer/Real-time detections (Plan dependent), and remediation actions (soft delete, etc.). Tie alerts management to triage workflow.
+
+</details>
+

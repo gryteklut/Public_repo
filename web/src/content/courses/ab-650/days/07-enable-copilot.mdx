@@ -1,0 +1,155 @@
+---
+day: 7
+title: Enable and manage Copilot
+moduleTitle: Enable and manage Microsoft 365 Copilot
+moduleId: d7-copilot
+minutes: 60
+practice: false
+summary: Highest priority new domain content for MS-102 holders. Use E5 tenant for admin settings; use work Copilot Cowork for end-user familiarity.
+focus: "AB-650-new core: readiness, oversharing, web search, Copilot Search, tenant settings, Cowork, connectors, third-party AI."
+tags:
+  - AB-650-new
+resources:
+  - { label: Microsoft 365 Copilot requirements, url: "https://learn.microsoft.com/en-us/microsoft-365-copilot/microsoft-365-copilot-requirements", kind: learn }
+  - { label: Copilot Control System, url: "https://learn.microsoft.com/en-us/copilot/control-system/overview", kind: learn }
+  - { label: Copilot connectors, url: "https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/overview-graph-connector", kind: learn }
+  - { label: "Skills: enable & manage Microsoft 365 Copilot", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650", kind: skillsup }
+  - { label: Official course AB-650T00, url: "https://learn.microsoft.com/en-us/training/courses/ab-650t00", kind: skillsup }
+  - { label: Certification overview, url: "https://learn.microsoft.com/en-us/credentials/certifications/microsoft-365-and-ai-services-administrator-associate/", kind: skillsup }
+videos:
+  - label: "AB-650: Enable and manage Microsoft 365 Copilot"
+    action: watch
+    note: "If Copilot Cowork / third-party AI providers are thin in video, use the portal study panels + Learn links."
+    lectures:
+      - "Assess tenant readiness for Copilot, including in-app experiences"
+      - "Identify and resolve data readiness issues for Copilot, data leaks, oversharing"
+      - Manage web search for Copilot and Microsoft 365 Copilot Chat
+      - Configure Microsoft 365 Copilot Search
+      - Assess what Copilot is and how accesses data in your tenant
+      - Identify how Microsoft Graph and Copilot work together in your tenant
+      - "Configure Copilot settings for a tenant, including self-service purchases & more"
+      - Manage Copilot user licenses
+      - Configure Copilot connectors
+  - label: Configure and manage a Microsoft 365 tenant
+    action: skim
+    note: Only if you skipped this on Day 1.
+    lectures:
+      - Understanding the capabilities of Copilot and Agents in Microsoft 365
+lab:
+  - "In E5 tenant, review Copilot-related settings in Microsoft 365 admin center (what your license exposes)."
+  - "Map data readiness: pick one SharePoint site and evaluate sharing links / membership sprawl."
+  - "At work (no admin portal), use Copilot Cowork as an end user and note admin-controlled behaviors you cannot change."
+tldr:
+  - "Enable and manage Copilot starts with readiness: licenses, in-app experiences, and especially data readiness."
+  - "Manage web search for Copilot and Microsoft 365 Copilot Chat, and configure Copilot Search."
+  - AB-650 lists managing Copilot user experiences and specifically Microsoft 365 Copilot Cowork.
+  - Configure Copilot connectors and manage third-party AI providers.
+  - "Study Copilot settings as a map: licensing, data readiness, web grounding, Search, connectors, user experiences, Cowork, and third-party AI."
+trap: "Exam trap: portal selection for “Enable and manage Copilot” — know which admin center owns the setting."
+videoTip: Highest-priority AB-650-new Udemy section for MS-102 holders. Watch end-to-end.
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+Learn the topic, then prove it with the knowledge checks below.
+
+<Quiz id="d7q1" title="What is a primary tenant readiness concern before enabling Copilot broadly?">
+What is a primary tenant readiness concern before enabling Copilot broadly?
+
+- [x] Data oversharing and permissions hygiene so Copilot does not surface content users should not see
+- [ ] Disabling TLS on all endpoints
+- [ ] Removing all sensitivity labels
+- [ ] Turning off Service health notifications permanently
+
+Assess readiness and remediate data leaks/oversharing/compliance issues — core Copilot enablement skills.
+
+[Source: Prevent oversharing with Microsoft 365 Copilot](https://learn.microsoft.com/en-us/microsoft-365-copilot/guidance/copilot-oversharing)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Enable and manage Copilot starts with readiness: licenses, in-app experiences, and especially data readiness. Copilot uses Microsoft Graph content the user can access. Oversharing (Everyone links, broad group membership) becomes an AI risk. Remediate with permissions cleanup, SAM controls, labels/DLP, and site restrictions.
+
+</details>
+
+<Quiz id="d7q2" title="Managing web search for Copilot / Copilot Chat primarily controls:">
+Managing web search for Copilot / Copilot Chat primarily controls:
+
+- [x] Whether Copilot can ground on public web content in addition to tenant content (per policy/config)
+- [ ] Whether MX records are published for the tenant
+- [ ] Whether PIM activations require approval
+- [ ] Whether Safe Attachments detonates files
+
+Web search grounding is an admin-governed Copilot capability called out in AB-650 skills.
+
+[Source: Manage web access for Copilot](https://learn.microsoft.com/en-us/microsoft-365-copilot/manage-web-access)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Manage web search for Copilot and Microsoft 365 Copilot Chat, and configure Copilot Search. Understand tenant settings such as self-service purchases, Copilot in admin centers, release preferences, AI disclaimer, and video/image generation. Know where these toggles live conceptually in admin experiences / Control System.
+
+</details>
+
+<Quiz id="d7q3" title="Microsoft 365 Copilot Cowork is best described as:">
+Microsoft 365 Copilot Cowork is best described as:
+
+- [x] A Copilot experience/capability admins must be able to manage as part of Copilot user experiences
+- [ ] A replacement for Entra Conditional Access
+- [ ] A Defender for Office 365 Safe Links policy type
+- [ ] An Exchange hybrid connector
+
+Manage Microsoft 365 Copilot Cowork is an explicit bullet under Enable and manage Microsoft 365 Copilot.
+
+[Source: AB-650 study guide — Copilot Cowork skill](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+AB-650 lists managing Copilot user experiences and specifically Microsoft 365 Copilot Cowork. Learn what Cowork is positioned as in current Microsoft documentation, how it differs from classic chat/in-app Copilot surfaces, and which admin controls govern availability. Hands-on at work helps memorably, even without job admin rights.
+
+</details>
+
+<Quiz id="d7q4" title="Copilot connectors are used to:">
+Copilot connectors are used to:
+
+- [x] Bring external/line-of-business data into Microsoft Graph so Copilot can ground on it (when configured and permitted)
+- [ ] Replace MFA authentication methods
+- [ ] Create DNS zones for custom domains
+- [ ] Disable Purview audit automatically
+
+Configure Copilot connectors is measured; connectors expand grounding beyond built-in M365 content.
+
+[Source: Graph connectors and Copilot](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/overview-graph-connector)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Configure Copilot connectors and manage third-party AI providers. Connectors index external content into Graph with schema/permissions considerations. Third-party AI provider governance is about what non-Microsoft AI is allowed and how it is controlled in the tenant.
+
+</details>
+
+<Quiz id="d7q5" title="Which admin mindset matches AB-650 Copilot configuration questions?">
+Which admin mindset matches AB-650 Copilot configuration questions?
+
+- [x] Know which control and which portal/experience configures a stated Copilot behavior
+- [ ] Assume all Copilot settings are exclusively end-user toggles with no tenant admin surface
+- [ ] Assume Copilot ignores Microsoft 365 permissions
+- [ ] Assume Copilot requires Entra Connect hybrid sync
+
+Exam items are framed around configure/manage/govern — portal and control selection matters.
+
+[Source: Copilot Control System overview](https://learn.microsoft.com/en-us/copilot/control-system/overview)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Study Copilot settings as a map: licensing, data readiness, web grounding, Search, connectors, user experiences, Cowork, and third-party AI. The Copilot Control System is increasingly the governance/monitoring umbrella — Day 9 expands cost/usage/health monitoring there.
+
+</details>
+

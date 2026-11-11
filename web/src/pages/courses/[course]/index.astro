@@ -1,0 +1,100 @@
+---
+import DefaultLayout from "@/layouts/DefaultLayout.astro";
+import { CurriculumAccordion } from "@/components/courses/CurriculumAccordion";
+import { ProgressCard } from "@/components/courses/ProgressCard";
+import {
+  courseSlugFromId,
+  getCourse,
+  getCourseDays,
+  getCourses,
+} from "@/lib/courses";
+import { withBase } from "@/lib/base";
+
+export async function getStaticPaths() {
+  const courses = await getCourses();
+  return courses.map((c) => ({
+    params: { course: courseSlugFromId(c.id) },
+  }));
+}
+
+const slug = Astro.params.course!;
+const course = await getCourse(slug);
+if (!course) {
+  return Astro.redirect(withBase("/courses/"));
+}
+const days = await getCourseDays(slug);
+const { data } = course;
+---
+
+<DefaultLayout title={data.title} description={data.subtitle}>
+  <div class="course-shell container pt-28 pb-20 lg:pt-40">
+    <nav class="text-muted-foreground mb-6 flex flex-wrap gap-2 text-sm">
+      <a class="hover:text-foreground" href={withBase("/courses/")}>Courses</a>
+      <span>/</span>
+      <span class="text-foreground">{data.code}</span>
+    </nav>
+
+    <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
+      <div class="space-y-8">
+        <header class="course-card p-6 md:p-8">
+          <p
+            class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+          >
+            {data.code} · {data.level} · {data.status}
+          </p>
+          <h1 class="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
+            {data.title}
+          </h1>
+          <p
+            class="text-muted-foreground mt-3 max-w-3xl text-base leading-relaxed"
+          >
+            {data.subtitle}
+          </p>
+        </header>
+
+        {
+          data.learn.length > 0 && (
+            <section class="course-card p-6">
+              <h2 class="text-xl font-semibold">What you'll learn</h2>
+              <ul class="text-muted-foreground mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed">
+                {data.learn.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+              {data.outOfScope && (
+                <p class="bg-muted text-muted-foreground mt-4 rounded-xl p-3 text-sm leading-relaxed">
+                  <strong class="text-foreground">Out of scope:</strong>{" "}
+                  {data.outOfScope}
+                </p>
+              )}
+            </section>
+          )
+        }
+
+        <section>
+          <h2 class="mb-3 text-xl font-semibold">Curriculum</h2>
+          <CurriculumAccordion
+            client:only="react"
+            code={data.code}
+            courseSlug={slug}
+            days={days.map((d) => ({
+              day: d.data.day,
+              title: d.data.title,
+              minutes: d.data.minutes,
+              practice: d.data.practice,
+            }))}
+          />
+        </section>
+      </div>
+
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <ProgressCard
+          client:only="react"
+          courseSlug={slug}
+          code={data.code}
+          totalDays={days.length}
+        />
+      </div>
+    </div>
+  </div>
+</DefaultLayout>

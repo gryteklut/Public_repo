@@ -1,4 +1,4 @@
-# Agent handoff — Public_repo hub + AB-650 portal
+# Agent handoff — Public_repo hub + courses platform
 
 Read this first before changing the site.
 
@@ -7,8 +7,10 @@ Read this first before changing the site.
 Public GitHub Pages site for Kim (`gryteklut`):
 
 - **Hub (Astro + Mainline theme):** `https://gryteklut.github.io/Public_repo/`
-- **AB-650 study portal:** `https://gryteklut.github.io/Public_repo/AB-650/`
-- Root `/` is reserved for a growing hub. Do **not** put a redirect from `/` to AB-650.
+- **Courses catalog:** `https://gryteklut.github.io/Public_repo/courses/`
+- **AB-650 course:** `https://gryteklut.github.io/Public_repo/courses/ab-650/`
+- Legacy `/AB-650/…` URLs **redirect** to `/courses/ab-650/…`
+- Root `/` is reserved for the hub. Do **not** redirect `/` to a course.
 - Other folders (`EntraID/`, `Intune/`, `Migration/`) are reference material, not part of the Pages build.
 
 ## Stack
@@ -19,25 +21,48 @@ Public GitHub Pages site for Kim (`gryteklut`):
 | Theme upstream | [mainline-astro-template](https://github.com/shadcnblocks/mainline-astro-template) | MIT; keep attribution in footer |
 | Base path | `web/astro.config.mjs` | `base: '/Public_repo'`, `site: 'https://gryteklut.github.io'`, `trailingSlash: 'always'` |
 | Hub page | `web/src/pages/index.astro` | Mainline Hero + Tools cards |
-| Theme chrome | `web/src/components/blocks/*` | Navbar, Footer, Hero, Tools |
-| AB-650 UI | `web/src/components/ab650/*` | React islands (`client:load`) on shadcn primitives |
-| Curriculum | `web/src/data/curriculum.ts` | Official AB-650 skills-oriented content |
-| Udemy map | `web/src/data/udemyMap.ts` | Watch / Skim / Skip for ms100course |
-| Progress | `web/src/lib/progress.ts` + `useProgress` | `localStorage` key `ab650-portal-progress-v1` |
+| Courses UI | `web/src/components/courses/*` | Catalog, landing, day player islands |
+| Course content | `web/src/content/courses/<slug>/` | Content Collections (`courses`, `courseDays`) |
+| Knowledge checks | `starlight-quiz` (standalone) | MDX `<Quiz>`; gate complete on `starlight-quiz:progress` score 100 |
+| Spaced review | `ts-fsrs` via `lib/courseProgress.ts` | FSRS cards after day mastery |
+| Search | `astro-pagefind` | Indexes the static build |
+| Progress | `lib/courseProgress.ts` | Keys `courses:<code>:v1` + bundle; migrates `ab650-portal-progress-v1` |
 | Deploy | `.github/workflows/deploy-ab650-portal.yml` | Builds `web/`, uploads `web/dist` to Pages |
 
-Legacy Vite app under `ab-650-portal/` is **deprecated** but **kept in-repo for revert**. Do not deploy it unless rolling back — see `ab-650-portal/DEPRECATED.md`.
+Legacy Vite app under `ab-650-portal/` is **deprecated** but **kept for revert**. Do not deploy it unless rolling back — see `ab-650-portal/DEPRECATED.md`.
 
-## Product rules (AB-650)
+Legacy React portal under `web/src/components/ab650/` and `web/src/data/*` remains as reference; live routes use `/courses/`.
+
+## Eye-friendly UI (required)
+
+Long study sessions: prefer soft contrast over pure white/black.
+
+- Light: cool soft-stone page (`--background`), charcoal ink (`--foreground` ~oklch 0.30), soft olive highlight (`--course-highlight`)
+- Dark: elevated charcoal surfaces, soft off-white text — never `#000` / `#fff` pairs
+- Course surfaces use `.course-shell`, `.course-card`, `.course-pill` in `web/src/styles/global.css`
+- Reading body: ~1.7 line-height, ~65ch measure (`.prose-course`)
+
+## Product rules (courses / AB-650)
 
 - UI + questions in **English**
-- **Module / full day view is the workspace** (day URLs render the same full module UI): Udemy watch checklist, study resources/labs, quiz, Learn/SkillsUp sidebar
-- Udemy watch lectures are **checkboxes** (persisted in `watchedLectures` on module progress)
-- **Learning method — successive relearning / retrieval practice:** practice days are retrieval-first; other modules default learn-first with study panels; spaced review due dates after mastery (`reviewDueAt`, intervals 2→4→7 days)
-- Checkbox **Mark module complete** unlocks only when **all** control questions are correct
+- **Day player layout** mirrors the sweet module view: Watch checklist (persisted), study resources + lab checklist, TL;DR / exam trap, knowledge check, Learn/SkillsUp sidebar (`LessonPlan`)
+- Prefer exact Udemy lecture titles in watch checklists (not fragile `3.xx` numbers)
+- **Mark day complete** unlocks only when knowledge-check score is **100%**
+- Progress export/import is one JSON bundle for all courses
 - Tags: `MS-102-core`, `MS-102-updated`, `AB-650-new`
-- Progress export/import JSON (multi-device; no shared backend)
-- SkillsUp map: `web/src/data/skillsUpMap.ts`; relearning helpers: `web/src/lib/relearning.ts`
+
+## Adding a new course
+
+```bash
+cd web
+npm run new-course -- md-102 "Endpoint Administrator"
+# edit src/content/courses/md-102/course.yaml and days/*.mdx
+npm run build
+```
+
+No route code changes — catalog picks up the folder automatically (`_template` is ignored).
+
+Plan / brief: `docs/courses/courses-platform-plan.md`.
 
 ## Local development
 
@@ -63,17 +88,16 @@ Push/merge to `main` triggers Pages deploy when `web/**` or the workflow file ch
 Live checks:
 
 - Hub: `https://gryteklut.github.io/Public_repo/`
-- Portal: `https://gryteklut.github.io/Public_repo/AB-650/`
+- Courses: `https://gryteklut.github.io/Public_repo/courses/`
+- AB-650: `https://gryteklut.github.io/Public_repo/courses/ab-650/`
 
 ## Editing content
 
-1. **Curriculum / questions:** `web/src/data/curriculum.ts`
-2. **Udemy section map:** `web/src/data/udemyMap.ts` (keyed by module id)
+1. **Course + days:** `web/src/content/courses/<slug>/`
+2. **Schema:** `web/src/content.config.ts`
 3. **Hub cards:** `web/src/components/blocks/tools.tsx` (+ hero copy in `hero.tsx`)
 4. **Theme / chrome:** `web/src/components/blocks/navbar.tsx`, `footer.tsx`
-5. **Tokens:** `web/src/styles/global.css` (Mainline / shadcn CSS variables)
-
-Every question should keep `studyContent`, `explanation`, `sourceUrl`, `sourceLabel`.
+5. **Tokens / readability:** `web/src/styles/global.css`
 
 ## Git / access notes for agents
 
@@ -87,9 +111,3 @@ Every question should keep `studyContent`, `explanation`, `sourceUrl`, `sourceLa
 - Shared multi-user progress DB
 - Scraping Udemy course content
 - Paid shadcnblocks All Access templates (Mainline free MIT is enough)
-
-## Suggested next improvements
-
-- Add more hub tool cards under new paths
-- Optionally pull extra blocks via shadcn CLI from shadcnblocks
-- Keep AB-650 interactive bits as React islands

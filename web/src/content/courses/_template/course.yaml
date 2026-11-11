@@ -1,0 +1,10 @@
+code: TEMPLATE
+title: Template course
+subtitle: Copy this folder to start a new topic.
+level: Intermediate
+status: draft
+color: "#0f5c63"
+tags: []
+learn:
+  - Replace this with real outcomes
+outOfScope: Replace with what to skip.
