@@ -34,15 +34,6 @@ export function Footer() {
             </a>
           </li>
         </ul>
-        <p className="text-muted-foreground text-center text-sm">
-          Theme:{" "}
-          <a
-            href="https://github.com/shadcnblocks/mainline-astro-template"
-            className="underline-offset-4 hover:underline"
-          >
-            Mainline (MIT)
-          </a>
-        </p>
       </nav>
     </footer>
   );
