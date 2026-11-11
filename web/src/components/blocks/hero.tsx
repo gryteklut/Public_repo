@@ -12,12 +12,12 @@ const features = [
   },
   {
     title: "Official labs",
-    description: "Seven Microsoft Learning labs, 450 minutes, in order.",
+    description: "Microsoft Learning labs, with each exercise checked off as you go.",
     icon: Timer,
   },
   {
     title: "Progress on this device",
-    description: "Export or import a JSON file when you switch browsers.",
+    description: "Each course keeps its own progress. Export JSON when you switch browsers.",
     icon: ClipboardCheck,
   },
 ];
@@ -28,23 +28,23 @@ export const Hero = () => {
       <div className="container flex flex-col justify-between gap-8 md:gap-14 lg:flex-row lg:gap-20">
         <div className="flex-1">
           <p className="text-muted-foreground mb-3 text-sm font-medium tracking-wide uppercase">
-            Exam AB-650
+            Course catalog
           </p>
           <h1 className="text-foreground max-w-160 text-3xl tracking-tight md:text-4xl lg:text-5xl">
-            Administer Microsoft 365 and AI services
+            Certification study courses
           </h1>
 
           <p className="text-muted-foreground mt-5 text-xl md:text-2xl">
-            Microsoft Learn modules, the official hands-on labs, and a
-            knowledge check for each day.
+            Ten-day plans, official Microsoft Learning labs, and a companion
+            course for each exam.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Button asChild>
-              <a href={withBase("/courses/ab-650/")}>Start AB-650</a>
+              <a href="#catalog">Browse courses</a>
             </Button>
             <Button variant="outline" asChild>
-              <a href={withBase("/courses/ab-650/labs/")}>Open the labs</a>
+              <a href={withBase("/courses/")}>Open the catalog</a>
             </Button>
           </div>
         </div>

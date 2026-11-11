@@ -14,3 +14,11 @@ learn:
   - Secure collaboration with Defender for Office 365 and Purview
   - Enable Copilot, govern agents with Agent 365, and monitor AI usage
 outOfScope: Skip hybrid Entra Connect sync troubleshooting and broad Defender XDR admin across Endpoint / Identity / Cloud Apps.
+hasLabs: true
+studyGuide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650
+external:
+  provider: Udemy
+  title: "AB-650 & MS-102 Hands on Certification Course with Sims"
+  url: https://www.udemy.com/course/ms100course/learn/
+  instructor: John Christopher
+  instructorUrl: https://www.udemy.com/user/john-christopher-32/

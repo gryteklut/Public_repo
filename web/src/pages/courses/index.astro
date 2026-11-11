@@ -17,6 +17,8 @@ for (const c of courses) {
     status: c.data.status,
     color: c.data.color,
     total: days.length,
+    labsHref: c.data.hasLabs ? `/courses/${slug}/labs/` : undefined,
+    external: c.data.external,
   });
 }
 ---
@@ -36,7 +38,7 @@ for (const c of courses) {
         Courses
       </h1>
       <p class="text-muted-foreground mt-3 text-base leading-relaxed">
-        AB-650 is the live course. Open it to continue the 10-day plan.
+        Open a course for the 10-day plan, the official labs, and the companion course.
       </p>
       <div class="mt-5 max-w-lg" data-pagefind-ignore>
         <Search className="course-search" />
@@ -55,6 +57,8 @@ for (const c of courses) {
             status={card.status}
             color={card.color}
             total={card.total}
+            labsHref={card.labsHref}
+            external={card.external}
           />
         ))
       }

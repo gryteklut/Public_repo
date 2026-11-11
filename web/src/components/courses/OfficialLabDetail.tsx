@@ -5,10 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import {
+  getLabCatalog,
   getLearningPathForLab,
   getOfficialLabById,
-  officialLabsCatalog,
-  TOTAL_OFFICIAL_LAB_MINUTES,
   type OfficialLab,
 } from "@/data/officialLabs";
 import {
@@ -21,11 +20,16 @@ import {
   setOfficialLabExercise,
 } from "@/lib/courseProgress";
 
-const CODE = "AB-650";
-
-export function OfficialLabDetail({ labId }: { labId: string }) {
-  const lab = getOfficialLabById(labId);
-  if (!lab) {
+export function OfficialLabDetail({
+  labId,
+  code = "AB-650",
+}: {
+  labId: string;
+  code?: string;
+}) {
+  const lab = getOfficialLabById(labId, code);
+  const catalog = getLabCatalog(code);
+  if (!lab || !catalog) {
     return (
       <p className="text-muted-foreground">
         Lab not found.{" "}
@@ -35,13 +39,14 @@ export function OfficialLabDetail({ labId }: { labId: string }) {
       </p>
     );
   }
-  return <LabDetailInner lab={lab} />;
+  return <LabDetailInner lab={lab} code={code} />;
 }
 
-function LabDetailInner({ lab }: { lab: OfficialLab }) {
+function LabDetailInner({ lab, code }: { lab: OfficialLab; code: string }) {
   const [, setTick] = useState(0);
-  const progress = loadCourseProgress(CODE);
-  const lp = getLearningPathForLab(lab);
+  const catalog = getLabCatalog(code)!;
+  const progress = loadCourseProgress(code);
+  const lp = getLearningPathForLab(lab, code);
   const exerciseIds = lab.exercises.map((e) => e.id);
   const done = isOfficialLabComplete(progress, lab.id, exerciseIds);
 
@@ -52,7 +57,7 @@ function LabDetailInner({ lab }: { lab: OfficialLab }) {
     .reduce((sum, ex) => sum + ex.minutes, 0);
   const labPercent = Math.round((doneMinutes / lab.duration) * 100);
 
-  const allMeta = officialLabsCatalog.learningPaths
+  const allMeta = catalog.learningPaths
     .flatMap((p) => p.labs)
     .flatMap((l) =>
       l.exercises.map((ex) => ({
@@ -62,8 +67,7 @@ function LabDetailInner({ lab }: { lab: OfficialLab }) {
       })),
     );
   const minutesLeft =
-    TOTAL_OFFICIAL_LAB_MINUTES -
-    officialLabMinutesCompleted(progress, allMeta);
+    catalog.totalMinutes - officialLabMinutesCompleted(progress, allMeta);
 
   function refresh() {
     setTick((t) => t + 1);
@@ -233,7 +237,7 @@ function LabDetailInner({ lab }: { lab: OfficialLab }) {
           >
             {lab.sourcePath}
           </a>
-          . {officialLabsCatalog.attribution.copyright}. Prefer the{" "}
+          . {catalog.attribution.copyright}. Prefer the{" "}
           <a
             className="font-semibold text-[var(--ms-accent)]"
             href={lab.officialUrl}

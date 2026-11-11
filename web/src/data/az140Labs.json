@@ -1,0 +1,855 @@
+{
+  "attribution": {
+    "license": "MIT",
+    "copyright": "Copyright (c) 2019 Sidney Andrews",
+    "sourceRepo": "https://github.com/MicrosoftLearning/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop",
+    "officialSite": "https://microsoftlearning.github.io/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/",
+    "notice": "Lab steps are adapted from the Microsoft Learning AZ-140 repository (Labs_EntraID) under the MIT License. Legacy AD DS and Microsoft Entra Domain Services lab tracks are not included; Microsoft Learning no longer maintains them."
+  },
+  "summary": "Seven Entra ID labs, in the official order. Later labs reuse the host pool from lab 1. The image lab can run on its own.",
+  "totalLabs": 7,
+  "totalMinutes": 330,
+  "learningPaths": [
+    {
+      "number": 1,
+      "title": "Entra ID labs",
+      "learnUrl": "https://learn.microsoft.com/en-us/training/paths/implement-azure-virtual-infrastructure/",
+      "duration": 330,
+      "labs": [
+        {
+          "id": "lab-1",
+          "number": 1,
+          "title": "Lab: Deploy host pools and session hosts by using the Azure portal (Entra ID)",
+          "description": "Module 1.4: Implement host pools and session hosts. Deploy Microsoft Entra joined Azure Virtual Desktop session hosts.",
+          "duration": 60,
+          "level": 400,
+          "objectives": [
+            "Deploy Microsoft Entra joined Azure Virtual Desktop session hosts"
+          ],
+          "slug": "01_LAB_14_01_Deploy_host_pools_and_session_hosts_with_Entra_ID_Azure_portal",
+          "sourcePath": "Instructions/Labs_EntraID/01_LAB_14_01_Deploy_host_pools_and_session_hosts_with_Entra_ID_Azure_portal.md",
+          "officialUrl": "https://microsoftlearning.github.io/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/Instructions/Labs_EntraID/01_LAB_14_01_Deploy_host_pools_and_session_hosts_with_Entra_ID_Azure_portal.html",
+          "sourceUrl": "https://github.com/MicrosoftLearning/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/blob/master/Instructions/Labs_EntraID/01_LAB_14_01_Deploy_host_pools_and_session_hosts_with_Entra_ID_Azure_portal.md",
+          "labFiles": [],
+          "learningPath": 1,
+          "exercises": [
+            {
+              "id": "lab1-ex1",
+              "number": 1,
+              "title": "Implement an Azure Virtual Desktop environment using Microsoft Entra joined session hosts",
+              "minutes": 60,
+              "scenario": "You have a Microsoft Azure subscription. You need to deploy Azure Virtual Desktop environment that uses Microsoft Entra joined session hosts.",
+              "tasks": [
+                {
+                  "id": "lab1-ex1-task1",
+                  "number": 1,
+                  "title": "Prepare the Azure subscription for deployment of an Azure Virtual Desktop host pool",
+                  "steps": [
+                    "From the lab computer, start a web browser, navigate to the Azure portal at [https://portal.azure.com](https://portal.azure.com) and sign in by providing the credentials of a user account with the Owner role in the subscription you will be using in this lab.\n\n> **Note**: Use the credentials of the `User1-` account listed on the Resources tab on the right side of the lab session window.",
+                    "In the Azure portal, start a PowerShell session in the Azure Cloud Shell.\n\n> **Note**: If prompted, in the **Getting started** pane, in the **Subscription** drop-down list, select the name of the Azure subscription you are using in this lab and then select **Apply**.",
+                    "In the PowerShell session in the Azure Cloud Shell pane, run the following command to register the **Microsoft.DesktopVirtualization** resource provider:\n\n```powershell\nRegister-AzResourceProvider -ProviderNamespace Microsoft.DesktopVirtualization\n```\n\n> **Note**: Do not wait for the registration to complete. This might take a couple of minutes.",
+                    "Close the Cloud Shell pane.",
+                    "In the web browser displaying the Azure portal, search for and select **Virtual networks** and, on the **Virtual networks** page, select **Create +**",
+                    "On the **Basics** tab of the **Create virtual network** page, specify the following settings and select **Next**:\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|The name of a new resource group **az140-11e-RG**|\n|Virtual network name|**az140-vnet11e**|\n|Region|The name of the Azure region where you want to deploy the Azure Virtual Desktop environment|",
+                    "On the **Security** tab, accept the default settings and select **Next**.",
+                    "On the **IP addresses** tab, apply the following settings (modify the default if needed):\n\n|Setting|Value|\n|---|---|\n|IP address space|**10.20.0.0/16**|",
+                    "Select the edit (pencil) icon next to the **default** subnet entry, in the **Edit** pane, specify the following settings (leave others with their existing values) and select **Save**:\n\n|Setting|Value|\n|---|---|\n|Name|**hp1-Subnet**|\n|Starting address|**10.20.1.0**|\n|Enable private subnet (no default outbound access)|Disabled|",
+                    "Back on the **IP addresses** tab, select **Review + create** and then, on the **Review + create** tab, select **Create**.\n\n> **Note**: Do not wait for the provisioning process to complete. This typically takes less than 1 minute.",
+                    "In the web browser displaying the Azure portal, search for and select **Microsoft Entra ID**.",
+                    "On the **Overview** page of the Microsoft Entra tenant associated with your subscription, in the **Manage** section of the vertical navigation menu, select **Users**.",
+                    "On the **Users** page, in the **Search** text box, enter the name of the `User1-` account listed on the Resources tab on the right side of the lab session window.",
+                    "In the list of results of the search, select the user account entry with the matching name.",
+                    "On the page displaying the proerties of the user account, in the **Manage** section of the vertical navigation menu, select **Groups**.",
+                    "On the **Groups** page, record the name of the group starting with **AVD-DAG** prefix (you will need it later in this lab).",
+                    "Navigate back to the **Users** page, in the **Search** text box, enter the name of the `User2-` account listed on the Resources tab on the right side of the lab session window.",
+                    "In the list of results of the search, select the user account entry with the matching name.",
+                    "On the page displaying the proerties of the user account, in the **Manage** section of the vertical navigation menu, select **Groups**.",
+                    "On the **Groups** page, record the name of the group starting with **AVD-RemoteApp** prefix (you will need it later in this lab)."
+                  ]
+                },
+                {
+                  "id": "lab1-ex1-task2",
+                  "number": 2,
+                  "title": "Deploy an Azure Virtual Desktop host pool",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop**, on the **Azure Virtual Desktop** page, in the **Manage** section of the vertical navigation menu, select **Host pools** and, on the **Azure Virtual Desktop \\| Host pools** page, select **+ Create**.",
+                    "On the **Basics** tab of the **Create a host pool** page, specify the following settings and select **Next : Session hosts >** (leave other settings with their default values):\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|The name of a new resource group **az140-21e-RG**|\n|Host pool name|**az140-21-hp1**|\n|Location|The name of the Azure region where you want to deploy your Azure Virtual Desktop environment|\n|Validation environment|**No**|\n|Preferred app group type|**Desktop**|\n|Host pool type|**Pooled**|\n|Create Session Host Configuration|**No**|\n|Load balancing algorithm|**Breadth-first**|\n\n> **Note**: When using the Breadth-first load balancing algorithm, the max session limit parameter is optional.",
+                    "On the **Session hosts** tab of the **Create a host pool** page, specify the following settings and select **Next : Workspace >** (leave other settings with their default values):\n\n> **Note**: When setting the **Name prefix** value, switch to the Resources tab on the right side of the lab session window and identify the string of characters between *User1-* and the *@* character. Use this string to replace the *random* placeholder.\n\n|Setting|Value|\n|---|---|\n|Add virtual machines|**Yes**|\n|Resource group|**Defaulted to same as host pool**|\n|Name prefix|**sh**-*random*|\n|Virtual machine type|**Azure virtual machine**|\n|Virtual machine location|The name of the Azure region where you want to deploy your Azure Virtual Desktop environment|\n|Availability options|**No infrastructure redundancy required**|\n|Security type|**Trusted launch virtual machines**|\n|Image|**Windows 11 Enterprise multi-session, Version 23H2 + Microsoft 365 Apps**|\n|Virtual machine size|**Standard DC2s_v3**|\n|Number of VMs|**2**|\n|OS disk type|**Standard SSD**|\n|OS disk size|**Default size (128GiB)**|\n|Boot Diagnostics|**Enable with managed storage account (recommended)**|\n|Virtual network|**az140-vnet11e**|\n|Subnet|**hp1-Subnet**|\n|Network security group|**Basic**|\n|Public inbound ports|**No**|\n|Select which directory you would like to join|**Microsoft Entra ID**|\n|Enroll VM with Intune|**No**|\n|User name|**Student**|\n|Password|Any sufficiently complex string of characters that will be used as the password for the built-in administrator account|\n|Confirm password|The same string of characters you specified previously|\n\n> **Note**: The password should be at least 12 characters in length and consist of a combination of lower-case characters, upper-case characters, digits, and special characters. For details, refer to the information about [the password requirements when creating an Azure VM](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/faq#what-are-the-password-requirements-when-creating-a-vm-).",
+                    "On the **Workspace** tab of the **Create a host pool** page, confirm the following setting and select **Review + create**:\n\n|Setting|Value|\n|---|---|\n|Register desktop app group|**No**|",
+                    "On the **Review + create** tab of the **Create a host pool** page, select **Create**.\n\n> **Note**: Wait for the deployment to complete. This might take about 20 minutes."
+                  ]
+                },
+                {
+                  "id": "lab1-ex1-task3",
+                  "number": 3,
+                  "title": "Create an Azure Virtual Desktop application group",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop** and, on the **Azure Virtual Desktop** page, select **Application groups**.",
+                    "On the **Azure Virtual Desktop \\| Application groups** page, note the existing, auto-generated **az140-21-hp1-DAG** desktop application group, and select it.",
+                    "On the **az140-21-hp1-DAG** page, in the **Manage** section of the vertical navigation menu, select **Assignments**.",
+                    "On the **az140-21-hp1-DAG \\| Assignments** page, select **+ Add**.",
+                    "On the **Select Microsoft Entra users or user groups** page, select **Groups**, in the search box, type the full name of the **AVD-DAG** group you identified in the first task of this exercise, select the checkbox next to the group name, and click **Select**.",
+                    "Navigate back to the **Azure Virtual Desktop \\| Application groups** page, select **+ Create**.",
+                    "On the **Basics** tab of the **Create an application group** page, specify the following settings and select **Next : Applications >**:\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|**az140-21e-RG**|\n|Host pool|**az140-21-hp1**|\n|Application group type|**Remote App**|\n|Application group name|**az140-21-hp1-Office365-RAG**|",
+                    "On the **Applications** tab of the **Create an application group** page, select **+ Add applications**.",
+                    "On the **Add application** page, specify the following settings and select **Review + add**, then select **Add**:\n\n|Setting|Value|\n|---|---|\n|Application source|**Start menu**|\n|Application|**Word**|\n|Display name|**Microsoft Word**|\n|Description|**Microsoft Word**|\n|Require command line|**No**|",
+                    "Back on the **Applications** tab of the **Create an application group** page, select **+ Add applications**.",
+                    "On the **Add application** page, specify the following settings and select **Review + add**, then select **Add**:\n\n|Setting|Value|\n|---|---|\n|Application source|**Start menu**|\n|Application|**Excel**|\n|Display name|**Microsoft Excel**|\n|Description|**Microsoft Excel**|\n|Require command line|**No**|",
+                    "Back on the **Applications** tab of the **Create an application group** page, select **+ Add applications**.",
+                    "On the **Add application** page, specify the following settings and select **Review + add**, then select **Add**:\n\n|Setting|Value|\n|---|---|\n|Application source|**Start menu**|\n|Application|**PowerPoint**|\n|Display name|**Microsoft PowerPoint**|\n|Description|**Microsoft PowerPoint**|\n|Require command line|**No**|",
+                    "Back on the **Applications** tab of the **Create an application group** page, select **Next : Assignments >**.",
+                    "On the **Assignments** tab of the **Create an application group** page, select **+ Add Microsoft Entra users or user groups**.",
+                    "On the **Select Microsoft Entra users or user groups** page, select **Groups**, type the full name of the **AVD-RemoteApp** group you identified in the first task of this exercise, select the checkbox next to the group name, and click **Select**.",
+                    "Back on the **Assignments** tab of the **Create an application group** page, select **Next : Workspace >**.",
+                    "On the **Workspace** tab of the **Create a workspace** page, specify the following setting and select **Review + create**:\n\n|Setting|Value|\n|---|---|\n|Register application group|**No**|",
+                    "On the **Review + create** tab of the **Create an application group** page, select **Create**.\n\n> **Note**: Wait for the Application Group to be created. This should take less than 1 minute. \n\n> **Note**: Next you will create an application group based on file path as the application source.",
+                    "In the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop** and, on the **Azure Virtual Desktop** page, select **Application groups**.",
+                    "On the **Azure Virtual Desktop \\| Application groups** page, select **+ Create**.",
+                    "On the **Basics** tab of the **Create an application group** page, specify the following settings and select **Next : Applications >**:\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|**az140-21e-RG**|\n|Host pool|**az140-21-hp1**|\n|Application group type|**RemoteApp**|\n|Application group name|**az140-21-hp1-Utilities-RAG**|",
+                    "On the **Applications** tab of the **Create an application group** page, select **+ Add applications**.",
+                    "On the **Add application** page, on the **Basics** tab, specify the following settings and select **Next**:\n\n|Setting|Value|\n|---|---|\n|Application source|**File path**|\n|Application path|**C:\\Windows\\system32\\cmd.exe**|\n|Application identifier|**Command Prompt**|\n|Display name|**Command Prompt**|\n|Description|**Windows Command Prompt**|\n|Require command line|**No**|",
+                    "On the **Icon** tab, specify the following settings and select **Review + add**, then select **Add**:\n\n|Setting|Value|\n|---|---|\n|Icon path|**C:\\Windows\\system32\\cmd.exe**|\n|Icon index|0|",
+                    "Back on the **Applications** tab of the **Create an application group** page, select **Next : Assignments >**.",
+                    "On the **Assignments** tab of the **Create an application group** page, select **+ Add Microsoft Entra users or user groups**.",
+                    "On the **Select Microsoft Entra users or user groups** page, select **Groups**, type the full name of the **AVD-RemoteApp** group you identified in the first task of this exercise, select the checkbox next to the group name, and click **Select**.",
+                    "Back on the **Assignments** tab of the **Create an application group** page, select **Next : Workspace >**.",
+                    "On the **Workspace** tab of the **Create a workspace** page, specify the following setting and select **Review + create**:\n\n|Setting|Value|\n|---|---|\n|Register application group|**No**|",
+                    "On the **Review + create** tab of the **Create an application group** page, select **Create**.\n\n> **Note**: Wait for the Application Group to be created. This should take less than 1 minute."
+                  ]
+                },
+                {
+                  "id": "lab1-ex1-task4",
+                  "number": 4,
+                  "title": "Create an Azure Virtual Desktop workspace",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop** and, on the **Azure Virtual Desktop** page, select **Workspaces**.",
+                    "On the **Azure Virtual Desktop \\| Workspaces** page, select **+ Create**.",
+                    "On the **Basics** tab of the **Create a workspace** page, specify the following settings and select **Next : Application groups >**:\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|**az140-21e-RG**|\n|Workspace name|**az140-21-ws1**|\n|Friendly name|**az140-21-ws1**|\n|Location|The name of the Azure region into which you deployed resources in the first exercise of this lab or a region close to it|",
+                    "On the **Application groups** tab of the **Create a workspace** page, specify the following settings:\n\n|Setting|Value|\n|---|---|\n|Register application groups|**Yes**|",
+                    "On the **Workspace** tab of the **Create a workspace** page, select **+ Register application groups**.",
+                    "On the **Add application groups** page, select the plus sign next to the **az140-21-hp1-DAG**, **az140-21-hp1-Office365-RAG**, and **az140-21-hp1-Utilities-RAG** entries and click **Select**.",
+                    "Back on the **Application groups** tab of the **Create a workspace** page, select **Review + create**.",
+                    "On the **Review + create** tab of the **Create a workspace** page, select **Create**."
+                  ]
+                },
+                {
+                  "id": "lab1-ex1-task5",
+                  "number": 5,
+                  "title": "Grant access to Azure Virtual Desktop host pools",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Resource groups** and, on the **Resource groups** page, select **az140-21e-RG**.",
+                    "On the **az140-21e-RG** page, in the vertical navigation menu, select **Access control (IAM)**.",
+                    "On the **az140-21e-RG\\|Access control (IAM)** page, select **+ Add** and, in the drop-down menu, select **Add role assignment**.",
+                    "On the **Role** tab of the **Add role assignment** page, ensure that the **Job function roles** tab is selected, in the search textbox, enter **Virtual Machine User Login**, in the list of results, select **Virtual Machine User Login**, and then select **Next**.",
+                    "On the **Members** tab of the **Add role assignment** page, ensure that the **User, group, or service principal** option is selected, click **+ Select members**, in the **Select members** pane, locate the **AVD-RemoteApp** group you identified in the first task of this exercise, and click **Select**.",
+                    "Back on the **Members** tab of the **Add role assignment** page, select **Next**.",
+                    "On the **Assignment type** tab of the **Add role assignment** page, set the **Assignment type** to **Active** and then select **Review + assign**.",
+                    "On the **Review + assign** tab of the **Add role assignment** page, select **Review + assign**.",
+                    "Back on the **az140-21e-RG\\|Access control (IAM)** page, select **+ Add** and, in the drop-down menu, select **Add role assignment**.",
+                    "On the **Role** tab of the **Add role assignment** page, ensure that the **Job function roles** tab is selected, in the search textbox, enter **Virtual Machine Administrator Login**, in the list of results, select **Virtual Machine Administrator Login**, and then select **Next**.",
+                    "On the **Members** tab of the **Add role assignment** page, ensure that the **User, group, or service principal** option is selected, click **+ Select memebers**, in the **Select members** pane, locate the **AVD-DAG** group you identified in the first task of this exercise, and click **Select**.",
+                    "Back on the **Members** tab of the **Add role assignment** page, set the **Assignment type** to **Active**, select **Review + assign** and then select **Review + assign** again."
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "lab-2",
+          "number": 2,
+          "title": "Lab: Manage host pools and session hosts by using the Azure portal (Entra ID)",
+          "description": "Module 3.2: Plan and implement user experience and client settings. Configure Microsoft Entra joined Azure Virtual Desktop session hosts to support a range of functional and business requirements.",
+          "duration": 30,
+          "level": 500,
+          "objectives": [
+            "Configure Microsoft Entra joined Azure Virtual Desktop session hosts to support a range of functional and business requirements"
+          ],
+          "slug": "02_LAB_32_01_Manage_host_pools_and_session_hosts_with_Entra_ID_Azure_portal",
+          "sourcePath": "Instructions/Labs_EntraID/02_LAB_32_01_Manage_host_pools_and_session_hosts_with_Entra_ID_Azure_portal.md",
+          "officialUrl": "https://microsoftlearning.github.io/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/Instructions/Labs_EntraID/02_LAB_32_01_Manage_host_pools_and_session_hosts_with_Entra_ID_Azure_portal.html",
+          "sourceUrl": "https://github.com/MicrosoftLearning/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/blob/master/Instructions/Labs_EntraID/02_LAB_32_01_Manage_host_pools_and_session_hosts_with_Entra_ID_Azure_portal.md",
+          "labFiles": [],
+          "learningPath": 1,
+          "exercises": [
+            {
+              "id": "lab2-ex1",
+              "number": 1,
+              "title": "Manage an Azure Virtual Desktop environment containing Microsoft Entra joined session hosts",
+              "minutes": 30,
+              "scenario": "You have an existing Azure Virtual Desktop environment. You need to configure host pool with Microsoft Entra joined session hosts to support a range of functional and business requirements. These requirements include: - Deploy additional session hosts to accommodate increased number of remote users - Minimize the cost of the Azure Virtual Desktop environment by optimizing the host pool load balancing configuration and leveraging the *Start VM on Connect* functionality - Maximize the availability of session hosts during business hours by implementing maintenance windows - Enable single sign-on to Microsoft Entra-joined session hosts - Maximize usability and user experience (such as automatic reconnection of disconnected sessions)",
+              "tasks": [
+                {
+                  "id": "lab2-ex1-task1",
+                  "number": 1,
+                  "title": "Deploy additional Azure Virtual Desktop host pool session hosts",
+                  "steps": [
+                    "If needed, from the lab computer, start a web browser, navigate to the Azure portal and sign in by providing credentials of a user account with the Owner role in the subscription you will be using in this lab.\n\n> **Note**: Use the credentials of the `User1-` account listed on the Resources tab on the right side of the lab session window.",
+                    "In the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop** and, on the **Azure Virtual Desktop** page, in the vertical menu bar, in the **Manage** section, select **Host pools**.",
+                    "On the **Azure Virtual Desktop \\| Host pools** page, in the list of host pools, select **az140-21-hp1**.",
+                    "On the **az140-21-hp1** page, in the in the vertical menu bar, in the **Manage** section, select **Session hosts** and verify that the pool consists of two hosts.",
+                    "On the **az140-21-hp1 \\| Session hosts** page, select **+ Add**.",
+                    "On the **Basics** tab of the **Add virtual machines to a host pool** page, review the preconfigured settings and select **Next : Virtual Machines**.",
+                    "On the **Virtual Machines** tab of the **Add virtual machines to a host pool** page, specify the following settings and select **Review + create** (leave others with their default settings):\n\n> **Note**: When setting the **Name prefix** value, switch to the Resources tab on the right side of the lab session window and identify the string of characters between *User1-* and the *@* character. Use this string to replace the *random* placeholder.\n\n|Setting|Value|\n|---|---|\n|Resource group|**az140-21e-RG**|\n|Name prefix|**sh**-*random*|\n|Virtual machine location|The name of the Azure region into which you deployed the first two session host VMs|\n|Availability options|**No infrastructure redundancy required**|\n|Security type|**Trusted launch virtual machines**|\n|Image|**Windows 11 Enterprise multi-session, Version 23H2 + Microsoft 365 Apps**|\n|Virtual machine size|**Standard DC2s_v3**|\n|Number of VMs|**1**|\n|OS disk type|**Standard SSD**|\n|OS disk size|**Default size (128GB)**|\n|Boot Diagnostics|**Enable with managed storage account (recommended)**|\n|Virtual network|**az140-vnet11e**|\n|Subnet|**hp1-Subnet**|\n|Network security group|**Basic**|\n|Public inbound ports|**No**|\n|Select which directory you would like to join|**Microsoft Entra ID**|\n|Enroll VM with Intune|**No**|\n|User name|**Student**|\n|Password|The same password you used when deploying the session hosts in the lab *Deploy host pools and session hosts by using the Azure portal (Entra ID)* \n|Confirm password|The same password you specified previously|\n\n> **Note**: The password should be at least 12 characters in length and consist of a combination of lower-case characters, upper-case characters, digits, and special characters. For details, refer to the information about [the password requirements when creating an Azure VM](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/faq#what-are-the-password-requirements-when-creating-a-vm-).\n\n> **Note**: As you likely noticed, it's possible to change the image and prefix of the VMs as you add session hosts to the existing pool. In general, this is not recommended unless you plan to replace all VMs in the pool.",
+                    "On the **Review + create** tab of the **Add virtual machines to a host pool** page, select **Create**\n\n> **Note**: Do not wait for the provisioning process to complete but instead proceed to the next task. The provisioning process might take about 20 minutes."
+                  ]
+                },
+                {
+                  "id": "lab2-ex1-task2",
+                  "number": 2,
+                  "title": "Review and configure the host pool properties",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop**, on the **Azure Virtual Desktop** page, in the **Manage** section of the vertical navigation menu, select **Host pools** and, on the **Azure Virtual Desktop \\| Host pools** page, select **az140-21-hp1**.",
+                    "On the **az140-21-hp1** page, in the **Settings** section, select **Properties**.",
+                    "On the **az140-21-hp1\\|Properties** page, review the available configuration options including:\n\n- **Preferred app group type**: This option sets the preferred app group type for the host pool to either **Desktop** or **RemoteApp**. If end users have both RemoteApp and Desktop apps published to them in the host pool, they will only see the selected app type in their feed.\n- **Start VM on connect**: Enabling this option allows users to start individual virtual machines in the host pool from the deallocated state.\n- **Validation environment**: Validation host pool is intended for testing service changes before they are deployed to production.\n- **Load balancing algorithm**: This option provides the choice between the breadth-first and depth-first load balancing. The breadth-first load balancing distributes new user sessions across all available session hosts in the host pool. Depth-first load balancing distributes new user sessions to an available session host with the highest number of connections which has not reached the maximum session limit threshold.",
+                    "On the **az140-21-hp1\\|Properties** page, in the **Load balancing algorithm** drop-down list, select **Depth-first**.",
+                    "In the **Max session limit** text box, enter **8**.",
+                    "On the **az140-21-hp1\\|Properties** page, set **Start VM on connect** to **Yes**.\n\n> **Note**: *Start VM on Connect* lets you reduce costs by enabling end users to power on the virtual machines (VMs) used as session hosts only when they're needed. For personal host pools, *Start VM on Connect* only powers on an existing session host VM that is already assigned or can be assigned to a user. For pooled host pools, *Start VM on Connect* only powers on a session host VM when none are turned on and more VMs are only be turned on when the first VM reaches the session limit.",
+                    "On the **az140-21-hp1\\|Properties** page, select **Save**.\n\n> **Note**: Using *Start VM on Connect* requires assigning the *Desktop Virtualization Power On Contributor* role-based access control (RBAC) role to the *Azure Virtual Desktop* service principal at the Azure subscription scope."
+                  ]
+                },
+                {
+                  "id": "lab2-ex1-task3",
+                  "number": 3,
+                  "title": "Assign the required RBAC role to an Azure Virtual Desktop service principal",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, start a PowerShell session in the Azure Cloud Shell.\n\n> **Note**: If prompted, in the **Getting started** pane, in the **Subscription** drop-down list, select the name of the Azure subscription you are using in this lab and then select **Apply**.",
+                    "In the PowerShell session in the Azure Cloud Shell pane, run the following command to retrieve the value of the Id property of the Azure subscription you are using in this lab and store it in a variable `$subId`:\n\n```powershell\n$subId = (Get-AzSubscription).Id\n```",
+                    "Run the following command to create a $parameters variable, which stores a hash table that contains the values of the RBAC role definition name, Microsoft Entra application representing the **Azure Virtual Desktop** service principal, and the subscription scope:\n\n```powershell\n$parameters = @{\n    RoleDefinitionName = \"Desktop Virtualization Power On Contributor\"\n    ApplicationId = \"9cdead84-a844-4324-93f2-b2e6bb768d07\"\n    Scope = \"/subscriptions/$subId\"\n}\n```",
+                    "Run the following command to create the RBAC role assignment:\n\n```powershell\nNew-AzRoleAssignment @parameters\n```",
+                    "Close the Cloud Shell pane."
+                  ]
+                },
+                {
+                  "id": "lab2-ex1-task4",
+                  "number": 4,
+                  "title": "Configure scheduled agent updates",
+                  "steps": [
+                    "In the web browser displaying the Azure portal, navigate back to the **az140-21-hp1** host pool page.",
+                    "On the **az140-21-hp1** page, in the in the vertical menu bar, in the **Settings** section, select the **Scheduled agent updates** entry and, on the **az140-21-hp1\\|Scheduled agent updates** page, select the **Scheduled agent updates** checkbox.",
+                    "In the **Schedule** section, select the **Use local session host time zone** checkbox.",
+                    "In the **Maintenance window** section, in the **Day** drop-down list, select **Saturday** and, in the **Time** drop-down list, select **11:00 PM**.",
+                    "Select **Apply**."
+                  ]
+                },
+                {
+                  "id": "lab2-ex1-task5",
+                  "number": 5,
+                  "title": "Configure RDP properties of the host pool",
+                  "steps": [
+                    "In the web browser displaying the Azure portal, on the **az140-21-hp1** page, in the in the vertical menu bar, in the **Settings** section, select the **RDP Properties** entry.",
+                    "On the **Connection information** tab of the **az140-21-hp1\\|RDP Properties** page, review the available configuration options, including:\n\n- **Microsoft Entra single sign-on**: This option determines if connections will attempt to leverage Microsoft Entra authentication to sign in to Microsoft Entra-joined session hosts and, effectively, provide a single sign-on experience. Note that it's not required for the client computer to be Microsoft Entra-joined. \n- **Credential Security Support Provider**: This option controls the use of CredSSP for authentication. CredSSP provides the ability to securely forward user credentials from the client device to the remote desktop session host. However, its capabilities do not include support for Entra ID authentication.\n- **Alternate shell**: This option allows you to specify an executable to start whenever a new connection to a session host is established. This setting applies only to session hosts running Windows Server.\n- **KDC proxy name**: This option provide the ability to proxy Kerberos authentication traffic to Active Directory domain controllers.\n\n> **Note**: Considering that three of these options are not applicable in our scenario (which involves Microsft Entra-joined session hosts without any presence of Active Directory Domain Services), you will configure only the first one. This option corresponds to the `enablerdsaadauth:i:value` RDP property.",
+                    "In the **Microsoft Entra single sign-on** drop-down list, select the option **Connections will use Microsoft Entra authentication to provide single sign-on** and then select **Save**.\n\n> **Important**: It is essential to keep in mind that enabling this specific RDP property is just one of several steps required to implement single sign-on functionality. Other actions applicable to this scenario include enabling Microsoft Entra authentication for RDP in the Entra tenant and configuring device groups, which are not supported in the current version of the lab environment, hence are not included in the instructions. For the full listing of actions necessary to implement single sign-on for Microsoft Entra ID, refer to [Configure single sign-on for Azure Virtual Desktop using Microsoft Entra ID authentication](https://learn.microsoft.com/en-us/azure/virtual-desktop/configure-single-sign-on).",
+                    "On the **az140-21-hp1\\|RDP Properties** page, select the **Session behavior** tab and review the available configuration options, including:\n\n- **Reconnection**: This option determines whether the client computer will automatically try to reconnect to the remote computer if the connection is dropped.\n- **Bandwidth auto detect**: This option determines whether to use automatic network bandwidth detection or not.\n- **Network auto detect**: This option allows you to enable automatic detection of the network type. It is used in conjunction with **Bandwidth auto detect**. \n- **Compression**: This option determines whether the connection should use bulk compression.\n- **Video playback**: This option enables the use of RDP efficient multimedia streaming for video playback.",
+                    "On the **Session behavior** tab, in the **Reconnection** drop-down list, select **Client automatically tries to reconnect** and then select **Save**.",
+                    "On the **az140-21-hp1\\|RDP Properties** page, select the **Device redirection** tab and review the available configuration options, including two main categories:\n\n- **Audio and video**\n- **Local devices and resources**\n\n> **Note**: By default, redirection applies to all disk drives, including the ones which are mounted after the initial connection is established.",
+                    "On the **az140-21-hp1\\|RDP Properties** page, select the **Display settings** tab and review the available configuration options, including support for multiple displays, smart sizing, and specific desktop sizes (in pixels).",
+                    "On the **az140-21-hp1\\|RDP Properties** page, select the **Advanced** tab and review the existing configuration settings. Note that these settings reflect the changes you made earlier in this task."
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "lab-3",
+          "number": 3,
+          "title": "Lab: Implement monitoring by using Azure Virtual Desktop Insights",
+          "description": "Module 4.1: Monitor and manage Azure Virtual Desktop services. Implement monitoring of an Azure Virtual Desktop environment.",
+          "duration": 25,
+          "level": 400,
+          "objectives": [
+            "Implement monitoring of an Azure Virtual Desktop environment"
+          ],
+          "slug": "03_LAB_41_01_Implement_monitoring_by_using_Azure_Virtual_Desktop_Insights",
+          "sourcePath": "Instructions/Labs_EntraID/03_LAB_41_01_Implement_monitoring_by_using_Azure_Virtual_Desktop_Insights.md",
+          "officialUrl": "https://microsoftlearning.github.io/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/Instructions/Labs_EntraID/03_LAB_41_01_Implement_monitoring_by_using_Azure_Virtual_Desktop_Insights.html",
+          "sourceUrl": "https://github.com/MicrosoftLearning/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/blob/master/Instructions/Labs_EntraID/03_LAB_41_01_Implement_monitoring_by_using_Azure_Virtual_Desktop_Insights.md",
+          "labFiles": [],
+          "learningPath": 1,
+          "exercises": [
+            {
+              "id": "lab3-ex1",
+              "number": 1,
+              "title": "Implement monitoring of an Azure Virtual Desktop environment",
+              "minutes": 25,
+              "scenario": "You have an existing Azure Virtual Desktop environment. You want to monitor the status and activities of the environment.",
+              "tasks": [
+                {
+                  "id": "lab3-ex1-task1",
+                  "number": 1,
+                  "title": "Register the Azure subscription with the Microsoft.Insights resource provider",
+                  "steps": [
+                    "If needed, from the lab computer, start a web browser, navigate to the Azure portal and sign in by providing credentials of a user account with the Owner role in the subscription you will be using in this lab.\n\n> **Note**: Use the credentials of the `User1-` account listed on the Resources tab on the right side of the lab session window.",
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Subscriptions**, on the **Subscriptions** page, select the Azure subscription you are using in this lab, and, in the vertical navigation menu, in the **Settings** section, select **Resource providers**.",
+                    "On the **Resource providers** tab, in the search text box, enter **Microsoft.Insights**, in the list of results, select the small circle to the left of the **Microsoft.Insights** entry, and then select **Register**.\n\n> **Note**: Wait for the registration process to complete. This typically takes about 1 minute. Use the **Refresh** toolbar button to display the up-to-date value of the registration status."
+                  ]
+                },
+                {
+                  "id": "lab3-ex1-task2",
+                  "number": 2,
+                  "title": "Create an Azure Log Analytics workspace",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Log Analytics workspaces**, on the **Log Analytics workspaces** page, select **+ Create**.",
+                    "On the **Basics** tab of the **Create Log Analytics workspace** page, specify the following settings and select **Review + create**:\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|The name of a new resource group **az140-411e-RG**|\n|Name|**az140-laworkspace41e**|\n|Region|The name of the Azure region where you deployed the Azure Virtual Desktop environment|",
+                    "On the **Review + Create** page, select **Create**.\n\n> **Note**: Wait for the provisioning process to complete. This typically takes about 1 minute.\n\n> **Note**: Next, you need to enable data collection in the newly provisioned Log Analytics workspace of diagnostics from the Azure Virtual Desktop environment, performance counters from the session hosts, and Windows Event Logs from the Azure Virtual Desktop session hosts."
+                  ]
+                },
+                {
+                  "id": "lab3-ex1-task3",
+                  "number": 3,
+                  "title": "Set up the Virtual Desktop Insights configuration workbook",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop** and, on the **Azure Virtual Desktop** page, in the vertical navigation menu, in the **Monitoring** section, select **Workbooks**.",
+                    "In the list of **Windows Virtual Desktop** workbooks, in the **Windows Virtual Desktop** section, select the **Insights** workbook.",
+                    "On the **Azure Virtual Desktop \\| Workbooks \\| Insights** page, review the warning messages indicating that the workspace and session hosts are not sending data to the workspace and then select the **Configuration workbook** link to repair the issue.",
+                    "On the **CheckAMAConfiguration** page, on the **Resource diagnostics settings** tab, in the **Log Analytics workspace** drop-down list, select **az140-laworkspace41e**.",
+                    "On the **CheckAMAConfiguration** page, on the **Resource diagnostics settings** tab, in the **Host pool az140-21-hp1** section, review the warning message indicating that no existing diagnostic configuration was found for the selected host pool and then select **Configure host pool**.",
+                    "In the **Deploy Template** pane, select **Deploy**.\n\n> **Note**: This effectively enables the following diagnostics tables in the target Log Analytics workspace:\n- Management Activities\n- Feed\n- Connections\n- Errors\n- Checkpoints\n- HostRegistration\n- AgentHealthStatus\n\n> **Note**: Wait for the deployment to complete. This typically takes less than 1 minute.",
+                    "On the **CheckAMAConfiguration** page, on the **Resource diagnostics settings** tab, select the **Refresh** icon (a circular arrow) in the toolbar.",
+                    "Review the **Host pool az140-21-hp1** section and verify that the diagnostic settings are enabled for **allLogs**.",
+                    "While on the **Resource diagnostics settings** tab, scroll down to the **Workspace az140-21-ws1** section and then select **Configure workspace**.",
+                    "In the **Deploy Template** pane, select **Deploy**.\n\n> **Note**: This effectively configures the workspace for **allLogs**.\n\n> **Note**: Wait for the deployment to complete. This typically takes less than 1 minute.",
+                    "On the **CheckAMAConfiguration** page, on the **Resource diagnostics settings** tab, select the **Refresh** icon (a circular arrow) in the toolbar.",
+                    "Review the **Workspace az140-21-ws1** section and verify that the diagnostic settings are enabled for **allLogs** and that thre are no remaining warning messages.",
+                    "Navigate to the top of the **CheckAMAConfiguration** page and switch to the **Session host data settings** tab.",
+                    "On the **Session host data settings** tab, in the **Create DCR** section, in the **Workspace destination** drop-down list, select **az140-laworkspace41e** and then select **Create data collection rule**.",
+                    "In the **Deploy Template** pane, select **Deploy**.\n\n> **Note**: Wait for the deployment to complete. This typically takes less than 1 minute.",
+                    "On the **CheckAMAConfiguration** page, on the **Session host data settings** tab, select the **Refresh** icon (a circular arrow) in the toolbar.\n\n> **Note**: Before you proceed, make sure that the newly created DCR is listed in the **Available DCRs** subsection of the **Create DCR** section. If that is not the case, wait for another minute and refresh the page again.",
+                    "On the **Session host data settings** tab, in the **Selected DCR** drop-down list, select the entry starting with **microsoft-avdi-** prefix.",
+                    "If needed, on the **Session host data settings** tab, in the **DCR associations** section, select **Deploy Association** and, in the **Deploy Template** pane, select **Deploy**.\n\n> **Note**: This effectively associates the newly created DCR with the session hosts in the **az140-21-hp1** host pool.\n\n> **Note**: Wait for the deployment to complete. This typically takes less than 1 minute.",
+                    "On the **CheckAMAConfiguration** page, on the **Session host data settings** tab, select the **Refresh** icon (a circular arrow) in the toolbar.",
+                    "On the **Session host data settings** tab, in the **Session hosts missing Azure Monitor extension** section, select **Add extension**.",
+                    "In the **Deploy Template** pane, select **Deploy**.\n\n> **Note**: This effectively installs the Azure Monitor extension on the session hosts in the **az140-21-hp1** host pool.\n\n> **Note**: Wait for the deployment to complete. This might take about 1 minute.",
+                    "On the **CheckAMAConfiguration** page, on the **Session host data settings** tab, select the **Refresh** icon (a circular arrow) in the toolbar.",
+                    "Verify that there are no error or warning messages displayed.",
+                    "Navigate to the top of the **CheckAMAConfiguration** page, select the **Data generated** tab, and then select the **Refresh** icon (a circular arrow) in the toolbar.",
+                    "Review the sections displaying graphs representing collected data, including **Billed data over last 24hrs**, **Performance Counters**, and **Events**.\n\n> **Note**: Use the **Billed data over last 24hrs** section to monitor data ingestion. You are responsible for Log Analytics charges for data storage and ingestion.",
+                    "In the web browser displaying the Azure portal, navigate back to the **Azure Virtual Desktop** page and, in the **Monitoring** section of the vertical navigation menu, select **Insights**.",
+                    "On the **Azure Virtual Desktop \\| Insights** page, review the content of the **Overview** tab, including the **Capacity** section, **Connection diagnostics: % of users able to connect**, **Connection performance: Time to connect (new sessions)**, and **Utilization** telemetry.",
+                    "Next, review all the remaining tabs on the **Azure Virtual Desktop \\| Insights** page, including **Connection Reliability**, **Connection Diagnostics**, **Connection Performance**, **Users**, **Utilization**, **Clients**, and **Alerts**.\n\n> **Note**: Consider revisiting these tabs of the Insights page once you complete the subsequent labs to review the charts representing collected telemetry."
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "lab-4",
+          "number": 4,
+          "title": "Lab: Connect to session hosts (Entra ID)",
+          "description": "Module 3.2: Plan and implement user experience and client settings. Validate the functionality of Microsoft Entra joined Azure Virtual Desktop session hosts by connecting to them from a Windows client which is not Microsoft Entra-joined or registered.",
+          "duration": 20,
+          "level": 300,
+          "objectives": [
+            "Validate the functionality of Microsoft Entra joined Azure Virtual Desktop session hosts by connecting to them from a Windows client which is not Microsoft Entra-joined or registered."
+          ],
+          "slug": "04_LAB_32_02_Connect_to_host_pools_and_session_hosts_with_Entra_ID",
+          "sourcePath": "Instructions/Labs_EntraID/04_LAB_32_02_Connect_to_host_pools_and_session_hosts_with_Entra_ID.md",
+          "officialUrl": "https://microsoftlearning.github.io/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/Instructions/Labs_EntraID/04_LAB_32_02_Connect_to_host_pools_and_session_hosts_with_Entra_ID.html",
+          "sourceUrl": "https://github.com/MicrosoftLearning/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/blob/master/Instructions/Labs_EntraID/04_LAB_32_02_Connect_to_host_pools_and_session_hosts_with_Entra_ID.md",
+          "labFiles": [],
+          "learningPath": 1,
+          "exercises": [
+            {
+              "id": "lab4-ex1",
+              "number": 1,
+              "title": "Validate the functionality of Microsoft Entra joined Azure Virtual Desktop session hosts by connecting to them from a Windows 11 client",
+              "minutes": 20,
+              "scenario": "You have an existing Azure Virtual Desktop environment containing Entra joined session hosts. You need to validate their functionality by connecting to them from a Windows 11 client which is not Microsoft Entra-joined or registered.",
+              "tasks": [
+                {
+                  "id": "lab4-ex1-task1",
+                  "number": 1,
+                  "title": "Adjust RDP properties of the Azure Virtual Desktop host pool",
+                  "steps": [
+                    "If needed, from the lab computer, start a web browser, navigate to the Azure portal and sign in by providing credentials of a user account with the Owner role in the subscription you will be using in this lab.\n\n> **Note**: Use the credentials of the `User1-` account listed on the Resources tab on the right side of the lab session window.",
+                    "In the web browser displaying the Azure portal, on the **az140-21-hp1** Azure Virtual Desktop host pool page, in the in the vertical menu bar, in the **Settings** section, select the **RDP Properties** entry.",
+                    "On the **az140-21-hp1 \\| RDP Properties** page, select the **Advanced** tab.",
+                    "On the **Advanced** tab of the **az140-21-hp1 \\| RDP Properties** page, in the **RDP Properties** text box, append the following string to the existing content (make sure to add a leading semicolon character (`;`) if needed to separate this string from the one which preceeds it:\n\n```txt\ntargetisaadjoined:i:1\n```",
+                    "In the **RDP Properties** text box, remove the following string (if present) from the existing content (with its trailing semicolon character):\n\n```txt\nenablerdsaadauth:i:value\n```",
+                    "On the **az140-21-hp1 \\| RDP Properties** page, select **Save**."
+                  ]
+                },
+                {
+                  "id": "lab4-ex1-task2",
+                  "number": 2,
+                  "title": "Install Microsoft Remote Desktop client on a Windows 11 computer",
+                  "steps": [
+                    "From the lab computer, start a web browser, navigate to the [Connect to Azure Virtual Desktop with the Remote Desktop client for Windows](https://learn.microsoft.com/en-us/azure/virtual-desktop/users/connect-windows) page, scroll down to the section **Download and install the Remote Desktop client (MSI)**, and select the [Windows 64-bit](https://go.microsoft.com/fwlink/?linkid=2139369) link.",
+                    "Open File Explorer, navigate to the **Downloads** folder, and launch the installation of the newly downloaded MSI file.",
+                    "In the **Remote Desktop Setup** window, when prompted, accept the terms of the licensing agreement and choose the option to **Install for all users of this machine**. If prompted, accept the User Account Control prompt to proceed with the installation.",
+                    "Once the installation completes, ensure that the **Launch Remote Desktop when setup exits** checkbox is selected and select **Finish** to start the Microsoft Remote Desktop client.\n\n> **Note**: The [Remote Desktop Store app](https://learn.microsoft.com/en-us/azure/virtual-desktop/users/connect-windows?pivots=rd-store) for Windows doesn't support connecting to Microsoft Entra-joined session hosts."
+                  ]
+                },
+                {
+                  "id": "lab4-ex1-task3",
+                  "number": 3,
+                  "title": "Subscribe to a Azure Virtual Desktop workspace",
+                  "steps": [
+                    "On the lab computer, switch to the **Remote Desktop** client window, select **Subscribe** and, when prompted, sign in with the credentials of the `User1` Entra ID user account which you can locate on the **Resources** tab in the right pane of the lab interface window.\n\n> **Note**: Select the user account which is the member of the Entra group with the **AVD-DAG** prefix.\n\n> **Note**: Alternatively, in the **Remote Desktop** client window, select **Subscribe with URL**, in the **Subscribe to a Workspace** pane, in the **Email or Workspace URL**, type **https://client.wvd.microsoft.com/api/arm/feeddiscovery**, select **Next**, and, once prompted, sign in with the Microsoft Entra credentials.",
+                    "Ensure that the **Remote Desktop** page displays only the **SessionDesktop** icon.\n\n> **Note**: This is expected, because the Microsoft Entra user account you selected was assigned in the first lab *Deploy host pools and session hosts by using the Azure portal (Entra ID)* to the auto-generated **az140-21-hp1-DAG** desktop application group.",
+                    "On the **Remote Desktop** page, right-click the **SessionDesktop** icon and, in the pop-up menu, select **Settings**.",
+                    "In the **SessionDesktop** pane, turn off the **Use default settings** switch.",
+                    "In the **Display settings** section, in the drop-down menu, select the entry **Select displays** and choose the displays you want to use for the session.",
+                    "In the **SessionDesktop** pane, review the remaining options, including **Maximize to current displays**, **Single display when in windowed mode** and **Fit session to window**, without making any changes.",
+                    "Close the **SessionDesktop** pane.",
+                    "On the **Remote Desktop** page, double-click the **SessionDesktop** icon.",
+                    "When prompted to sign in, in the **Windows Security** dialog box, enter the password of the first Microsoft Entra user account, which you used in this task to connect to the target Azure Virtual Desktop environment.\n\n> **Note**: Azure Virtual Desktop doesn't support signing in to Microsoft Entra ID with one user account, then signing in to Windows with a separate user account. Signing in with two different accounts at the same time can lead to users reconnecting to the wrong session host, incorrect or missing information in the Azure portal, and error messages appearing while using app attach or MSIX app attach.\n\n> **Note**: You will be automatically presented with the **SessionDesktop** window.",
+                    "In the Remote Desktop session window, verify that you have full administrative access within the session (for example, select the **Windows** logo icon in the taskbar and then select the **Windows PowerShell(Admin)** item from the pop-up menu.",
+                    "Within the Remote Desktop session window, select the Windows logo icon in the taskbar, select the avatar icon representing the Microsoft Entra user account you used to sign in and, in the pop-up menu, select **Sign out**.\n\n> **Note**: This will automatically terminate the Remote Desktop session.",
+                    "Back in the **Remote Desktop** window, select the ellipsis (`...`) icon to the right of the **az140-21-ws1** workspace entry, select **Unsubscribe** and, when prompted to confirm, select **Continue**.",
+                    "In the **Remote Desktop** client window, select **Subscribe** and, when prompted, sign in with the credentials of the second Entra ID user account which you can locate on the **Resources** tab in the right pane of the lab interface window.\n\n> **Note**: Select the user account which is the member of the Entra group with the **AVD-RemoteApp** prefix.",
+                    "Ensure that the **Remote Desktop** page displays four icons, including Command Prompt, Microsoft Word, Microsoft Excel, Microsoft PowerPoint. \n\n> **Note**: This is expected, because the Microsoft Entra user account you selected was assigned in the first lab *Deploy host pools and session hosts by using the Azure portal (Entra ID)* to the **az140-21-hp1-Office365-RAG** and **az140-21-hp1-Utilities-RAG** application groups.",
+                    "Double-click the Command Prompt icon.",
+                    "When prompted to sign in, in the **Windows Security** dialog box, enter the password of the second Microsoft Entra user account you used to connect to the target Azure Virtual Desktop environment.",
+                    "Verify that a **Command Prompt** window appears shortly afterwards.",
+                    "In the Command Prompt window, type **hostname** and press the **Enter** key to display the name of the computer on which the Command Prompt is running.\n\n> **Note**: Verify that the displayed name starts with the **sh-** prefix.",
+                    "At the Command Prompt, type **logoff** and press the **Enter** key to log off from the current Remote App session.",
+                    "Double-click the remaining icons on the **Remote Desktop** page to launch Microsoft Word, Microsoft Excel, and Microsoft PowerPoint.",
+                    "Close each session window."
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "lab-5",
+          "number": 5,
+          "title": "Lab: Implement autoscaling of session hosts",
+          "description": "Module 4.1: Monitor and manage Azure Virtual Desktop services. Implement and evaluate Azure Virtual Desktop autoscaling.",
+          "duration": 45,
+          "level": 300,
+          "objectives": [
+            "Implement and evaluate Azure Virtual Desktop autoscaling"
+          ],
+          "slug": "05_LAB_41_02_Implement_autoscaling_of_session_hosts",
+          "sourcePath": "Instructions/Labs_EntraID/05_LAB_41_02_Implement_autoscaling_of_session_hosts.md",
+          "officialUrl": "https://microsoftlearning.github.io/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/Instructions/Labs_EntraID/05_LAB_41_02_Implement_autoscaling_of_session_hosts.html",
+          "sourceUrl": "https://github.com/MicrosoftLearning/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/blob/master/Instructions/Labs_EntraID/05_LAB_41_02_Implement_autoscaling_of_session_hosts.md",
+          "labFiles": [],
+          "learningPath": 1,
+          "exercises": [
+            {
+              "id": "lab5-ex1",
+              "number": 1,
+              "title": "Implement Azure Virtual Desktop autoscale scaling plans",
+              "minutes": 45,
+              "scenario": "You have an Azure Virtual Desktop environment which usage changes on regular basis. You want to minimize the cost by leveraging the autoscale scaling plans functionality.",
+              "tasks": [
+                {
+                  "id": "lab5-ex1-task1",
+                  "number": 1,
+                  "title": "Assign the required RBAC role to an Azure Virtual Desktop service principal",
+                  "steps": [
+                    "If needed, from the lab computer, start a web browser, navigate to the Azure portal and sign in by providing credentials of a user account with the Owner role in the subscription you will be using in this lab.\n\n> **Note**: Use the credentials of the `User1-` account listed on the Resources tab on the right side of the lab session window.",
+                    "From the lab computer, in the web browser displaying the Azure portal, start a PowerShell session in the Azure Cloud Shell.\n\n> **Note**: If prompted, in the **Getting started** pane, in the **Subscription** drop-down list, select the name of the Azure subscription you are using in this lab and then select **Apply**.",
+                    "In the PowerShell session in the Azure Cloud Shell pane, run the following command to retrieve the value of the Id property of the Azure subscription you are using in this lab and store it in a variable `$subId`:\n\n```powershell\n$subId = (Get-AzSubscription).Id\n```",
+                    "Run the following command to create a $parameters variable, which stores a hash table that contains the values of the RBAC role definition name, Microsoft Entra application representing the **Azure Virtual Desktop** service principal, and the subscription scope:\n\n```powershell\n$parameters = @{\n    RoleDefinitionName = \"Desktop Virtualization Power On Off Contributor\"\n    ApplicationId = \"9cdead84-a844-4324-93f2-b2e6bb768d07\"\n    Scope = \"/subscriptions/$subId\"\n}\n```",
+                    "Run the following command to create the RBAC role assignment:\n\n```powershell\nNew-AzRoleAssignment @parameters\n```",
+                    "Close the Cloud Shell pane."
+                  ]
+                },
+                {
+                  "id": "lab5-ex1-task2",
+                  "number": 2,
+                  "title": "Stop and deallocate all session hosts",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop** and, on the **Azure Virtual Desktop** page, in the vertical menu bar, in the **Manage** section, select **Host pools**.",
+                    "On the **Azure Virtual Desktop \\| Host pools** page, in the list of host pools, select **az140-21-hp1**.",
+                    "On the **az140-21-hp1** page, in the in the vertical menu bar, in the **Manage** section, select **Session hosts**.",
+                    "On the **az140-21-hp1 \\| Session hosts** page, select the checkbox next to each session host name and then select **Stop**.",
+                    "When prompted to confirm, in the **Stop session hosts** pop-up window, select **Stop**.\n\n> **Note**: You might need to select the ellipsis (`...`) icon in the toolbar to display the **Stop** button.\n\n> **Note**: Do not wait until the session hosts are stopped and deallocated, but instead proceed to the next task. Stopping and deallocating session hosts might take about 2 minutes."
+                  ]
+                },
+                {
+                  "id": "lab5-ex1-task3",
+                  "number": 3,
+                  "title": "Adjust the host pool settings",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, on the **az140-21-hp1** page, in the **Settings** section, select **Properties**.",
+                    "On the **az140-21-hp1\\|Properties** page, in the **Max session limit** text box, enter **1**.",
+                    "On the **az140-21-hp1\\|Properties** page, select **Save**."
+                  ]
+                },
+                {
+                  "id": "lab5-ex1-task4",
+                  "number": 4,
+                  "title": "Create a scaling plan",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop**, on the **Azure Virtual Desktop** page, in the **Manage** section of the vertical navigation menu, select **Scaling plans**.",
+                    "On the **Azure Virtual Desktop \\| Scaling plans** page, select **+ Create**.",
+                    "On the **Basics** tab of the **Create a scaling plan** page, specify the following settings and select **Next : Schedules**:\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|The name of a new resource group **az140-412e-RG**|\n|Scaling plan name|**az140-scalingplan412e**|\n|Region|The name of the Azure region where you deployed the Azure Virtual Desktop environment|\n|Friendly name|**az140-scalingplan412e**|\n|Time zone|The local time zone of the Azure region where you deployed the Azure Virtual Desktop environment|\n|Host pool type|**Pooled**|\n|Scaling method|**Power management autoscaling**|\n\n> **Note**: Leave the **Exclusion tag** property not set. In general, you can use this feature to exclude Azure VMs with arbitrarily set tags from autoscaling.",
+                    "On the **Schedule** tab, select **+ Add schedule**.\n\n> **Note**: Schedules allow you to define ramp-up hours, peak hours, ramp-down hours, and off-peak hours for week days and specify autoscaling triggers. Scaling plan must include an associated schedule for at least one day of the week.",
+                    "On the **General** tab of the **Add a schedule** pane, adjust the default configuration to match the following settings and then select **Next**:\n\n|Setting|Value|\n|---|---|\n|Time zone|The local time zone of your Azure Virtual Desktop environment (based on the region you selected earlier in this task)|\n|Schedule name|**week_schedule**|\n|Repeat on|**7 selected** (select all days of the week)|\n\n> **Note**: The schedule effectively covers every day of the week, which will facilitate evaluating outcome of autoscaling.",
+                    "On the **Ramp-up** tab of the **Add a schedule** pane, adjust the default configuration to match the following settings and then select **Next**:\n\n|Setting|Value|\n|---|---|\n|Start time (12 hour system)|Your current time minus 1 hour|\n|Load balancing algorithm|**Breadth-first**|\n|Minimum percentage of hosts (%)|**30**|\n|Capacity threshold (%)|**60**|\n\n> **Note**: For pooled host pools, autoscale ignores existing load-balancing algorithms in your host pool settings, and instead applies load balancing based on your schedule configuration.\n\n> **Note**: The **Minimum percentage of hosts** setting designates the minimum percentage of session host virtual machines to start for ramp-up and peak hours. For example, if **Minimum percentage of hosts** is specified as 30% and total number of session hosts in your host pool is 3, autoscale will ensure a minimum of 1 session host is available to accept user connections.\n\n> **Note**: Autoscale rounds up to the nearest whole number.\n\n> **Note**: The **Capacity threshold** setting is the percentage of used host pool capacity that will be considered to evaluate whether to turn on/off virtual machines during the ramp-up and peak hours. For example, if capacity threshold is specified as 60% and your host pool capacity is 1 session (with one host running), autoscale will turn on additional session hosts once the load of the host pool exceeds 60% (it's 100% in this case).",
+                    "On the **Peak hours** tab of the **Add a schedule** pane, adjust the default configuration to match the following settings and then select **Next**:\n\n|Setting|Value|\n|---|---|\n|Start time (12 hour system)|Your current time plus 1 hour|\n|Load balancing algorithm|**Depth-first**|\n|Capacity threshold (%)|**60**|\n\n> **Note**: The **Capacity threshold (%)** setting is shared between the **Ramp-up** and **Peak hours** settings.",
+                    "On the **Ramp-down** tab of the **Add a schedule** pane, adjust the default configuration to match the following settings and then select **Next**:\n\n|Setting|Value|\n|---|---|\n|Start time (12 hour system)|Your current time plus 2 hours|\n|Load balancing algorithm|**Depth-first**|\n|Minimum percentage of active hosts (%)|**10**|\n|Capacity threshold (%)|**80**|\n|Force sign out users|**No**|\n|Stop VMs when|**VMs have no active or disconnected sessions**|\n\n> **Note**: The **Minimum percentage of active hosts (%)** setting designates the minimum percentage of session host virtual machines that you would like to get to for ramp-down and off-peak hours. For example, if **Minimum percentage of active hosts (%)** is set to 10% and total number of session hosts in your host pool is 3, autoscale will ensure a minimum of 1 session host is available to take user connections.\n\n> **Note**: The **Capacity threshold (%)** setting designates the percentage of used host pool capacity that will be considered to evaluate whether to turn off virtual machines during the ramp-down and off-peak hours. For example, with 1 user connection and 3 hosts running, if capacity threshold is specified as 80%, autoscale would turn off 1 host (resulting in 50% used host pool capacity).\n\n> **Note**: In general, autoscale will stop and deallocate session hosts according to the following rules:\n\n- The used host pool capacity is below the capacity threshold.\n- Turning off session hosts will not result in exceeding the capacity threshold.\n- Autoscale only turns off session hosts with no user sessions on them, unless the scaling plan is in ramp-down phase and you've enabled the setting to force user logoff. \n- Pooled autoscale will not turn off session hosts in the ramp-up phase to ensure that user experience is not impacted.",
+                    "On the **Off-peak hours** tab of the **Add a schedule** pane, adjust the default configuration to match the following settings and then select **Add**:\n\n|Setting|Value|\n|---|---|\n|Start time (12 hour system)|Your current time plus 3 hours|\n|Load balancing algorithm|**Depth-first**|\n|Capacity threshold (%)|**80**|\n\n> **Note**: The **Capacity threshold** setting is shared between the **Ramp-down** and **Off-peak hours** settings.",
+                    "Back on the **Schedule** tab of the **Create a scaling plan** page, select **Next : Host pool assignments**.",
+                    "On the **Host pool assignments** tab, in the **Select host pool** drop-down list, select **az140-21-hp1**, ensure that **Enable autoscale** checkbox is selected, and then select **Review + create**.",
+                    "On the **Review + Create** page, select **Create**.\n\n> **Note**: Wait for autoscale configuration to complete. This typically takes just a few seconds."
+                  ]
+                },
+                {
+                  "id": "lab5-ex1-task5",
+                  "number": 5,
+                  "title": "Evaluate the autoscaling functionality",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop** and, on the **Azure Virtual Desktop** page, in the vertical menu bar, in the **Manage** section, select **Host pools**.",
+                    "On the **Azure Virtual Desktop \\| Host pools** page, in the list of host pools, select **az140-21-hp1**.",
+                    "On the **az140-21-hp1** page, in the in the vertical menu bar, in the **Manage** section, select **Session hosts**.",
+                    "On the **az140-21-hp1 \\| Session hosts** page, review the values of the **Power state** setting of session hosts and verify that one of them is listed as **Running**.\n\n> **Note**: You might need to wait a couple of minutes before the first session hosts reaches the **Running** state.\n\n> **Note**: This is expected, since according to the **Ramp-up** settings of the newly created scaling plan, at least one session host should be always online. At this point, the host pool capacity is 1 (since there is only 1 host running), but the used host pool capacity is 0%, since there are no user connections.\n\n> **Note**: Next, you will evaluate the **Ramp-up** and **Peek hours** capacity threshold setting by launching a single user session. We can evaluate this even outside of **Peek hours** window, since the two stages share the same capacity threshold.",
+                    "From the lab computer, start the Microsoft Remote Desktop client.",
+                    "On the lab computer, in the **Remote Desktop** client window, select **Subscribe** and, when prompted, sign in with the credentials of the `User2` Entra ID user account which you can locate on the **Resources** tab in the right pane of the lab interface window.",
+                    "Ensure that the **Remote Desktop** page displays four icons, including Microsoft Word, Microsoft Excel, Microsoft PowerPoint, and Command Prompt.",
+                    "Double-click the Command Prompt icon.",
+                    "When prompted to sign in, in the **Windows Security** dialog box, enter the password of the Microsoft Entra user account you used to connect to the target Azure Virtual Desktop environment.",
+                    "Verify that a **Command Prompt** window appears shortly afterwards. \n\n> **Note**: At this point, the used host pool capacity is 100%, which is greater than the capacity threshold (60%). This should result in autoscaling turning on another host, which will bring the used host pool capacity to 50%. Since this is below the capacity threshold, the third host will remain stopped/deallocated. You will verify this next.",
+                    "From the lab computer, switch to the web browser displaying the Azure portal.",
+                    "On the **az140-21-hp1 \\| Session hosts** page, select **Refresh**, review the values of the **Power state** setting of session hosts, and verify that now two of them are listed as **Running**.\n\n> **Note**: Next, you will evaluate the **Ramp-down** capacity threshold setting by adjusting its time window.",
+                    "On the **az140-21-hp1 \\| Session hosts** page, in the vertical navigation menu, in the **Manage** section, select **Scaling plans** and then, on the **Scaling plans** page, select **az140-scalingplan412e**.",
+                    "On the **az140-scalingplan412e** page, in the vertical navigation menu, in the **Settings** section, select **Schedules** and then select **week_schedule**.",
+                    "In the **week_schedule** pane, navigate to the **Ramp-down** tab and adjust the value of the **Start time (12 hour system)** setting to any time between the \n**Start time (12 hour system)** of the **Peek hours** phase and your current time.\n\n> **Note**: You might need to adjust the value of **Start time (12 hour system)** of the **Peek hours** phase.",
+                    "In the **week_schedule** pane, navigate to the **Off-peek hours** tab and select **Save**.",
+                    "Switch to the **Command Prompt** window representing the only RDP session to the host pool and, at the Command Prompt, enter the following and press the **Enter** key:\n\n```cmd\nlogoff\n```",
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop** and, on the **Azure Virtual Desktop** page, in the vertical menu bar, in the **Manage** section, select **Host pools**.",
+                    "On the **Azure Virtual Desktop \\| Host pools** page, in the list of host pools, select **az140-21-hp1**.",
+                    "On the **az140-21-hp1** page, in the in the vertical menu bar, in the **Manage** section, select **Session hosts**.",
+                    "On the **az140-21-hp1 \\| Session hosts** page, review the values of the **Power state** setting of session hosts and verify that now only one of them is listed as **Running**.\n\n> **Note**: It may take 1-2 minutes before the session host is shut down."
+                  ]
+                },
+                {
+                  "id": "lab5-ex1-task6",
+                  "number": 6,
+                  "title": "Disable host pool autoscaling",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop**, on the **Azure Virtual Desktop** page, in the **Manage** section of the vertical navigation menu, select **Scaling plans**, and then, on the **Scaling plans** page, select **az140-scalingplan412e**.",
+                    "On the **az140-scalingplan412e** page, in the **Manage** section, select **Host pool assignments**.",
+                    "On the **az140-scalingplan412e \\| Host pool assignments** page, select **az140-21-hp1**, then select **Unassign** and, when prompted to confirm, in the **Unassign host pool** dialog box, select **Unassign**."
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "lab-6",
+          "number": 6,
+          "title": "Lab: Implement Azure Private Link for Azure Virtual Desktop",
+          "description": "Module 1.1: Plan, implement, and manage networking for Azure Virtual Desktop. Implement Azure Private Link for Azure Virtual Desktop.",
+          "duration": 60,
+          "level": 400,
+          "objectives": [
+            "Implement Azure Private Link for Azure Virtual Desktop"
+          ],
+          "slug": "06_LAB_11_01_Implement_Azure_Private_Link_for_Azure_Virtual_Desktop",
+          "sourcePath": "Instructions/Labs_EntraID/06_LAB_11_01_Implement_Azure_Private_Link_for_Azure_Virtual_Desktop.md",
+          "officialUrl": "https://microsoftlearning.github.io/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/Instructions/Labs_EntraID/06_LAB_11_01_Implement_Azure_Private_Link_for_Azure_Virtual_Desktop.html",
+          "sourceUrl": "https://github.com/MicrosoftLearning/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/blob/master/Instructions/Labs_EntraID/06_LAB_11_01_Implement_Azure_Private_Link_for_Azure_Virtual_Desktop.md",
+          "labFiles": [],
+          "learningPath": 1,
+          "exercises": [
+            {
+              "id": "lab6-ex1",
+              "number": 1,
+              "title": "Implement Azure Private Link for Azure Virtual Desktop",
+              "minutes": 60,
+              "scenario": "You have an existing Azure Virtual Desktop environment. You need to implement connection to the environment by using Azure Private Link.",
+              "tasks": [
+                {
+                  "id": "lab6-ex1-task1",
+                  "number": 1,
+                  "title": "Re-register the Azure Virtual Desktop resource provider",
+                  "steps": [
+                    "If needed, from the lab computer, start a web browser, navigate to the Azure portal and sign in by providing credentials of a user account with the Owner role in the subscription you will be using in this lab.\n\n> **Note**: Use the credentials of the `User1-` account listed on the Resources tab on the right side of the lab session window.",
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Subscriptions**, on the **Subscriptions** page, select the Azure subscription you are using in this lab, and, in the vertical navigation menu, in the **Settings** section, select **Resource providers**.",
+                    "On the **Resource providers** tab, in the search text box, enter **Microsoft.DesktopVirtualization**, in the list of results, select the small circle to the left of the **Microsoft.DesktopVirtualization** entry, and then select **Re-register**.\n\n> **Note**: Wait for the re-registration process to complete. This typically takes less than 1 minute."
+                  ]
+                },
+                {
+                  "id": "lab6-ex1-task2",
+                  "number": 2,
+                  "title": "Create an Azure virtual network subnet",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Virtual networks** and, on the **Virtual networks** page, select **az140-vnet11e**.",
+                    "On the **az140-vnet11e** page, in the **Settings** section of the vertical navigation menu, select **Subnets**.",
+                    "On the **az140-vnet11e \\| Subnets** page, select **+ Subnet**.",
+                    "In the **Add a subnet** pane, specify the following settings and select **Add** (leave other settings with their default values):\n\n|Setting|Value|\n|---|---|\n|Name|**pe-Subnet**|\n|Starting address|**10.20.255.0**|\n|Enable private subnet (no default outbound access)|Disabled|"
+                  ]
+                },
+                {
+                  "id": "lab6-ex1-task3",
+                  "number": 3,
+                  "title": "Implement a private endpoint for connections to a host pool",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop**, on the **Azure Virtual Desktop** page, in the **Manage** section of the vertical navigation menu, select **Host pools** and, on the **Azure Virtual Desktop \\| Host pools** page, select **az140-21-hp1**.",
+                    "On the **az140-21-hp1** page, in the vertical navigation menu, in the **Settings** section, select **Networking**.",
+                    "On the **az140-21-hp1 \\| Networking** page, select the **Private endpoint connections** tab and then, select **+ New private endpoint**.",
+                    "On the **Basics** tab of the **Create a private endpoint** page, specify the following settings and select **Next : Resource >**:\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|**az140-11e-RG**|\n|Name|**az140-11-pehp1**|\n|Network Interface Name|**az140-11-pehp1-nic**|\n|Region|The name of the Azure region where you deployed your Azure Virtual Desktop environment|",
+                    "On the **Resource** tab of the **Create a private endpoint** page, specify the following settings and select **Next : Virtual network >**:\n\n|Setting|Value|\n|---|---|\n|Target sub-resource|**connection**|",
+                    "On the **Virtual network** tab of the **Create a private endpoint** page, specify the following settings and select **Next : DNS >** (leave other settings with their default values):\n\n|Setting|Value|\n|---|---|\n|Virtual network|**az140-vnet11e (az140-11e-RG)**|\n|Subnet|**pe-Subnet**|\n|Network policy for private endpoints|**Disabled**|\n|Private IP configuration|**Dynamically allocate IP address**|",
+                    "On the **DNS** tab of the **Create a private endpoint** page, specify the following settings and select **Next : Tags >**:\n\n|Setting|Value|\n|---|---|\n|Integrate with private DNS zone|**Yes**|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|**az140-11e-RG**|\n\n> **Note**: This step will result in creation of a private DNS zone named **privatelink.wvd.microsoft.com**.",
+                    "On the **Tags** tab of the **Create a private endpoint** page, select **Next : Review + create**.",
+                    "On the **Review + create** tab of the **Create a private endpoint** page, select **Create**.\n\n> **Note**: Wait for the deployment to complete. The deployment might take about 3 minutes.\n\n> **Note**: You would need to create a private endpoint for the connection sub-resource for each host pool you want to use with Private Link."
+                  ]
+                },
+                {
+                  "id": "lab6-ex1-task4",
+                  "number": 4,
+                  "title": "Implement a private endpoint for feed download",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop** and, on the **Azure Virtual Desktop** page, select **Workspaces**.",
+                    "On the **Azure Virtual Desktop \\| Workspaces** page, select **az140-21-ws1**.",
+                    "On the **az140-21-ws1** page, in the vertical navigation menu, in the **Settings** section, select **Networking**.",
+                    "On the **az140-21-ws1 \\| Networking** page, select the **Private endpoint connections** tab and then, select **+ New private endpoint**.",
+                    "On the **Basics** tab of the **Create a private endpoint** page, specify the following settings and select **Next : Resource >**:\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|**az140-11e-RG**|\n|Name|**az140-11-pefeeddwnld**|\n|Network Interface Name|**az140-11-pefeeddwnld-nic**|\n|Region|The name of the Azure region where you deployed your Azure Virtual Desktop environment|",
+                    "On the **Resource** tab of the **Create a private endpoint** page, specify the following settings and select **Next : Virtual network >**:\n\n|Setting|Value|\n|---|---|\n|Target sub-resource|**feed**|",
+                    "On the **Virtual network** tab of the **Create a private endpoint** page, specify the following settings and select **Next : DNS >** (leave other settings with their default values):\n\n|Setting|Value|\n|---|---|\n|Virtual network|**az140-vnet11e (az140-11e-RG)**|\n|Subnet|**pe-Subnet**|\n|Network policy for private endpoints|**Disabled**|\n|Private IP configuration|**Dynamically allocate IP address**|",
+                    "On the **DNS** tab of the **Create a private endpoint** page, specify the following settings and select **Next : Tags >**:\n\n|Setting|Value|\n|---|---|\n|Integrate with private DNS zone|**Yes**|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|**az140-11e-RG**|\n\n> **Note**: This step will leverage the private DNS zone named **privatelink.wvd.microsoft.com** you created in the previous task.",
+                    "On the **Tags** tab of the **Create a private endpoint** page, select **Next : Review + create**.",
+                    "On the **Review + create** tab the **Create a private endpoint** page, select **Create**.\n\n> **Note**: Do not wait for the deployment to complete but instead proceed to the next task. The deployment might take about 1 minute.\n\n> **Note**: You would need to a create private endpoint for the feed sub-resource for each workspace you want to use with Private Link."
+                  ]
+                },
+                {
+                  "id": "lab6-ex1-task5",
+                  "number": 5,
+                  "title": "Implement a private endpoint for initial feed discovery",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop** and, on the **Azure Virtual Desktop** page, select **Workspaces**.",
+                    "On the **Azure Virtual Desktop \\| Workspaces** page, select **az140-21-ws1**.",
+                    "On the **az140-21-ws1** page, in the vertical navigation menu, in the **Settings** section, select **Networking**.",
+                    "On the **az140-21-ws1 \\| Networking** page, select the **Private endpoint connections** tab and then, select **+ New private endpoint**.",
+                    "On the **Basics** tab of the **Create a private endpoint** page, specify the following settings and select **Next : Resource >**:\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|**az140-11e-RG**|\n|Name|**az140-11-pefeeddisc**|\n|Network Interface Name|**az140-11-pefeeddisc-nic**|\n|Region|The name of the Azure region where you deployed your Azure Virtual Desktop environment|",
+                    "On the **Resource** tab of the **Create a private endpoint** page, specify the following settings and select **Next : Virtual network >**:\n\n|Setting|Value|\n|---|---|\n|Target sub-resource|**global**|",
+                    "On the **Virtual network** tab of the **Create a private endpoint** page, specify the following settings and select **Next : DNS >** (leave other settings with their default values):\n\n|Setting|Value|\n|---|---|\n|Virtual network|**az140-vnet11e (az140-11e-RG)**|\n|Subnet|**pe-Subnet**|\n|Network policy for private endpoints|**Disabled**|\n|Private IP configuration|**Dynamically allocate IP address**|",
+                    "On the **DNS** tab of the **Create a private endpoint** page, specify the following settings and select **Next : Tags >**:\n\n|Setting|Value|\n|---|---|\n|Integrate with private DNS zone|**Yes**|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|**az140-11e-RG**|\n\n> **Note**: This step will will result in creation of a private DNS zone named **privatelink-global.wvd.microsoft.com**.",
+                    "On the **Tags** tab of the **Create a private endpoint** page, select **Next : Review + create**.",
+                    "On the **Review + create** tab the **Create a private endpoint** page, select **Create**.\n\n> **Note**: Do not wait for the deployment to complete but instead proceed to the next task. The deployment might take about 1 minute.\n\n> **Note**: You would need to a create private endpoint for the global sub-resource for each workspace you want to use with Private Link.\n\n> **Note**: For the network changes to take effect, you need to restart the session hosts in the target host pool.",
+                    "From the lab computer, in the web browser displaying the Azure portal, navigate to the **Azure Virtual Desktop** page, in the **Manage** section of the vertical navigation menu, select **Host pools** and, on the **Azure Virtual Desktop \\| Host pools** page, select **az140-21-hp1**.",
+                    "On the **az140-21-hp1** page, in the **Manage** section of the vertical navigation menu, select **Session hosts**.",
+                    "In the list of session hosts, select all checkboxes to the left of each session host and then select **Restart** in the toolbar.\n\n> **Note**: Wait until all session hosts are in the **Running** state."
+                  ]
+                },
+                {
+                  "id": "lab6-ex1-task6",
+                  "number": 6,
+                  "title": "Validate the private endpoint functionality",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop** and, on the **Azure Virtual Desktop** page, select **Workspaces**.",
+                    "On the **Azure Virtual Desktop \\| Workspaces** page, select **az140-21-ws1**.",
+                    "On the **az140-21-ws1** page, in the vertical navigation menu, in the **Settings** section, select **Networking**.",
+                    "On the **az140-21-ws1 \\| Networking** page, on the **Public access** tab, select the option **Disable public access and use private access**, and then select **Save**.",
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop**, on the **Azure Virtual Desktop** page, in the **Manage** section of the vertical navigation menu, select **Host pools** and, on the **Azure Virtual Desktop \\| Host pools** page, select **az140-21-hp1**.",
+                    "On the **az140-21-hp1** page, in the vertical navigation menu, in the **Settings** section, select **Networking**.",
+                    "On the **az140-21-hp1 \\| Networking** page, on the **Public access** tab, select the option **Disable public access and use private access**, and then select **Save**.\n\n> **Note**: To validate the private endpoint functionality, an RDP client needs to be connected to a network that has private connectivity to the Azure virtual network containing subnet hosting the private endpoints you created earlier in this lab. To simulate this scenario, you will create another subnet in the same virtual network used to create private endpoints and deploy an Azure VM running Windows 11 into that subnet.",
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Virtual networks** and, on the **Virtual networks** page, select **az140-vnet11e**.",
+                    "On the **az140-vnet11e** page, in the **Settings** section of the vertical navigation menu, select **Subnets**.",
+                    "On the **az140-vnet11e \\| Subnets** page, select **+ Subnet**.",
+                    "In the **Add a subnet** pane, specify the following settings and select **Add** (leave other settings with their default values):\n\n|Setting|Value|\n|---|---|\n|Name|**client-Subnet**|\n|Starting address|**10.20.2.0**|\n|Enable private subnet (no default outbound access)|Disabled|",
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Virtual machines**, on the **Virtual machines** page, select **+ Create** and, in the drop-down list, select **Azure virtual machine**.",
+                    "On the **Basics** tab of the **Create a virtual machine** page, specify the following settings (leave other settings with their default values) and select **Next : Disks >**:\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|The name of a new resource group **az140-111e-RG**|\n|Virtual machine name|**az140-111e-vm0**|\n|Region|The name of the Azure region where you deployed your Azure Virtual Desktop environment|\n|Availability options|**No infrastructure redundancy required**|\n|Security type|**Standard**|\n|Image|**Windows 11 Pro, version 24H2 - x64 Gen2**|\n|Size|**Standard DC2s_v3**|\n|Username|Any valid user name of your choice|\n|Password|Any valid password of your choice|\n|Public inbound ports|**None**|\n|Licensing|Enable the checkbox|\n\n> **Note**: The password should be at least 12 characters in length and consist of a combination of lower-case characters, upper-case characters, digits, and special characters. For details, refer to the information about [the password requirements when creating an Azure VM](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/faq#what-are-the-password-requirements-when-creating-a-vm-).",
+                    "On the **Disks** tab of the **Create a virtual machine** page, set the **OS disk type** to **Standard HDD (locally-redundant storage)** and select **Next : Networking >**.",
+                    "On the **Networking** tab of the **Create a virtual machine** page, specify the following settings (leave other settings with their default values):\n\n|Setting|Value|\n|---|---|\n|Virtual network|**az140-vnet11e**|\n|Subnet|**client-Subnet**|\n|Public IP|**(new) az140-111e-vm0-ip**|\n|NIC network security group|**Advanced**|",
+                    "On the **Networking** tab of the **Create a virtual machine** page, next to the **Configure network security group** drop-down list, select **Create new**.",
+                    "On the **Create network security group** page, delete the pre-created inbound rule **1000: default-allow-rdp** and then select **+ Add an inbound rule**.",
+                    "In the **Add inbound security rule** pane, in the **Source** drop-down list, select **My IP address** to identify the public IP address representing your connection to the internet.",
+                    "In the **Add inbound security rule** pane, specify the following settings (leave other settings with their default values), and then select **Add**:\n\n|Setting|Value|\n|---|---|\n|Source|**IP Addresses**|\n|Source IP addresses/CIDR ranges|Leave unchanged (this should still contain your public IP address)|\n|Source port ranges|*|\n|Destination|**Any**|\n|Service|**RDP**|\n|Action|**Allow**|\n|Priority|**300**|\n|Name|**AllowCidrBlockRDPInbound**|",
+                    "Back on the **Create network security group** page, select **OK**.",
+                    "Back on the **Networking** tab of the **Create a virtual machine** page, select **Next : Management >**:",
+                    "On the **Management** tab of the **Create a virtual machine** page, specify the following settings (leave other settings with their default values), and then select **Next : Monitoring >**:\n\n|Setting|Value|\n|---|---|\n|Enable basic plan for free|disabled|\n|Patch orchestration options|**Manual updates**|",
+                    "On the **Monitoring** tab of the **Create a virtual machine** page, specify the following settings (leave other settings with their default values), and then select **Review + create**:\n\n|Setting|Value|\n|---|---|\n|Boot diagnostics|**Disable**|",
+                    "On the **Review + create** tab of the **Create a virtual machine** page, select **Create**.\n\n> **Note**: Wait for the deployment to complete. The deployment might take about 5 minutes.",
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Virtual machines**, on the **Virtual machines** page, select **az140-111e-vm0**.",
+                    "On the **az140-111e-vm0** page, select **Connect** and, in the drop-down menu, select **Connect**.",
+                    "On the **az140-111e-vm0 \\| Connect** page, in the **Most common** section, select **Download RDP file**.",
+                    "In the **Download** pop-up window, select **Keep** and then select **Open file**.",
+                    "When prompted, select **Connect** and then, in the **Windows Security** dialog box, enter the user name and password you specified when deploying the Azure VM.",
+                    "When prompted for confirmation, select **Connect** again.",
+                    "Within the Remote Desktop session to **az140-111e-vm0**, choose and accept your preferred privacy settings.",
+                    "Within the Remote Desktop session to **az140-111e-vm0**, start Microsoft Edge, navigate to the [Connect to Azure Virtual Desktop with the Remote Desktop client for Windows](https://learn.microsoft.com/en-us/azure/virtual-desktop/users/connect-windows) page, scroll down to the section **Download and install the Remote Desktop client (MSI)**, and select the [Windows 64-bit](https://go.microsoft.com/fwlink/?linkid=2139369) link.",
+                    "Open File Explorer, navigate to the **Downloads** folder, and launch the installation of the newly downloaded MSI file.",
+                    "When prompted, accept the terms of the licensing agreement and choose the option to **Install for all users of this machine**. If prompted, accept the User Account Control prompt to proceed with the installation.",
+                    "Once the installation completes, ensure that the **Launch Remote Desktop when setup exits** checkbox is selected and select **Finish** to start the Microsoft Remote Desktop client.",
+                    "Within the Remote Desktop session to **az140-111e-vm0**, in the **Remote Desktop** client window, select **Subscribe** and, when prompted, sign in with the credentials of the `User2` Entra ID user account which you can locate on the **Resources** tab in the right pane of the lab interface window.\n\n> **Note**: Select the user account which is the member of the Entra group with the **AVD-RemoteApp** prefix.",
+                    "Ensure that the **Remote Desktop** page displays four icons, including Command Prompt, Microsoft Word, Microsoft Excel, Microsoft PowerPoint.",
+                    "Double-click the Command Prompt icon.",
+                    "When prompted to sign in, in the **Windows Security** dialog box, enter the password of the same Microsoft Entra user account you used to connect to the target Azure Virtual Desktop environment.",
+                    "Verify that a **Command Prompt** window appears shortly afterwards.",
+                    "At the Command Prompt, type **logoff** and press the **Enter** key to log off from the current Remote App session.\n\n> **Note**: Optionally, you might consider attempting to subscribe to the feed and connect to The Azure Virtual Desktop workspace from the lab computer to validate that this connection will fail."
+                  ]
+                },
+                {
+                  "id": "lab6-ex1-task7",
+                  "number": 7,
+                  "title": "Allow public network access to a host pool and workspace",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop** and, on the **Azure Virtual Desktop** page, select **Workspaces**.",
+                    "On the **Azure Virtual Desktop \\| Workspaces** page, select **az140-21-ws1**.",
+                    "On the **az140-21-ws1** page, in the vertical navigation menu, in the **Settings** section, select **Networking**.",
+                    "On the **az140-21-ws1 \\| Networking** page, on the **Public access** tab, select the option **Enable public access from all networks**, and then select **Save**.",
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop**, on the **Azure Virtual Desktop** page, in the **Manage** section of the vertical navigation menu, select **Host pools** and, on the **Azure Virtual Desktop \\| Host pools** page, select **az140-21-hp1**.",
+                    "On the **az140-21-hp1** page, in the vertical navigation menu, in the **Settings** section, select **Networking**.",
+                    "On the **az140-21-hp1 \\| Networking** page, on the **Public access** tab, select the option **Enable public access from all networks**, and then select **Save**."
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "lab-7",
+          "number": 7,
+          "title": "Lab: Create custom session host images by using image templates",
+          "description": "Module 1.5: Create and manage session host images. Create custom session host images for Azure Virtual Desktop by using image templates.",
+          "duration": 90,
+          "level": 500,
+          "objectives": [
+            "Create custom session host images for Azure Virtual Desktop by using image templates"
+          ],
+          "slug": "07_LAB_15_01_Create_custom_session_host_images_by_using_image_templates_StandAlone",
+          "sourcePath": "Instructions/Labs_EntraID/07_LAB_15_01_Create_custom_session_host_images_by_using_image_templates_StandAlone.md",
+          "officialUrl": "https://microsoftlearning.github.io/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/Instructions/Labs_EntraID/07_LAB_15_01_Create_custom_session_host_images_by_using_image_templates_StandAlone.html",
+          "sourceUrl": "https://github.com/MicrosoftLearning/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop/blob/master/Instructions/Labs_EntraID/07_LAB_15_01_Create_custom_session_host_images_by_using_image_templates_StandAlone.md",
+          "labFiles": [],
+          "learningPath": 1,
+          "exercises": [
+            {
+              "id": "lab7-ex1",
+              "number": 1,
+              "title": "Create custom session host images by using image templates",
+              "minutes": 90,
+              "scenario": "You plan to implement an Azure Virtual Desktop environment. You need to use custom virtual machine images when deploying Azure Virtual Desktop session hosts.",
+              "tasks": [
+                {
+                  "id": "lab7-ex1-task1",
+                  "number": 1,
+                  "title": "Register required resource providers",
+                  "steps": [
+                    "If needed, from the lab computer, start a web browser, navigate to the Azure portal and sign in by providing credentials of a user account with the Owner role in the subscription you will be using in this lab.\n\n> **Note**: Use the credentials of the `User1-` account listed on the Resources tab on the right side of the lab session window.",
+                    "In the Azure portal, start a PowerShell session in the Azure Cloud Shell.\n\n> **Note**: If prompted, in the **Getting started** pane, in the **Subscription** drop-down list, select the name of the Azure subscription you are using in this lab and then select **Apply**.",
+                    "In the PowerShell session in the Azure Cloud Shell pane, run the following command to register the **Microsoft.DesktopVirtualization** resource provider:\n\n```powershell\nRegister-AzResourceProvider -ProviderNamespace Microsoft.DesktopVirtualization\nRegister-AzResourceProvider -ProviderNamespace Microsoft.VirtualMachineImages\nRegister-AzResourceProvider -ProviderNamespace Microsoft.Storage\nRegister-AzResourceProvider -ProviderNamespace Microsoft.Compute\nRegister-AzResourceProvider -ProviderNamespace Microsoft.Network\nRegister-AzResourceProvider -ProviderNamespace Microsoft.KeyVault\nRegister-AzResourceProvider -ProviderNamespace Microsoft.ContainerInstance\n```\n\n> **Note**: Do not wait for the registration to complete. This might take about 5 minutes.",
+                    "Close the Azure Cloud Shell pane."
+                  ]
+                },
+                {
+                  "id": "lab7-ex1-task2",
+                  "number": 2,
+                  "title": "Create a user-assigned managed identity",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Managed Identities**.",
+                    "On the **Managed Identities** page, select **+ Create**.",
+                    "On the **Basics** tab of the **Create User Assigned Managed Identity** page, specify the following settings and then select **Review + create**:\n\n> **Note**: When setting the **Name** value, switch to the Resources tab on the right side of the lab session window and identify the string of characters between *User1-* and the *@* character. Use this string to replace the *random* placeholder.\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|The name of a new resource group **az140-15a-RG**|\n|Region|The name of the Azure region where you want to deploy your Azure Virtual Desktop environment|\n|Name|**az140**-*random*-**uami**|",
+                    "On the **Review + create** tab, select **Create**.\n\n>**Note**: Do not wait for the provisioning of the user assigned managed identity to complete. This should take just a few seconds."
+                  ]
+                },
+                {
+                  "id": "lab7-ex1-task3",
+                  "number": 3,
+                  "title": "Create a custom Azure role-based access control (RBAC) role",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, start a PowerShell session in the Azure Cloud Shell.",
+                    "In the PowerShell session in the Azure Cloud Shell pane, run the following command to identify the value of the **Id** property of the Azure subscription used for this lab and store it in the **$subscriptionId** variable:\n\n```powershell\n$subscriptionId = (Get-AzSubscription).Id\n```",
+                    "Run the following command to create the role definition of the new custom role including its assignable scope value and store it in the **$jsonContent** variable (make sure to replace the *random* placeholder with the same string you identified in the previous task):\n\n```powershell\n$jsonContent = @\"\n{\n  \"Name\": \"Desktop Virtualization Image Creator (random)\",\n  \"IsCustom\": true,\n  \"Description\": \"Create custom image templates for Azure Virtual Desktop images.\",\n  \"Actions\": [\n    \"Microsoft.Compute/galleries/read\",\n    \"Microsoft.Compute/galleries/images/read\",\n    \"Microsoft.Compute/galleries/images/versions/read\",\n    \"Microsoft.Compute/galleries/images/versions/write\",\n    \"Microsoft.Compute/images/write\",\n    \"Microsoft.Compute/images/read\",\n    \"Microsoft.Compute/images/delete\"\n  ],\n  \"NotActions\": [],\n  \"DataActions\": [],\n  \"NotDataActions\": [],\n  \"AssignableScopes\": [\n    \"/subscriptions/$subscriptionId\",\n    \"/subscriptions/$subscriptionId/resourceGroups/az140-15b-RG\"\n  ]\n}\n\"@\n```",
+                    "Run the following command to store the content of the **$jsonContent** variable in a file named **CustomRole.json**:\n\n```powershell\n$jsonContent | Out-File -FilePath 'CustomRole.json'\n```",
+                    "Run the following command to create the custom role:\n\n```powershell\nNew-AzRoleDefinition -InputFile ./CustomRole.json\n```",
+                    "Close the Azure Cloud Shell pane."
+                  ]
+                },
+                {
+                  "id": "lab7-ex1-task4",
+                  "number": 4,
+                  "title": "Set permissions on the host image provisioning-related resources",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Resource groups** and, on the **Resource groups** page, select **+ Create**.",
+                    "On the **Basics** tab of the **Create a resource group** page, specify the following settings and then select **Review + create**:\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|The name of a new resource group **az140-15b-RG**|\n|Region|The name of the Azure region where you want to deploy your Azure Virtual Desktop environment|",
+                    "On the **Review + create** tab, select **Create**.",
+                    "Refresh the **Resource groups** page and, in the list of resource groups, select **az140-15b-RG**.",
+                    "On the **az140-15b-RG** page, in the vertical navigation menu, select **Access control (IAM)**.",
+                    "On the **az140-15b-RG\\|Access control (IAM)** page, select **+ Add** and, in the drop-down menu, select **Add role assignment**.",
+                    "On the **Role** tab of the **Add role assignment** page, ensure that the **Job function roles** tab is selected, in the search textbox, enter **Desktop Virtualization Image Creator** (*random*), in the list of results, select **Desktop Virtualization Image Creator** (*random*), and then select **Next**.\n\n>**Note**: Make sure to replace the *random* placeholder with the same string you used when defining the new custom RBAC role.",
+                    "On the **Members** tab of the **Add role assignment** page, select the **Managed identity** option, click **+ Select members**, in the **Select managed identities** pane, in the **Managed identity** drop-down list, select **User-assigned managed identity**, in the list of user-assigned managed identities, select **az140**-*random*-**uami** (where the *random* placehodler represents the same string you used when defining the new custom RBAC role), and then click **Select**.",
+                    "Back on the **Members** tab of the **Add role assignment** page, select **Review + assign**.",
+                    "On the **Review + assign** tab, select **Review + assign**."
+                  ]
+                },
+                {
+                  "id": "lab7-ex1-task5",
+                  "number": 5,
+                  "title": "Create an Azure Compute Gallery instance and an image definition",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure compute galleries** and, on the **Azure compute galleries** page, select **+ Create**.",
+                    "On the **Basics** tab of the **Create Azure compute gallery** page, specify the following settings and then select **Next : Sharing method**:\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|**az140-15b-RG**|\n|Name|**az14015computegallery**|\n|Region|The name of the Azure region where you want to deploy your Azure Virtual Desktop environment|",
+                    "On the **Sharing** tab of the **Create Azure compute gallery** page, leave the default option **Role based access control (RBAC)** selected and then select **Review + create**.",
+                    "On the **Review + create** tab, select **Create**.\n\n>**Note**: Wait for the provisioning process to complete. This should take less than 1 minute.",
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure compute galleries** and, on the **Azure compute galleries** page, select **az14015computegallery**.",
+                    "On the **az14015computegallery** page, select **+ Add** and, in the drop-down menu, select **+ VM image definition**.",
+                    "On the **Basics** tab of the **Create VM image definition** page, specify the following settings (leave other settings with their default values) and then select **Next : Version**:\n\n|Setting|Value|\n|---|---|\n|Region|The name of the Azure region where you want to deploy your Azure Virtual Desktop environment|\n|VM image definition name|**az14015imagedefinition**|\n|OS type|**Windows**|\n|Security type|**Trusted launch supported**|\n|OS state|**Generalized**|\n|Publisher|**MicrosoftWindowsDesktop**|\n|Offer|**Windows-11**|\n|SKU|**win11-23h2-avd-m365**|\n\n> **Note**: VM generation is automatically set to Gen2, because Gen 1 virtual machines are not supported with Trusted and Confidential security type.",
+                    "On the **Version** tab of the **Create VM image definition** page, leave the settings unchanged and select **Next : Publishing options**.\n\n> **Note**: You should not create the VM image version at this stage. This will be done by Azure Virtual Desktop.",
+                    "On the **Publishing options** tab of the **Create VM image definition** page, leave the settings unchanged and select **Review + create**.",
+                    "On the **Review + create** tab the **Create VM image definition** page, select **Create**.\n\n> **Note**: Wait for the provisioning process to complete. This typically takes less than 1 minute."
+                  ]
+                },
+                {
+                  "id": "lab7-ex1-task6",
+                  "number": 6,
+                  "title": "Create a custom image template",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop**, on the **Azure Virtual Desktop** page, in the **Manage** section of the vertical navigation menu, select **Custom image templates** and, on the **Azure Virtual Desktop \\| Custom image templates** page, select **+ Add custom image template**.",
+                    "On the **Basics** tab of the **Create custom image template** page, specify the following settings and select **Next**:\n\n> **Note**: When setting the **Managed identity** property, make sure to replace the *random* placeholder with the same string you identified earlier in this exercise.\n\n|Setting|Value|\n|---|---|\n|Template name|**az140-15b-imagetemplate**|\n|Import from existing template|**No**|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|**az140-15b-RG**|\n|Location|The name of the Azure region where you want to deploy your Azure Virtual Desktop environment|\n|Managed identity|**az140**-*random*-**uami**|",
+                    "On the **Source image** tab of the **Create custom image template** page, specify the following settings and select **Next**:\n\n|Setting|Value|\n|---|---|\n|Source type|**Platform image (marketplace)**|\n|Select image|**Windows 11 Enterprise multi-session, Version 23H2 + Microsoft 365 Apps**|",
+                    "On the **Distribution targets** tab of the **Create custom image template** page, specify the following settings (leave other settings with their default values) and select **Next**:\n\n|Setting|Value|\n|---|---|\n|Azure Compute Gallery|enabled|\n|Gallery name|**az14015computegallery**|\n|Gallery image definition|**az14015imagedefinition**|\n|Gallery image version|**1.0.0**|\n|Run output name|**az140-15-image-1.0.0**|\n|Replication regions|The name of the Azure region where you want to deploy your Azure Virtual Desktop environment|\n|Exclude from latest|**No**|\n|Storage account type|**Standard_LRS**|\n\n> **Note**: You can use the **Replication regions** property to accommodate multi-region builds. Setting **Exclude from latest** to **Yes** would prevent this image version from being used when **latest** is specified as the version of the **ImageReference** element during VM creation.",
+                    "On the **Build properties** tab of the **Create custom image template** page, specify the following settings (leave other settings with their default values) and select **Next**:\n\n|Setting|Value|\n|---|---|\n|Build timeout|**120**|\n|Build VM size|**Standard_DC2s_v3**|\n|OS disk size (GB)|**127**|\n|Staging group|**az140-15c-RG**|\n|VNet|Leave not set|\n\n> **Note**: **Staging group** is the resource group used to stage resources to build the image and store logs. If you don't provide its name, it will be automatically generated. If the **VNet** name is not set, a temporary one is created, along with a public IP address for the VM used to create the build.\n\n> **Important**: Ensure that you have sufficient number of available vCPUs for the Build VM size you specified. If not, either choose a different size or request quota increase.",
+                    "On the **Customization** tab of the **Create custom image template** page, select **+ Add built-in script**.",
+                    "In the **Select built-in scripts** pane, review the available options grouped into operating system specific scripts, Azure Virtual Desktop scripts, MSIX App Attach scripts, Application scripts, and Windows Updates-related scripts, and then select the following entries:\n\n- **Time zone redirection**: allows the client to use its time zone within a session on session hosts\n- **Disable Storage Sense**: prevents Storage Sense from negatively affecting session hosts by falsely detecting low free disk space conditions\n- **Enable screen capture protection** with **Block Screen capture on client and server**: blocks or hides remote content in screenshots and screen sharing",
+                    "In the **Select built-in scripts** pane, select **Save**.\n\n> **Note**: You have the option of adding your own scripts. For examples, consider referencing the built-in scripts, such as [Time zone redirection](https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/TimezoneRedirection.ps1), [Disable Storage Sense](https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/DisableStorageSense.ps1), or [Enable screen capture protection](https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/ScreenCaptureProtection.ps1).",
+                    "Back on the **Customization** tab of the **Create custom image template** page, select **Next**.",
+                    "On the **Tags** tab of the **Create custom image template** page, select **Next**.",
+                    "On the **Review + create** tab of the **Create custom image template** page, select **Create**.\n\n> **Note**: Wait for the template to be created. This might take a few minutes. Refresh the **Azure Virtual Desktop \\| Custom image templates** page to review the template status."
+                  ]
+                },
+                {
+                  "id": "lab7-ex1-task7",
+                  "number": 7,
+                  "title": "Build a custom image",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, on the **Azure Virtual Desktop \\| Custom image template** page, select **az140-15b-imagetemplate**.",
+                    "On the **az140-15b-imagetemplate** page, select **Start build**.\n\n> **Note**: Wait for the build to be created. The actual time to complete the build process might vary, but with the settings provided in the lab instructions, it should complete within 45 minutes. Refresh the page every few minutes and monitor the **Build run state** value in the **Essentials** section of the **az140-15b-imagetemplate** page. \n\n> **Note**: The build run state should change at some point from **Running - Building** to **Running - Distributing** and finally to **Succeeded**.\n\n> **Note**: While waiting for the build to complete, review the content of the staging resource group **az140-15c-RG**, where the build resources, including the bulid virtual machine, a virtual network, network security group, key vault, snapshot, container instance, and storage account are automatically provisioned.",
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Resource groups** and, on the **Resource groups** page, select **az140-15c-RG**.",
+                    "On the **az140-15c-RG** page, in the **Resources** section, note the auto-provisoned resources.",
+                    "Return to the **az140-15b-imagetemplate** page and monitor the build progress. \n\n> **Note**: Alternatively, you can use **Activity Log** to keep track of the completion of the build process. The action you should focus on is **Execute a VM image template to produce its output**. Its status should change at some point from **Accepted** to **Succeeded**.",
+                    "Once the build completes, from the lab computer, in the web browser displaying the Azure portal, search for and select **Azure compute galleries** and, on the **Azure compute galleries** page, select **az14015computegallery**.",
+                    "On the **az14015computegallery**, on the **Definitions** tab, select **az14015imagedefinition**.",
+                    "On the **az14015imagedefinition** page, on the **Versions** tab, review the information about the **1.0.0 (latest version)** image."
+                  ]
+                },
+                {
+                  "id": "lab7-ex1-task8",
+                  "number": 8,
+                  "title": "Deploy session hosts by using a custom image",
+                  "steps": [
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Virtual networks** and, on the **Virtual networks** page, select **Create +**",
+                    "On the **Basics** tab of the **Create virtual network** page, specify the following settings and select **Next**:\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|The name of a new resource group **az140-15d-RG**|\n|Virtual network name|**az140-vnet15d**|\n|Region|The name of the Azure region where you want to deploy the Azure Virtual Desktop environment|",
+                    "On the **Security** tab, accept the default settings and select **Next**.",
+                    "On the **IP addresses** tab, specify the following settings:\n\n|Setting|Value|\n|---|---|\n|IP address space|**10.30.0.0/16**|",
+                    "Select the edit (pencil) icon next to the **default** subnet entry, in the **Edit** pane, specify the following settings (leave others with their existing values) and select **Save**:\n\n|Setting|Value|\n|---|---|\n|Name|**hp1-Subnet**|\n|Starting address|**10.30.1.0**|\n|Enable private subnet (no default outbound access)|Disabled|",
+                    "Back on the **IP addresses** tab, select **Review + create** and then select **Create**.\n\n> **Note**: Wait for the provisioning process to complete. This typically takes less than 1 minute.",
+                    "From the lab computer, in the web browser displaying the Azure portal, search for and select **Azure Virtual Desktop**, on the **Azure Virtual Desktop** page, in the **Manage** section of the vertical navigation menu, select **Host pools** and, on the **Azure Virtual Desktop \\| Host pools** page, select **+ Create**.",
+                    "On the **Basics** tab of the **Create a host pool** page, specify the following settings and select **Next : Session hosts >** (leave other settings with their default values):\n\n|Setting|Value|\n|---|---|\n|Subscription|The name of the Azure subscription you are using in this lab|\n|Resource group|**az140-15d-RG**|\n|Host pool name|**az140-15-hp1**|\n|Location|The name of the Azure region where you want to deploy your Azure Virtual Desktop environment|\n|Validation environment|**No**|\n|Preferred app group type|**Desktop**|\n|Host pool type|**Pooled**|\n|Create Session Host Configuration|**No**|\n|Load balancing algorithm|**Breadth-first**|\n\n> **Note**: When using the Breadth-first load balancing algorithm, the max session limit parameter is optional.",
+                    "On the **Session hosts** tab of the **Create a host pool** page, specify the following settings (leave other settings with their default values):\n\n> **Note**: When setting the **Name prefix** value, switch to the Resources tab on the right side of the lab session window and identify the string of characters between *User1-* and the *@* character. Use this string to replace the *random* placeholder.\n\n|Setting|Value|\n|---|---|\n|Add virtual machines|**Yes**|\n|Resource group|**Defaulted to same as host pool**|\n|Name prefix|**sh0**_random_|\n|Virtual machine type|**Azure virtual machine**|\n|Virtual machine location|The name of the Azure region where you want to deploy your Azure Virtual Desktop environment|\n|Availability options|**No infrastructure redundancy required**|\n|Security type|**Trusted launch virtual machines**|",
+                    "On the **Virtual machines** tab of the **Create a host pool** page, below the **Image** drop-down list, select **See all images**.",
+                    "On the **Select an image** page, select **Shared images** and, in the list of images, select **az14015imagedefinition**.",
+                    "Back on the **Virtual machines** tab of the **Create a host pool** page, specify the following settings and select **Next : Workspace >** (leave other settings with their default values):\n\n|Setting|Value|\n|---|---|\n|Virtual machine size|**Standard DC2s_v3**|\n|Number of VMs|**1**|\n|OS disk type|**Standard SSD**|\n|OS disk size|**Default size**|\n|Boot Diagnostics|**Enable with managed storage account (recommended)**|\n|Virtual network|az140-vnet15d|\n|Subnet|**hp1-Subnet**|\n|Network security group|**Basic**|\n|Public inbound ports|**No**|\n|Select which directory you would like to join|**Microsoft Entra ID**|\n|Enroll VM with Intune|**No**|\n|User name|**Student**|\n|Password|Any sufficiently complex string of characters that will be used as the password for the built-in administrator account|\n|Confirm password|The same string of characters you specified previously|\n\n> **Note**: The password should be at least 12 characters in length and consist of a combination of lower-case characters, upper-case characters, digits, and special characters. For details, refer to the information about [the password requirements when creating an Azure VM](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/faq#what-are-the-password-requirements-when-creating-a-vm-).",
+                    "On the **Workspace** tab of the **Create a host pool** page, confirm the following setting and select **Review + create**:\n\n|Setting|Value|\n|---|---|\n|Register desktop app group|**No**|",
+                    "On the **Review + create** tab of the **Create a host pool** page, select **Create**.\n\n> **Note**: Wait for the deployment to complete. This might take about 10-15 minutes."
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+code: AZ-140
+title: Configuring and Operating Microsoft Azure Virtual Desktop
+subtitle: Ten days for Exam AZ-140. Microsoft Learn and the Entra ID labs come first, then the Udemy watch checklist.
+level: Intermediate
+status: live
+color: "#3d5a80"
+tags:
+  - AZ-140-infra
+  - AZ-140-identity
+  - AZ-140-apps
+  - AZ-140-monitor
+learn:
+  - Plan and deploy host pools, networking, storage, and session host images
+  - Choose an identity model and lock down access, including Entra ID join
+  - Configure FSLogix, clients, RemoteApp, and App attach
+  - Monitor with Azure Virtual Desktop Insights and run scaling plans
+outOfScope: The legacy AD DS and Microsoft Entra Domain Services lab tracks are no longer maintained. Study those identity options on Microsoft Learn, and do the Entra ID labs.
+hasLabs: true
+studyGuide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-140
+external:
+  provider: Udemy
+  title: "AZ-140 Configuring & Operating MS Azure Virtual Desktop AVD"
+  url: https://www.udemy.com/course/az-140-configuring-operating-ms-azure-virtual-desktop-avd/
+  instructor: John Christopher
+  instructorUrl: https://www.udemy.com/user/john-christopher-32/
+  note: Lecture titles follow the public curriculum (updated October 2026). Microsoft Learn remains the source for current exam facts.

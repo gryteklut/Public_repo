@@ -1,0 +1,124 @@
+---
+day: 10
+title: Continuity and review
+moduleTitle: Updates, backup, disaster recovery, and mixed practice
+moduleId: d10-continuity
+minutes: 60
+practice: true
+summary: "How you patch session hosts, back up profiles and images, and place a second region. Then a mixed check across the four skill areas."
+focus: "Skills measured: plan and implement updates, backups, and disaster recovery (10–15%), plus a pass back over the higher-weighted areas."
+tags:
+  - AZ-140-monitor
+  - AZ-140-infra
+  - AZ-140-identity
+  - AZ-140-apps
+resources:
+  - { label: "Plan and implement updates, backups, and disaster recovery", url: "https://learn.microsoft.com/en-us/training/modules/plan-implement-business-continuity-disaster-recovery/", kind: course }
+  - { label: "Business continuity for Azure Virtual Desktop", url: "https://learn.microsoft.com/en-us/azure/virtual-desktop/disaster-recovery", kind: learn }
+  - { label: "AZ-140 study guide", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-140", kind: learn }
+videos:
+  - label: Plan, implement, and maintain business continuity
+    action: watch
+    lectures:
+      - Recommend an update strategy for session hosts agent
+      - Disaster recovery planning for Azure Virtual Desktop
+      - Plan for multi-region implementation
+      - Design a backup strategy for Azure Virtual Desktop
+  - label: Cleanup
+    action: skip
+    note: Skip until you are finished with every lab. It deletes the practice resources.
+    lectures:
+      - Cleaning up your Azure practice environment
+officialLabs: []
+lab: []
+outOfScopeNote: There is no Entra ID lab for backup. Do not invent a second copy of the earlier lab steps.
+tldr:
+  - "A host pool is regional. Multi-region means another host pool, plus a plan for profiles and images."
+  - "Back up FSLogix by backing up the file share. Back up personal desktops as virtual machines. Keep image versions in Azure Compute Gallery."
+  - "Patching hosts in place and replacing them from a new image version are both valid. Know which one the scenario asks for."
+  - "Infrastructure is 40–45% of the exam. Identity is 15–20%, user environments and apps 20–25%, monitor and maintain 10–15%."
+trap: "Restoring a session host OS disk does not restore the user profile when the profile is in FSLogix. Restore the share."
+videoTip: "Watch the continuity lectures, then take the mixed check without looking at the study notes."
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="az140-d10-q1">
+Pooled profiles are FSLogix containers on Azure Files. A session host is rebuilt from the gallery image. What must you restore for the user to see yesterday's files?
+
+- [x] The file share that holds the profile containers
+- [ ] The session host OS disk
+- [ ] The host pool RDP properties
+- [ ] The Log Analytics workspace
+
+The profile is not on the OS disk. Rebuilding the host from the image is normal. The container on the share is the profile. Personal desktops are the case where the virtual machine itself may hold user data, and those disks are a separate backup target. Image versions are a third target.
+
+[Source: Backup recommendations](https://learn.microsoft.com/en-us/azure/virtual-desktop/disaster-recovery)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Design three backups: FSLogix share (profiles and often Office containers), personal desktop disks, and image versions or the gallery. Azure Backup on the storage account covers the share. Azure Site Recovery is for replicating virtual machines to another region, not for mounting a profile VHD by itself.
+
+</details>
+
+<Quiz id="az140-d10-q2">
+The business requires a second Azure region if the primary region fails. Which design is valid?
+
+- [x] A second host pool in the other region, with profile storage that the recovered users can mount, and image versions replicated there
+- [ ] One host pool stretched across two regions
+- [ ] A Private Link endpoint in the second region and no other resources
+- [ ] Turning on RDP Multipath
+
+Host pools are deployed in one region. You plan another host pool (active/active or active/passive), how profiles move or replicate, and how clients find the surviving feed. Multipath keeps a session up across network paths. It is not a regional disaster-recovery plan.
+
+[Source: Multi-region for Azure Virtual Desktop](https://learn.microsoft.com/en-us/azure/virtual-desktop/disaster-recovery)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Cloud Cache can point a profile at storage in two regions. Gallery replication places the image near the second host pool. Document which region is primary and how you tell users which workspace to open. Update strategy is separate: in-place updates versus a new image version and new hosts.
+
+</details>
+
+<Quiz id="az140-d10-q3">
+Which statement about the July 20, 2026 skill weights is accurate?
+
+- [x] Plan and implement the infrastructure is the largest area, at 40–45%
+- [ ] Monitor and maintain is the largest area, at 40–45%
+- [ ] Identity and security is larger than user environments and apps
+- [ ] The four areas are weighted equally
+
+Infrastructure is 40–45%. User environments and apps are 20–25%. Identity and security are 15–20%. Monitor and maintain is 10–15%. Spend the extra practice on host pools, networking, storage, and images.
+
+[Source: AZ-140 study guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-140)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+The English exam uses the skills measured as of July 20, 2026. Identity, FSLogix, clients, and app delivery had minor wording changes from the previous outline. The four area names and the infrastructure-heavy weight stayed.
+
+</details>
+
+<Quiz id="az140-d10-q4">
+A pooled user on an Entra-joined host gets a new session host after autoscale replaces the previous one. Their desktop icons are missing. The image is correct. Where do you look first?
+
+- [x] The FSLogix share: the profile container did not mount
+- [ ] The RemoteApp application group
+- [ ] RDP Multipath
+- [ ] The management group
+
+Icons and documents in a pooled pool live in the profile container. A new host with the right image still looks empty until FSLogix mounts the VHD. Check share permissions, Entra Kerberos or the directory the share expects, and `VHDLocations` or Cloud Cache. RemoteApp would hide the desktop entirely, not just the icons.
+
+[Source: FSLogix profile containers](https://learn.microsoft.com/en-us/azure/virtual-desktop/fslogix-profile-containers)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+This is the mixed case: Entra join (identity), a pooled host (infrastructure), FSLogix (user environment), and autoscale (monitor). The official labs cover the host pool, the client, Insights, and the scaling plan. The profile path is Learn plus the storage day, because the Entra ID lab track does not include a profile lab.
+
+</details>

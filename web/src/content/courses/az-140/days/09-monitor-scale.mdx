@@ -1,0 +1,119 @@
+---
+day: 9
+title: Monitor and scale
+moduleTitle: Insights and host pool scaling plans
+moduleId: d9-monitor
+minutes: 80
+practice: false
+summary: "Azure Virtual Desktop Insights, then a scaling plan. Lab 3 needs labs 1 and 2. Lab 5 also needs lab 4."
+focus: "Skills measured: monitor and manage Azure Virtual Desktop services."
+tags:
+  - AZ-140-monitor
+resources:
+  - { label: "Path: Monitor and maintain an Azure Virtual Desktop infrastructure", url: "https://learn.microsoft.com/en-us/training/paths/monitor-maintain-azure-virtual-desktop-infrastructure/", kind: course }
+  - { label: "Monitor and manage performance and health", url: "https://learn.microsoft.com/en-us/training/modules/monitor-manage-performance-health/", kind: course }
+  - { label: "Scaling plans", url: "https://learn.microsoft.com/en-us/azure/virtual-desktop/autoscale-scaling-plan", kind: learn }
+videos:
+  - label: Monitor and manage Azure Virtual Desktop services
+    action: watch
+    lectures:
+      - Configure log collection and analysis for Azure Virtual Desktop session hosts
+      - Configure Azure Virtual Desktop monitoring by using Azure Monitor
+      - Monitor Azure Virtual Desktop by using Azure Monitor
+      - Customize Azure Monitor workbooks for Azure Virtual Desktop monitoring
+      - Monitor Azure Virtual Desktop by using Azure Advisor
+      - Implement autoscaling in host pools
+officialLabs:
+  - labId: lab-3
+  - labId: lab-5
+lab: []
+tldr:
+  - "Insights needs a Log Analytics workspace and the Insights configuration workbook. Diagnostic settings send host pool and session host logs there."
+  - "A scaling plan is attached to a host pool and uses ramp-up, peak, ramp-down, and off-peak."
+  - "Autoscale puts hosts into drain mode and waits for sessions to leave before it deallocates them."
+  - "Azure Advisor gives recommendations. It is not the Insights workbook."
+trap: "Deleting the scaling plan's role assignment leaves the plan in place and the virtual machines will not start or stop. Lab 5 assigns Desktop Virtualization Power On Contributor to the service principal first."
+videoTip: "Do lab 3 before lab 5. Lab 5 also expects you to have connected once (lab 4)."
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="az140-d9-q1">
+You need connection, host, and session reports for a host pool. What do you deploy?
+
+- [x] A Log Analytics workspace and the Azure Virtual Desktop Insights workbook
+- [ ] Only Azure Advisor
+- [ ] An FSLogix Cloud Cache share
+- [ ] A second workspace resource in Azure Virtual Desktop
+
+Lab 3 registers Microsoft.Insights, creates the workspace, and opens the Insights configuration workbook so diagnostic data lands in Log Analytics. The Azure Virtual Desktop workspace (the feed users subscribe to) is a different object. Advisor is recommendations, not the telemetry store.
+
+[Source: Azure Virtual Desktop Insights](https://learn.microsoft.com/en-us/azure/virtual-desktop/insights)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Turn on diagnostic settings for the host pool, workspace, and application groups you care about, and install or configure the agent path the workbook expects on session hosts. You can pin or edit the workbook. That is the "customize Azure Monitor workbooks" skill.
+
+</details>
+
+<Quiz id="az140-d9-q2">
+Weekday mornings need most session hosts running before users arrive, and nights need them deallocated. What do you create?
+
+- [x] A scaling plan with ramp-up, peak, ramp-down, and off-peak schedules, assigned to the host pool
+- [ ] Start VM on Connect, and nothing on a schedule
+- [ ] A QoS policy
+- [ ] A new image version
+
+A scaling plan is the schedule. Start VM on Connect only reacts when someone connects, so hosts are still off at the start of the day until the first person signs in.
+
+[Source: Autoscale scaling plans](https://learn.microsoft.com/en-us/azure/virtual-desktop/autoscale-scaling-plan)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Ramp-up starts hosts before the peak. Peak holds minimum hosts and a load-balancing algorithm. Ramp-down drains and deallocates. Off-peak keeps a small minimum. The plan is assigned to one or more host pools. Time zone matters: use the region where the users work, which is what lab 5 tells you to set.
+
+</details>
+
+<Quiz id="az140-d9-q3">
+Autoscale is reducing the pool during ramp-down. A session host still has two users connected. What does the plan do before it deallocates that host?
+
+- [x] Put the host in drain mode and wait until the sessions end
+- [ ] Delete the session host virtual machine immediately
+- [ ] Remove the users from the application group
+- [ ] Turn off diagnostic settings
+
+Drain mode stops new connections to that host. Existing sessions finish or hit the session time limit, and then the host can be deallocated. Autoscale does not delete the virtual machine and it does not remove application group assignments.
+
+[Source: How autoscale works](https://learn.microsoft.com/en-us/azure/virtual-desktop/autoscale-scenarios)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Lab 5 stops and deallocates hosts first so you can see the plan start them, adjusts the host pool, creates the plan, watches it, and then disables autoscale. The service principal needs the power-on role or the plan cannot change virtual machine power state.
+
+</details>
+
+<Quiz id="az140-d9-q4">
+Azure Advisor shows a cost recommendation for the host pool. Azure Virtual Desktop Insights shows no recent connection failures. Which tool answers which question?
+
+- [x] Advisor is the recommendation list. Insights is the operational workbook over Log Analytics.
+- [ ] They are the same workbook
+- [ ] Insights only stores Azure Advisor alerts
+- [ ] Advisor replaces diagnostic settings
+
+Use Insights when you need sessions, hosts, and connection health. Use Advisor when you want a suggested change, such as an idle host or a reliability tip. You still have to configure diagnostic settings for Insights to have data.
+
+[Source: Azure Advisor for Azure Virtual Desktop](https://learn.microsoft.com/en-us/azure/virtual-desktop/azure-advisor-recommendations)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+The monitor section of the Udemy course lists both, and the study guide lists both workbooks and Advisor-style optimization. Do not send an operator to Advisor to count active sessions. That count is in Insights or the host pool session list.
+
+</details>

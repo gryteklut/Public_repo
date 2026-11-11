@@ -20,7 +20,7 @@ export function WatchChecklist({
   day,
   tip,
   sections,
-  courseUrl = "https://www.udemy.com/course/ms100course/learn/",
+  courseUrl,
 }: {
   code: string;
   day: number;
@@ -61,11 +61,13 @@ export function WatchChecklist({
             </p>
           )}
         </div>
-        <Button variant="outline" asChild>
-          <a href={courseUrl} target="_blank" rel="noreferrer">
-            Open course player
-          </a>
-        </Button>
+        {courseUrl && (
+          <Button variant="outline" asChild>
+            <a href={courseUrl} target="_blank" rel="noreferrer">
+              Open course player
+            </a>
+          </Button>
+        )}
       </div>
 
       {tip && (

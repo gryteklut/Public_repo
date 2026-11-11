@@ -3,9 +3,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
-  getAllOfficialExercises,
-  officialLabsCatalog,
-  TOTAL_OFFICIAL_LAB_MINUTES,
+  getAllOfficialLabs,
+  getLabCatalog,
+  type OfficialLabsCatalog,
 } from "@/data/officialLabs";
 import { withBase } from "@/lib/base";
 import {
@@ -15,25 +15,48 @@ import {
   officialLabMinutesCompleted,
 } from "@/lib/courseProgress";
 
-const CODE = "AB-650";
-
-export function OfficialLabsOverview() {
+export function OfficialLabsOverview({
+  code = "AB-650",
+  courseSlug = "ab-650",
+}: {
+  code?: string;
+  courseSlug?: string;
+}) {
   const [, setTick] = useState(0);
   void setTick;
-  const progress = loadCourseProgress(CODE);
-  const { attribution, learningPaths, totalLabs } = officialLabsCatalog;
+  const catalog = getLabCatalog(code);
+  if (!catalog) {
+    return <p className="text-muted-foreground">No labs for this course.</p>;
+  }
+  return (
+    <LabsOverviewBody code={code} courseSlug={courseSlug} catalog={catalog} />
+  );
+}
 
-  const exerciseMeta = getAllOfficialExercises().map(({ lab, exercise }) => ({
-    labId: lab.id,
-    exerciseId: exercise.id,
-    minutes: exercise.minutes,
-  }));
+function LabsOverviewBody({
+  code,
+  courseSlug,
+  catalog,
+}: {
+  code: string;
+  courseSlug: string;
+  catalog: OfficialLabsCatalog;
+}) {
+  const progress = loadCourseProgress(code);
+  const { attribution, learningPaths, totalLabs, totalMinutes, summary } =
+    catalog;
+
+  const exerciseMeta = getAllOfficialLabs(code).flatMap((lab) =>
+    lab.exercises.map((exercise) => ({
+      labId: lab.id,
+      exerciseId: exercise.id,
+      minutes: exercise.minutes,
+    })),
+  );
   const minutesDone = officialLabMinutesCompleted(progress, exerciseMeta);
-  const minutesLeft = Math.max(0, TOTAL_OFFICIAL_LAB_MINUTES - minutesDone);
+  const minutesLeft = Math.max(0, totalMinutes - minutesDone);
   const percent =
-    TOTAL_OFFICIAL_LAB_MINUTES === 0
-      ? 0
-      : Math.round((minutesDone / TOTAL_OFFICIAL_LAB_MINUTES) * 100);
+    totalMinutes === 0 ? 0 : Math.round((minutesDone / totalMinutes) * 100);
 
   const labsDone = learningPaths
     .flatMap((lp) => lp.labs)
@@ -56,13 +79,11 @@ export function OfficialLabsOverview() {
           Official hands-on labs
         </p>
         <h1 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
-          AB-650 labs
+          {code} labs
         </h1>
         <p className="text-muted-foreground mt-3 max-w-3xl text-base leading-relaxed">
-          Seven labs across three Microsoft Learn paths —{" "}
-          {TOTAL_OFFICIAL_LAB_MINUTES} minutes of practice on one Microsoft 365
-          E7 lab tenant. Complete them in order; later labs reuse groups, sites,
-          and agents you create earlier.
+          {summary ??
+            `Seven labs across three Microsoft Learn paths — ${totalMinutes} minutes of practice on one Microsoft 365 E7 lab tenant. Complete them in order; later labs reuse groups, sites, and agents you create earlier.`}
         </p>
         <div className="mt-5 space-y-2">
           <div className="flex flex-wrap items-baseline justify-between gap-2 text-sm">
@@ -70,7 +91,7 @@ export function OfficialLabsOverview() {
               {labsDone} of {totalLabs} labs
             </span>
             <span className="text-muted-foreground">
-              {minutesDone} of {TOTAL_OFFICIAL_LAB_MINUTES} min · {minutesLeft}{" "}
+              {minutesDone} of {totalMinutes} min · {minutesLeft}{" "}
               min left
             </span>
           </div>
@@ -89,15 +110,17 @@ export function OfficialLabsOverview() {
               Official lab site
             </a>
           </Button>
-          <Button variant="secondary" asChild>
-            <a
-              href={`${attribution.officialSite}Instructions/Labs/00-getting-started.html`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Get started guide
-            </a>
-          </Button>
+          {code === "AB-650" && (
+            <Button variant="secondary" asChild>
+              <a
+                href={`${attribution.officialSite}Instructions/Labs/00-getting-started.html`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Get started guide
+              </a>
+            </Button>
+          )}
         </div>
       </header>
 
@@ -140,7 +163,7 @@ export function OfficialLabsOverview() {
                     <h3 className="text-lg font-semibold">
                       <a
                         className="hover:text-[var(--ms-accent)]"
-                        href={withBase(`/courses/ab-650/labs/${lab.id}/`)}
+                        href={withBase(`/courses/${courseSlug}/labs/${lab.id}/`)}
                       >
                         {lab.title}
                       </a>
@@ -209,7 +232,7 @@ export function OfficialLabsOverview() {
                   )}
                   <div className="flex flex-wrap gap-2 pt-1">
                     <Button asChild>
-                      <a href={withBase(`/courses/ab-650/labs/${lab.id}/`)}>
+                      <a href={withBase(`/courses/${courseSlug}/labs/${lab.id}/`)}>
                         Open lab
                       </a>
                     </Button>
@@ -240,12 +263,12 @@ export function OfficialLabsOverview() {
             target="_blank"
             rel="noreferrer"
           >
-            MicrosoftLearning/AB-650T00_administer_microsoft_365_and_ai_services
+            {attribution.sourceRepo.replace("https://github.com/", "")}
           </a>{" "}
           repository ({attribution.copyright}) under the{" "}
           <a
             className="font-semibold text-[var(--ms-accent)]"
-            href={`${attribution.sourceRepo}/blob/main/LICENSE`}
+            href={`${attribution.sourceRepo}/blob/${attribution.sourceRepo.includes("AZ-140") ? "master" : "main"}/LICENSE`}
             target="_blank"
             rel="noreferrer"
           >

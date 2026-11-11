@@ -108,6 +108,7 @@ const hasLab = (d.officialLabs?.length ?? 0) > 0 || d.lab.length > 0;
                   day={d.day}
                   tip={d.videoTip}
                   sections={d.videos}
+                  courseUrl={course.data.external?.url}
                 />
               </div>
             )
@@ -143,6 +144,7 @@ const hasLab = (d.officialLabs?.length ?? 0) > 0 || d.lab.length > 0;
             <OfficialLabDayPanel
               client:only="react"
               code={code}
+              courseSlug={slug}
               day={d.day}
               pointers={d.officialLabs ?? []}
               portalTips={d.lab}

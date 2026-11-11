@@ -8,6 +8,7 @@ import {
   getCourseDays,
   getCourses,
 } from "@/lib/courses";
+import { getLabCatalog } from "@/data/officialLabs";
 import { withBase } from "@/lib/base";
 
 export async function getStaticPaths() {
@@ -24,6 +25,7 @@ if (!course) {
 }
 const days = await getCourseDays(slug);
 const { data } = course;
+const labs = data.hasLabs ? getLabCatalog(data.code) : undefined;
 ---
 
 <DefaultLayout title={data.title} description={data.subtitle}>
@@ -50,26 +52,68 @@ const { data } = course;
         {data.subtitle}
       </p>
       {
-        slug === "ab-650" && (
+        (data.hasLabs || data.studyGuide) && (
           <p class="mt-4 flex flex-wrap gap-2">
-            <a
-              class="course-pill inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-semibold"
-              href={withBase("/courses/ab-650/labs/")}
-            >
-              Hands-on labs (450 min)
-            </a>
-            <a
-              class="inline-flex items-center rounded-lg border border-[var(--course-line)] bg-[var(--card)] px-3 py-1.5 text-sm font-semibold"
-              href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Exam study guide
-            </a>
+            {data.hasLabs && (
+              <a
+                class="course-pill inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-semibold"
+                href={withBase(`/courses/${slug}/labs/`)}
+              >
+                Hands-on labs{labs ? ` (${labs.totalMinutes} min)` : ""}
+              </a>
+            )}
+            {data.studyGuide && (
+              <a
+                class="inline-flex items-center rounded-lg border border-[var(--course-line)] bg-[var(--card)] px-3 py-1.5 text-sm font-semibold"
+                href={data.studyGuide}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Exam study guide
+              </a>
+            )}
           </p>
         )
       }
     </header>
+
+    {
+      data.external && (
+        <section class="course-card mb-8 p-6">
+          <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+            External course · {data.external.provider}
+          </p>
+          <h2 class="mt-2 text-xl font-semibold">
+            <a
+              class="hover:text-[var(--ms-accent)]"
+              href={data.external.url}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {data.external.title}
+            </a>
+          </h2>
+          <p class="text-muted-foreground mt-2 text-sm leading-relaxed">
+            Instructor:{" "}
+            <a
+              class="text-foreground font-medium underline-offset-4 hover:underline"
+              href={data.external.instructorUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {data.external.instructor}
+            </a>
+            . Each day has a watch checklist of lecture titles from this course.
+            Microsoft Learn and the official labs stay the primary material.
+          </p>
+          {data.external.note && (
+            <p class="text-muted-foreground mt-2 text-sm leading-relaxed">
+              {data.external.note}
+            </p>
+          )}
+        </section>
+      )
+    }
 
     <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
       <div class="space-y-8">

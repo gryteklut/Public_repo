@@ -404,6 +404,27 @@ body {
   background: var(--ms-soft);
   padding: 0.5rem 0.75rem;
 }
+.ms-table-wrap {
+  margin-top: 0.6rem;
+  overflow-x: auto;
+}
+.ms-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+.ms-table th,
+.ms-table td {
+  border: 1px solid var(--ms-border);
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+.ms-table th {
+  background: var(--ms-soft);
+  font-weight: 600;
+}
 .ms-lab-done {
   border-color: color-mix(in srgb, var(--ms-ok) 45%, var(--course-line)) !important;
   background: linear-gradient(

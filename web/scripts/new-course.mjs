@@ -43,3 +43,6 @@ writeFileSync(yamlPath, yaml);
 
 console.log(`Created ${dest}`);
 console.log(`Edit course.yaml and add days under days/*.mdx`);
+console.log(
+  "External companion: set external.provider, title, and url (no coupon query). Default instructor is John Christopher (https://www.udemy.com/user/john-christopher-32/).",
+);
