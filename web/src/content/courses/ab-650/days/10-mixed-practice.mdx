@@ -5,7 +5,7 @@ moduleTitle: Cross-domain practice exam set
 moduleId: d10-practice
 minutes: 60
 practice: true
-summary: No new theory. Answer all questions correctly to mark the practice module complete. Review every miss via explanation + Learn link.
+summary: "Mixed questions across the exam. Score 100% on the knowledge check to finish the day."
 focus: "Quiz-first dry run across domains. Study panels stay available if you need a hint, but treat this as exam practice."
 tags:
   - MS-102-core
@@ -40,15 +40,15 @@ tldr:
   - Standing privileged roles are a governance smell.
   - Do not sink limited study time into full MS-102 XDR breadth.
   - Connect Purview classic controls (DLP/labels/retention requirements) to AI-specific posture with DSPM for AI.
-trap: "Exam trap: Copilot/agent wording is precise — readiness, oversharing, and governance are different skills."
+trap: "Match the symptom to the control. Oversharing is permissions or discovery, not a new identity design."
 videoTip: No new theory. Rewatch only sections tied to questions you miss in the portal.
 ---
 
 import { Quiz } from 'starlight-quiz/components';
 
-Quiz-first practice day. Answer from memory, then open study notes only if you miss.
+Answer from memory. Open a study note only if you miss.
 
-<Quiz id="d10q1" title="Which AB-650 domain carries the largest listed weight?">
+<Quiz id="d10q1">
 Which AB-650 domain carries the largest listed weight?
 
 - [x] Govern and secure Microsoft 365 tenants and workloads (40–45%)
@@ -68,7 +68,7 @@ Memorize the three domain weights. Even as an MS-102 holder, do not under-study 
 
 </details>
 
-<Quiz id="d10q2" title="Copilot returns content from a SharePoint site that should still be under permis">
+<Quiz id="d10q2">
 Copilot returns content from a SharePoint site that should still be under permissions review. Which response is most aligned with AB-650?
 
 - [x] Apply SharePoint restriction/exclusion controls and remediate oversharing/permissions
@@ -88,7 +88,7 @@ Scenario pattern: Copilot surfaces sensitive drafts → fix discovery/permission
 
 </details>
 
-<Quiz id="d10q3" title="Just-in-time elevation for Global Reader vs standing Global Administrator is pri">
+<Quiz id="d10q3">
 Just-in-time elevation for Global Reader vs standing Global Administrator is primarily a job for:
 
 - [x] Microsoft Entra Privileged Identity Management (PIM)
@@ -108,7 +108,7 @@ Standing privileged roles are a governance smell. PIM eligible assignments with 
 
 </details>
 
-<Quiz id="d10q4" title="Which security product family is explicitly centered in AB-650 “Secure Microsoft">
+<Quiz id="d10q4">
 Which security product family is explicitly centered in AB-650 “Secure Microsoft 365 workloads” bullets?
 
 - [x] Microsoft Defender for Office 365
@@ -128,7 +128,7 @@ Do not sink limited study time into full MS-102 XDR breadth. Be excellent at Def
 
 </details>
 
-<Quiz id="d10q5" title="DSPM for AI helps you:">
+<Quiz id="d10q5">
 DSPM for AI helps you:
 
 - [x] Monitor and secure AI activity / posture in Microsoft Purview
@@ -148,7 +148,7 @@ Connect Purview classic controls (DLP/labels/retention requirements) to AI-speci
 
 </details>
 
-<Quiz id="d10q6" title="An agent is pending approval before organization-wide use. Which control plane i">
+<Quiz id="d10q6">
 An agent is pending approval before organization-wide use. Which control plane is most relevant?
 
 - [x] Agent registry review to publish or reject the agent
@@ -168,7 +168,7 @@ Registry = inventory + approval + block/install controls for Microsoft, third-pa
 
 </details>
 
-<Quiz id="d10q7" title="Group-based licensing is preferred for large Copilot rollouts because:">
+<Quiz id="d10q7">
 Group-based licensing is preferred for large Copilot rollouts because:
 
 - [x] License assignment follows group membership with less manual per-user churn
@@ -188,7 +188,7 @@ Operational pattern: security/M365 groups drive license assignment for Copilot a
 
 </details>
 
-<Quiz id="d10q8" title="Conditional Access can protect agent access by:">
+<Quiz id="d10q8">
 Conditional Access can protect agent access by:
 
 - [x] Applying policy conditions/controls to agent identities similar to other identities needing governance
@@ -208,7 +208,7 @@ Extend your CA mental model from humans to agents: who/what the agent is, which 
 
 </details>
 
-<Quiz id="d10q9" title="Microsoft 365 Backup on AB-650 is about:">
+<Quiz id="d10q9">
 Microsoft 365 Backup on AB-650 is about:
 
 - [x] Setup, restore, and monitor for operational recovery scenarios
@@ -228,7 +228,7 @@ Distinguish Backup (operational restore) from Purview retention (compliance) and
 
 </details>
 
-<Quiz id="d10q10" title="Web search management for Copilot controls grounding on:">
+<Quiz id="d10q10">
 Web search management for Copilot controls grounding on:
 
 - [x] Public web content versus tenant-only grounding behaviors per admin configuration
@@ -248,7 +248,7 @@ Expect scenario questions: restrict web grounding for a population vs leave it e
 
 </details>
 
-<Quiz id="d10q11" title="Administrative units help you:">
+<Quiz id="d10q11">
 Administrative units help you:
 
 - [x] Scope admin permissions to a subset of directory objects
@@ -268,7 +268,7 @@ Delegation pattern for regional/divisional admins without Global Administrator s
 
 </details>
 
-<Quiz id="d10q12" title="Attack simulation training is part of:">
+<Quiz id="d10q12">
 Attack simulation training is part of:
 
 - [x] Defender for Office 365 security skills on AB-650
@@ -288,7 +288,7 @@ Simulations measure susceptibility and drive training — governance of human ri
 
 </details>
 
-<Quiz id="d10q13" title="Copilot connectors typically expand Copilot grounding by:">
+<Quiz id="d10q13">
 Copilot connectors typically expand Copilot grounding by:
 
 - [x] Indexing external sources into Microsoft Graph with governed access
@@ -308,7 +308,7 @@ Connectors are extensibility + governance: what data is indexed, who can see it,
 
 </details>
 
-<Quiz id="d10q14" title="Monitoring AI service health and adoption together is most associated with:">
+<Quiz id="d10q14">
 Monitoring AI service health and adoption together is most associated with:
 
 - [x] Copilot Control System (plus admin center usage reports)
@@ -328,7 +328,7 @@ Operations layer for AI: are people using it, is it healthy, what does it cost, 
 
 </details>
 
-<Quiz id="d10q15" title="Which topic should an MS-102 holder treat as net-new priority for AB-650?">
+<Quiz id="d10q15">
 Which topic should an MS-102 holder treat as net-new priority for AB-650?
 
 - [x] Agent identities, agent registry/Agent 365, Copilot admin governance, DSPM for AI, AI cost monitoring
@@ -348,7 +348,7 @@ Your MS-102 foundation covers much of identity/security/compliance refresh. Spen
 
 </details>
 
-<Quiz id="d10q16" title="Sensitivity labels vs DLP — which mapping is most accurate at requirements level">
+<Quiz id="d10q16">
 Sensitivity labels vs DLP — which mapping is most accurate at requirements level?
 
 - [x] Labels classify/protect content; DLP detects/prevents sensitive data scenarios across locations (including Copilot where configured)
@@ -368,7 +368,7 @@ Exam language is often “which control meets the requirement?” — map classi
 
 </details>
 
-<Quiz id="d10q17" title="Bulk identity operations at scale on AB-650 point you toward:">
+<Quiz id="d10q17">
 Bulk identity operations at scale on AB-650 point you toward:
 
 - [x] Microsoft Graph PowerShell / Graph APIs
@@ -388,7 +388,7 @@ You do not need to memorize every cmdlet — know Graph PowerShell is the toolcl
 
 </details>
 
-<Quiz id="d10q18" title="Managing agent owners matters because:">
+<Quiz id="d10q18">
 Managing agent owners matters because:
 
 - [x] Ownership/accountability is part of agent lifecycle and governance when agents access organizational data

@@ -35,15 +35,7 @@ export function SourceToggle({ code, day }: { code: string; day: number }) {
 
   return (
     <div className="course-card flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
-      <div>
-        <p className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-          Study sources for this day
-        </p>
-        <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
-          Pick Microsoft Learn, Udemy, or both. Sections you turn off stay
-          hidden on this day.
-        </p>
-      </div>
+      <p className="text-sm font-semibold">Sources</p>
       <div className="flex flex-wrap gap-4">
         <label className="flex cursor-pointer items-center gap-2 text-sm">
           <Checkbox

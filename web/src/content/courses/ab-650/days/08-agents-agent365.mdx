@@ -5,7 +5,7 @@ moduleTitle: "Implement, manage, and govern agents"
 moduleId: d8-agents
 minutes: 60
 practice: false
-summary: "Pure AB-650-new. Expect scenario questions on identity, ownership, registry approval, and securing agent access."
+summary: "Agent identity, the agent registry, owners, and Agent 365 governance."
 focus: "Entra Agent ID, registry lifecycle, owners, access packages/CA for agents, tools, and Agent 365 governance."
 tags:
   - AB-650-new
@@ -42,18 +42,17 @@ lab:
   - "If your E5/Frontier SKU does not expose Agent Registry / Agent 365 UI, complete Lab 7 conceptually from the official steps and note the gap — exam still expects the control-plane ideas."
 tldr:
   - Agents are not just bots in a gallery — they have identities.
-  - "Treat the agent registry as the inventory and control plane: what agents exist, what is pending approval, what is published, what is bloc…"
+  - "Treat the agent registry as the inventory and control plane: what agents exist, what is pending approval, what is published, what is blocked, and who can use them."
   - "Combine identity governance (access packages, reviews) with Conditional Access targeted at agent identities."
   - "Beyond build/publish: operate agents."
-trap: "Exam trap: Copilot/agent wording is precise — readiness, oversharing, and governance are different skills."
+trap: "Agent ID is the identity. The registry approves what is published. Access packages and Conditional Access secure how the agent is used."
 videoTip: Watch both AB-650 agent sections. This is pure net-new vs classic MS-102.
 ---
 
 import { Quiz } from 'starlight-quiz/components';
 
-Learn the topic, then prove it with the knowledge checks below.
 
-<Quiz id="d8q1" title="Microsoft Entra Agent ID is primarily about:">
+<Quiz id="d8q1">
 Microsoft Entra Agent ID is primarily about:
 
 - [x] Giving agents identities with lifecycle workflows you can manage like other identities needing ownership and access control
@@ -71,11 +70,11 @@ Manage lifecycle workflows for agent identities using Microsoft Entra Agent ID i
 
 
 
-_Hands-on depth: [Lab 7 Ex 1–4](../labs/lab-7/#lab7-ex1) (Agent ID, registry, sharing). Exam note:_ Agents are not just bots in a gallery — they have identities. Manage lifecycle (create, own, sponsor, retire), secure access with access packages and Conditional Access, and manage owners. When an owner leaves, governance must cover transfer/disable patterns.
+Agents are not just bots in a gallery — they have identities. Manage lifecycle (create, own, sponsor, retire), secure access with access packages and Conditional Access, and manage owners. When an owner leaves, governance must cover transfer/disable patterns.
 
 </details>
 
-<Quiz id="d8q2" title="The agent registry is used to:">
+<Quiz id="d8q2">
 The agent registry is used to:
 
 - [x] Discover, review, publish/reject, install, block, or control access to Microsoft and third-party agents (including uploading custom agents)
@@ -93,11 +92,11 @@ AB-650 lists discover/manage agents in the registry, review requests, publish/re
 
 
 
-_Hands-on depth: [Lab 7 Ex 1–4](../labs/lab-7/#lab7-ex1) (Agent ID, registry, sharing). Exam note:_ Treat the agent registry as the inventory and control plane: what agents exist, what is pending approval, what is published, what is blocked, and who can use them. Also configure agent settings: allowed agent types, sharing, templates, and user access.
+Treat the agent registry as the inventory and control plane: what agents exist, what is pending approval, what is published, what is blocked, and who can use them. Also configure agent settings: allowed agent types, sharing, templates, and user access.
 
 </details>
 
-<Quiz id="d8q3" title="Securing agent access with access packages and Conditional Access implies agents">
+<Quiz id="d8q3">
 Securing agent access with access packages and Conditional Access implies agents are treated as:
 
 - [x] Identities that can be granted least-privilege, time-bound, policy-governed access to resources
@@ -115,11 +114,11 @@ Skills measured explicitly include securing agent access with access packages an
 
 
 
-_Hands-on depth: [Lab 7 Ex 1–4](../labs/lab-7/#lab7-ex1) (Agent ID, registry, sharing). Exam note:_ Combine identity governance (access packages, reviews) with Conditional Access targeted at agent identities. Think: just enough access, auditable assignments, and policy enforcement similar in spirit to human privileged access — adapted to agents.
+Combine identity governance (access packages, reviews) with Conditional Access targeted at agent identities. Think: just enough access, auditable assignments, and policy enforcement similar in spirit to human privileged access — adapted to agents.
 
 </details>
 
-<Quiz id="d8q4" title="Agent 365 governance skills include monitoring activity, protecting sensitive da">
+<Quiz id="d8q4">
 Agent 365 governance skills include monitoring activity, protecting sensitive data, and:
 
 - [x] Evaluating compliance gaps using Agent 365
@@ -137,7 +136,7 @@ Secure and govern agents by using Agent 365 includes monitor activity, protect s
 
 
 
-_Hands-on depth: [Lab 7 Ex 1–4](../labs/lab-7/#lab7-ex1) (Agent ID, registry, sharing). Exam note:_ Beyond build/publish: operate agents. Monitor agent activity, apply data protection, evaluate compliance gaps, and manage tools available to agents in Agent 365. This is governance/ops, not just enablement.
+Beyond build/publish: operate agents. Monitor agent activity, apply data protection, evaluate compliance gaps, and manage tools available to agents in Agent 365. This is governance/ops, not just enablement.
 
 </details>
 

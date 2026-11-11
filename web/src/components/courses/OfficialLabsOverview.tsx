@@ -66,14 +66,18 @@ export function OfficialLabsOverview() {
         </p>
         <div className="mt-5 space-y-2">
           <div className="flex flex-wrap items-baseline justify-between gap-2 text-sm">
-            <span className="font-semibold">Lab time remaining</span>
+            <span className="font-semibold">
+              {labsDone} of {totalLabs} labs
+            </span>
             <span className="text-muted-foreground">
-              {minutesLeft} min left · {minutesDone} /{" "}
-              {TOTAL_OFFICIAL_LAB_MINUTES} min done · {labsDone}/{totalLabs}{" "}
-              labs · {exercisesDone}/{exerciseMeta.length} exercises
+              {minutesDone} of {TOTAL_OFFICIAL_LAB_MINUTES} min · {minutesLeft}{" "}
+              min left
             </span>
           </div>
           <Progress value={percent} className="h-2" />
+          <p className="text-muted-foreground text-xs">
+            {exercisesDone} of {exerciseMeta.length} exercises
+          </p>
         </div>
         <div className="mt-6 flex flex-wrap gap-3">
           <Button asChild>
@@ -92,11 +96,6 @@ export function OfficialLabsOverview() {
               rel="noreferrer"
             >
               Get started guide
-            </a>
-          </Button>
-          <Button variant="outline" asChild>
-            <a href={attribution.sourceRepo} target="_blank" rel="noreferrer">
-              Source repo
             </a>
           </Button>
         </div>
@@ -160,38 +159,43 @@ export function OfficialLabsOverview() {
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     {lab.description}
                   </p>
-                  <ol className="space-y-2">
-                    {lab.exercises.map((ex) => {
-                      const exDone = isOfficialLabExerciseComplete(
-                        progress,
-                        lab.id,
-                        ex.id,
-                      );
-                      return (
-                        <li
-                          key={ex.id}
-                          className="flex items-start gap-2 text-sm"
-                        >
-                          <span
-                            className={`mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border text-[10px] ${
-                              exDone
-                                ? "border-[var(--ms-ok)] bg-[var(--ms-ok)] text-white"
-                                : "border-[var(--course-line)]"
-                            }`}
-                            aria-hidden
+                  <details className="text-sm">
+                    <summary className="cursor-pointer font-semibold text-[var(--ms-accent)]">
+                      {doneEx} of {lab.exercises.length} exercises
+                    </summary>
+                    <ol className="mt-2 space-y-2">
+                      {lab.exercises.map((ex) => {
+                        const exDone = isOfficialLabExerciseComplete(
+                          progress,
+                          lab.id,
+                          ex.id,
+                        );
+                        return (
+                          <li
+                            key={ex.id}
+                            className="flex items-start gap-2"
                           >
-                            {exDone ? "✓" : ""}
-                          </span>
-                          <span>
-                            {ex.title}{" "}
-                            <span className="text-muted-foreground">
-                              ({ex.minutes} min)
+                            <span
+                              className={`mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border text-[10px] ${
+                                exDone
+                                  ? "border-[var(--ms-ok)] bg-[var(--ms-ok)] text-white"
+                                  : "border-[var(--course-line)]"
+                              }`}
+                              aria-hidden
+                            >
+                              {exDone ? "✓" : ""}
                             </span>
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ol>
+                            <span>
+                              {ex.title}{" "}
+                              <span className="text-muted-foreground">
+                                ({ex.minutes} min)
+                              </span>
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  </details>
                   {lab.labFiles.length > 0 && (
                     <p className="text-muted-foreground text-sm">
                       Lab files:{" "}

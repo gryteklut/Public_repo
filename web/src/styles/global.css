@@ -56,9 +56,9 @@
 
   --background: #f5f1e8;
   --foreground: #222222;
-  --card: #ffffff;
+  --card: #fffcf7;
   --card-foreground: #222222;
-  --popover: #ffffff;
+  --popover: #fffcf7;
   --popover-foreground: #222222;
   --primary: #6b4ba1;
   --primary-foreground: #ffffff;
@@ -384,6 +384,25 @@ body {
 }
 .dark .ms-code {
   color: var(--foreground);
+}
+.ms-pre {
+  margin-top: 0.6rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  border: 1px solid var(--ms-border);
+  border-radius: 0.5rem;
+  background: var(--ms-badge-bg);
+  padding: 0.75rem 1rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+.ms-note {
+  display: block;
+  margin-top: 0.55rem;
+  border-left: 3px solid var(--ms-accent);
+  border-radius: 0.25rem;
+  background: var(--ms-soft);
+  padding: 0.5rem 0.75rem;
 }
 .ms-lab-done {
   border-color: color-mix(in srgb, var(--ms-ok) 45%, var(--course-line)) !important;

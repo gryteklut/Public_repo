@@ -1,32 +1,18 @@
 import { ArrowUpRight } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { GITHUB_URL } from "@/consts";
 import { withBase } from "@/lib/base";
 
 export function Footer() {
   const navigation = [
     { name: "Hub", href: withBase("/") },
-    { name: "AB-650 portal", href: withBase("/AB-650/") },
+    { name: "Courses", href: withBase("/courses/") },
+    { name: "AB-650", href: withBase("/courses/ab-650/") },
+    { name: "Labs", href: withBase("/courses/ab-650/labs/") },
   ];
 
   return (
-    <footer className="flex flex-col items-center gap-14 pt-20 lg:pt-28">
-      <div className="container space-y-3 text-center">
-        <h2 className="text-2xl tracking-tight md:text-4xl">
-          Public tools hub
-        </h2>
-        <p className="text-muted-foreground mx-auto max-w-xl leading-snug text-balance">
-          Built with the Mainline Astro theme (shadcn/ui + Tailwind). Root stays
-          a hub; tools live under their own paths.
-        </p>
-        <div>
-          <Button size="lg" className="mt-4" asChild>
-            <a href={withBase("/AB-650/")}>Open AB-650</a>
-          </Button>
-        </div>
-      </div>
-
+    <footer className="pt-16 lg:pt-20">
       <nav className="container flex flex-col items-center gap-4 pb-10">
         <ul className="flex flex-wrap items-center justify-center gap-6">
           {navigation.map((item) => (
@@ -48,7 +34,7 @@ export function Footer() {
             </a>
           </li>
         </ul>
-        <p className="text-muted-foreground text-sm">
+        <p className="text-muted-foreground text-center text-sm">
           Theme:{" "}
           <a
             href="https://github.com/shadcnblocks/mainline-astro-template"
@@ -60,4 +46,4 @@ export function Footer() {
       </nav>
     </footer>
   );
-}
+};

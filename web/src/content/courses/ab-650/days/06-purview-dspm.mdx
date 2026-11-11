@@ -5,7 +5,7 @@ moduleTitle: Protect data with Microsoft Purview
 moduleId: d6-purview
 minutes: 60
 practice: false
-summary: MS-102-updated framing (“identify requirements”) plus AB-650-new DSPM for AI and Copilot DLP scope.
+summary: "Purview requirements for DLP, sensitivity labels, retention, and DSPM for AI."
 focus: "Identify DLP, information protection, and retention requirements — plus AI activity monitoring with DSPM for AI."
 tags:
   - MS-102-updated
@@ -35,19 +35,18 @@ officialLabs:
   - labId: lab-5
 lab: []
 tldr:
-  - "Know when to recommend DLP policies (Exchange, SharePoint, OneDrive, Teams, endpoints, Copilot), sensitivity information types/labels/pol…"
+  - "Know when to recommend DLP policies (Exchange, SharePoint, OneDrive, Teams, endpoints, Copilot), sensitivity information types/labels/policies, and retention labels vs retention policies."
   - "DSPM for AI helps you see AI usage posture: prompts/responses as data, oversharing risks, and recommended controls."
-  - "Identify requirements for information protection: SITs detect sensitive data; sensitivity labels apply classification/protection; label p…"
+  - "Identify requirements for information protection: SITs detect sensitive data; sensitivity labels apply classification/protection; label policies publish labels to users/groups."
   - "DLP alert management: triage alert severity, matched SITs, user/activity context, and respond (notify, confirm false positive, escalate)."
-trap: "Exam trap: Copilot/agent wording is precise — readiness, oversharing, and governance are different skills."
+trap: "DLP, sensitivity labels, and retention answer different requirements. DSPM for AI is the AI-activity view, not a DLP policy."
 videoTip: Watch Purview for DLP / labels / retention requirements and alert response. Pair with Microsoft Learn for DSPM for AI if the Udemy section is light there.
 ---
 
 import { Quiz } from 'starlight-quiz/components';
 
-Learn the topic, then prove it with the knowledge checks below.
 
-<Quiz id="d6q1" title="AB-650 Purview objectives emphasize that you can:">
+<Quiz id="d6q1">
 AB-650 Purview objectives emphasize that you can:
 
 - [x] Identify requirements for DLP, information protection, and data lifecycle management across Microsoft 365 and Copilot
@@ -65,11 +64,11 @@ Skills measured use “identify requirements” for DLP, information protection,
 
 
 
-_Hands-on depth: [Lab 5 — Purview / DSPM](../labs/lab-5/). Exam note:_ Know when to recommend DLP policies (Exchange, SharePoint, OneDrive, Teams, endpoints, Copilot), sensitivity information types/labels/policies, and retention labels vs retention policies. You may not always be asked to click every blade — you must map business requirements to the right Purview control.
+Know when to recommend DLP policies (Exchange, SharePoint, OneDrive, Teams, endpoints, Copilot), sensitivity information types/labels/policies, and retention labels vs retention policies. You may not always be asked to click every blade — you must map business requirements to the right Purview control.
 
 </details>
 
-<Quiz id="d6q2" title="Which Purview capability is specifically highlighted for monitoring and securing">
+<Quiz id="d6q2">
 Which Purview capability is specifically highlighted for monitoring and securing AI activity?
 
 - [x] Data Security Posture Management (DSPM) for AI
@@ -87,11 +86,11 @@ Monitor and secure AI activity by using Microsoft Purview DSPM for AI is an expl
 
 
 
-_Hands-on depth: [Lab 5 — Purview / DSPM](../labs/lab-5/). Exam note:_ DSPM for AI helps you see AI usage posture: prompts/responses as data, oversharing risks, and recommended controls. Pair with DLP for Copilot interactions. This is a high-value AB-650-new topic for MS-102 holders.
+DSPM for AI helps you see AI usage posture: prompts/responses as data, oversharing risks, and recommended controls. Pair with DLP for Copilot interactions. This is a high-value AB-650-new topic for MS-102 holders.
 
 </details>
 
-<Quiz id="d6q3" title="Sensitivity labels primarily help you:">
+<Quiz id="d6q3">
 Sensitivity labels primarily help you:
 
 - [x] Classify and protect content (and related containers) according to information protection policies
@@ -109,11 +108,11 @@ Information protection requirements include sensitive information types, sensiti
 
 
 
-_Hands-on depth: [Lab 5 — Purview / DSPM](../labs/lab-5/). Exam note:_ Identify requirements for information protection: SITs detect sensitive data; sensitivity labels apply classification/protection; label policies publish labels to users/groups. Understand auto-labeling concepts at requirement level for exam scenarios.
+Identify requirements for information protection: SITs detect sensitive data; sensitivity labels apply classification/protection; label policies publish labels to users/groups. Understand auto-labeling concepts at requirement level for exam scenarios.
 
 </details>
 
-<Quiz id="d6q4" title="A DLP policy alerts on sensitive content leaving via Microsoft 365. What should ">
+<Quiz id="d6q4">
 A DLP policy alerts on sensitive content leaving via Microsoft 365. What should admins be able to do per AB-650?
 
 - [x] Review and respond to DLP alerts for Microsoft 365 and AI services
@@ -131,7 +130,7 @@ Reviewing and responding to DLP alerts for Microsoft 365 and AI services is expl
 
 
 
-_Hands-on depth: [Lab 5 — Purview / DSPM](../labs/lab-5/). Exam note:_ DLP alert management: triage alert severity, matched SITs, user/activity context, and respond (notify, confirm false positive, escalate). Include AI services in your mental model — prompts/responses and Copilot interactions can be in scope depending on policy design.
+DLP alert management: triage alert severity, matched SITs, user/activity context, and respond (notify, confirm false positive, escalate). Include AI services in your mental model — prompts/responses and Copilot interactions can be in scope depending on policy design.
 
 </details>
 
