@@ -1,0 +1,119 @@
+---
+day: 7
+title: User experience
+moduleTitle: Clients, RDP properties, and Start VM on Connect
+moduleId: d7-experience
+minutes: 60
+practice: false
+summary: "Host pool properties, RDP settings, single sign-on, and Start VM on Connect. Official lab 2 needs the host pool from day 2."
+focus: "Skills measured: plan and implement user experience and client settings."
+tags:
+  - AZ-140-apps
+resources:
+  - { label: "Path: Manage user environments and apps", url: "https://learn.microsoft.com/en-us/training/paths/manage-user-environments-apps/", kind: course }
+  - { label: "Configure user experience settings", url: "https://learn.microsoft.com/en-us/training/modules/configure-user-experience-settings/", kind: course }
+  - { label: "Start VM on Connect", url: "https://learn.microsoft.com/en-us/azure/virtual-desktop/start-virtual-machine-connect", kind: learn }
+videos:
+  - label: Plan and implement user experience and client settings
+    action: watch
+    lectures:
+      - Choose an Azure Virtual Desktop client and deployment method
+      - Deploy and troubleshoot Azure Virtual Desktop clients
+      - Configure printing and device redirection using RDP properties on a host pool
+      - Configure user settings through Group Policy and Microsoft Endpoint Manager policies
+      - Configure session timeout properties
+      - Implement the Start Virtual Machine on Connect feature
+      - Assign and unassign personal desktops for users
+officialLabs:
+  - labId: lab-2
+lab: []
+tldr:
+  - "Device redirection, clipboard, and printers are RDP properties on the host pool. Group Policy or Intune can still apply inside the session."
+  - "Start VM on Connect powers on a deallocated session host when a user connects. A scaling plan changes how many hosts are on, on a schedule."
+  - "Start VM on Connect needs the Azure Virtual Desktop service principal to start the virtual machines."
+  - "A personal desktop is assigned and unassigned per user. A pooled desktop is not pinned to one user."
+trap: "Start VM on Connect does not resize the host pool on a clock. That is a scaling plan, on day 9."
+videoTip: "Watch the client and RDP lectures, then do lab 2. It also covers scheduled agent updates and single sign-on."
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="az140-d7-q1">
+Users must print to a local printer and map a local drive into the session. Where do you set that for the whole host pool?
+
+- [x] RDP properties on the host pool
+- [ ] The session host image definition in Azure Compute Gallery
+- [ ] A Conditional Access grant control
+- [ ] The FSLogix VHDLocations value
+
+Host pool RDP properties control redirection (drives, clipboard, printers, cameras) for connections to that pool. The image does not store the user's client devices. FSLogix stores the profile.
+
+[Source: RDP properties](https://learn.microsoft.com/en-us/azure/virtual-desktop/customize-rdp-properties)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Lab 2 configures RDP properties after it adds session hosts and reviews load balancing. Intune or Group Policy still configures settings inside Windows, such as Universal Print or a timeout that you also want enforced if someone signs in another way. Know which layer the question is pointing at.
+
+</details>
+
+<Quiz id="az140-d7-q2">
+Personal desktops are deallocated at night. You want a user's virtual machine to start when that user connects. What do you enable?
+
+- [x] Start VM on Connect, with permission for the Azure Virtual Desktop service to start the virtual machine
+- [ ] A breadth-first load-balancing algorithm
+- [ ] RDP Multipath
+- [ ] An Office container
+
+Start VM on Connect starts a stopped virtual machine at connection time. The service principal needs a role that can start the VM, such as Desktop Virtualization Power On Contributor, on the resource group that holds the session hosts. Load balancing does not power on a deallocated personal desktop by itself.
+
+[Source: Start VM on Connect](https://learn.microsoft.com/en-us/azure/virtual-desktop/start-virtual-machine-connect)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Lab 2 assigns that role to the Azure Virtual Desktop service principal while it configures Start VM on Connect. Scaling plans (day 9) are the schedule-based control for pooled capacity. You can use both, and they answer different questions.
+
+</details>
+
+<Quiz id="az140-d7-q3">
+Disconnected sessions are holding pooled capacity all afternoon. What do you set?
+
+- [x] Session time limits so idle and disconnected sessions end
+- [ ] A larger FSLogix container
+- [ ] Private Link on the workspace
+- [ ] Trusted Launch on the session host
+
+Session time-limit properties end sessions that are idle or disconnected. That returns the slot to the pool. Storage size and Private Link do not sign the user out.
+
+[Source: Configure a time limit policy](https://learn.microsoft.com/en-us/azure/virtual-desktop/autoscale-create-assign-scaling-plan)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Set the limits in host pool properties or with policy, and tell users that a disconnected session will not stay forever. Combine this with load balancing. A disconnected session still counts toward the max session limit until it ends.
+
+</details>
+
+<Quiz id="az140-d7-q4">
+A user must always return to the same session host. Which configuration is that?
+
+- [x] A personal host pool, with the desktop assigned to that user
+- [ ] A pooled host pool with breadth-first and FSLogix
+- [ ] A RemoteApp application group
+- [ ] Cloud Cache with two file shares
+
+Personal host pools have a desktop assignment. You assign and unassign the user when they change roles. Pooled plus FSLogix gives the same profile on any host, which is a different requirement. RemoteApp publishes an application, not a dedicated desktop.
+
+[Source: Personal desktop assignment](https://learn.microsoft.com/en-us/azure/virtual-desktop/configure-host-pool-personal-desktop-assignment-type)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Automatic assignment can give the next free personal desktop to the first user who connects. Direct assignment pins a named user. Unassign the desktop before you hand it to someone else, and decide whether the profile is local to that virtual machine or still in FSLogix.
+
+</details>

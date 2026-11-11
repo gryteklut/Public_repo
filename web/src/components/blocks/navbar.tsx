@@ -12,14 +12,16 @@ import { GITHUB_URL } from "@/consts";
 import { withBase } from "@/lib/base";
 import { cn } from "@/lib/utils";
 
-const ITEMS = [
+const FALLBACK_ITEMS = [
   { label: "Hub", href: "/" },
   { label: "Courses", href: "/courses/" },
-  { label: "AB-650", href: "/courses/ab-650/" },
-  { label: "Labs", href: "/courses/ab-650/labs/" },
 ];
 
-export const Navbar = () => {
+export const Navbar = ({
+  items = FALLBACK_ITEMS,
+}: {
+  items?: { label: string; href: string }[];
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [pathname, setPathname] = useState("");
 
@@ -27,7 +29,7 @@ export const Navbar = () => {
     setPathname(window.location.pathname);
   }, []);
 
-  const current = ITEMS.filter((link) => {
+  const current = items.filter((link) => {
     const path = withBase(link.href).replace(/\/$/, "") || "/";
     const here = pathname.replace(/\/$/, "") || "/";
     if (link.href === "/") return here === path;
@@ -54,7 +56,7 @@ export const Navbar = () => {
 
         <NavigationMenu className="max-lg:hidden">
           <NavigationMenuList>
-            {ITEMS.map((link) => (
+            {items.map((link) => (
               <NavigationMenuItem key={link.label}>
                 <a
                   href={withBase(link.href)}
@@ -125,7 +127,7 @@ export const Navbar = () => {
         )}
       >
         <nav className="divide-border flex flex-1 flex-col divide-y">
-          {ITEMS.map((link) => (
+          {items.map((link) => (
             <a
               key={link.label}
               href={withBase(link.href)}

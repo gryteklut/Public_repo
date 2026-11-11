@@ -1,0 +1,118 @@
+---
+day: 3
+title: Networking and Private Link
+moduleTitle: Plan networking, Shortpath, and Private Link
+moduleId: d3-network
+minutes: 75
+practice: false
+summary: "Capacity, RDP Shortpath, RDP Multipath, QoS, and Private Link. The hands-on is official lab 6, which needs the host pool from day 2."
+focus: "Skills measured: plan, implement, and manage networking for Azure Virtual Desktop."
+tags:
+  - AZ-140-infra
+resources:
+  - { label: "Implement and manage networking for Azure Virtual Desktop", url: "https://learn.microsoft.com/en-us/training/modules/implement-manage-networking-azure-virtual-desktop/", kind: course }
+  - { label: "RDP Shortpath", url: "https://learn.microsoft.com/en-us/azure/virtual-desktop/rdp-shortpath", kind: learn }
+  - { label: "RDP Multipath", url: "https://learn.microsoft.com/en-us/azure/virtual-desktop/rdp-multipath", kind: learn }
+videos:
+  - label: Plan, implement, and manage networking for Azure Virtual Desktop
+    action: watch
+    lectures:
+      - Assess and calculate network capacity and speed requirements for AVD
+      - Plan and implement Azure virtual network connectivity
+      - Manage connectivity to the internet and on-premises networks
+      - Plan and implement RDP Shortpath and quality of service (QoS) policies
+      - Plan and implement name resolution for Azure Virtual Desktop
+      - Monitor and troubleshoot network connectivity
+officialLabs:
+  - labId: lab-6
+lab: []
+tldr:
+  - "RDP Shortpath is a direct UDP path between the client and the session host. The Azure Virtual Desktop control plane still brokers the session."
+  - "RDP Multipath keeps extra UDP and TCP paths and switches if the active path fails. Configure Shortpath; Multipath does not need a separate feature switch."
+  - "QoS marks RDP traffic with DSCP. It does not replace a firewall or an NSG."
+  - "Private Link uses private endpoints for the host pool connection, feed download, and initial feed discovery."
+trap: "Private Link is not a substitute for the session host subnet, and Shortpath is not a reason to open RDP to the internet."
+videoTip: "The networking section is the watch list. Lab 6 is Private Link only; it assumes lab 1 is already done."
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="az140-d3-q1">
+You want the remote desktop transport to use a direct UDP path when the network allows it. Which feature is that?
+
+- [x] RDP Shortpath
+- [ ] A public inbound rule for TCP 3389 on the session host
+- [ ] Azure Bastion
+- [ ] A scaling plan
+
+RDP Shortpath establishes a direct UDP connection (STUN, or TURN when a relay is required). Sign-in and brokering still use Azure Virtual Desktop. Opening TCP 3389 to the internet is the pattern you avoid.
+
+[Source: RDP Shortpath](https://learn.microsoft.com/en-us/azure/virtual-desktop/rdp-shortpath)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Shortpath can run over a public network or a managed network (VPN or ExpressRoute). For a managed network you also plan DNS so the client can resolve the session host. Bandwidth planning still matters: graphics, printing, and file copy cost more than keyboard input.
+
+</details>
+
+<Quiz id="az140-d3-q2">
+RDP Multipath is enabled in the environment and Shortpath is configured. What does Multipath add?
+
+- [x] It monitors more than one transport path and moves the session to a standby UDP or TCP path if the active path fails
+- [ ] It replaces the Azure Virtual Desktop broker with a point-to-site VPN
+- [ ] It turns off Shortpath and forces TCP 3389
+- [ ] It is a QoS policy that only changes the DSCP value
+
+Multipath evaluates multiple Shortpath UDP routes and can keep redundant TCP Reverse Connect paths. If the active path degrades, it switches. Microsoft recommends Shortpath as the primary transport. There is no separate Multipath toggle beyond those prerequisites.
+
+[Source: RDP Multipath](https://learn.microsoft.com/en-us/azure/virtual-desktop/rdp-multipath)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+UDP Shortpath stays the preferred transport when it is available. Redundant TCP paths help networks that block UDP. The Windows App version has to be new enough for the paths you expect. QoS is a different control: it marks packets so the network can prioritize them.
+
+</details>
+
+<Quiz id="az140-d3-q3">
+You must keep the Azure Virtual Desktop feed and host-pool connections on your virtual network. Which design matches Private Link?
+
+- [x] Private endpoints for the host pool connection, workspace feed download, and initial feed discovery
+- [ ] One private endpoint on the session host subnet that also replaces the NSG
+- [ ] A public IP on every session host, plus a private DNS zone
+- [ ] Azure Bastion in front of the Windows App
+
+Lab 6 creates those private endpoints, checks that they work, and then shows how to allow public network access again. Private Link does not remove the need for name resolution or for the session host subnet.
+
+[Source: Private Link with Azure Virtual Desktop](https://learn.microsoft.com/en-us/azure/virtual-desktop/private-link-setup)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+The three endpoints in the lab are connection (host pool), feed download (workspace), and initial feed discovery. You re-register the DesktopVirtualization provider first, add a subnet, then create the endpoints. Clients on the private network use private DNS.
+
+</details>
+
+<Quiz id="az140-d3-q4">
+Which control marks Azure Virtual Desktop traffic so the network can prioritize it?
+
+- [x] A QoS policy that sets DSCP on RDP traffic
+- [ ] The host pool load-balancing algorithm
+- [ ] FSLogix Cloud Cache
+- [ ] The Desktop Virtualization User role
+
+QoS policies tag RDP packets. They do not choose a session host and they do not authenticate the user. Shortpath and Multipath are the transport features. QoS sits beside them.
+
+[Source: Quality of service for Azure Virtual Desktop](https://learn.microsoft.com/en-us/azure/virtual-desktop/rdp-quality-of-service-qos)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+The usual policy uses a DSCP value (the course uses DSCP 46) on the RDP shortpath ports. Apply it where you control the client or the network path. An NSG or Azure Firewall is still what allows or denies the endpoints.
+
+</details>

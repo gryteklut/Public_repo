@@ -1,0 +1,129 @@
+---
+day: 1
+title: Plan host pools
+moduleTitle: Plan host pools, licensing, and capacity
+moduleId: d1-plan
+minutes: 60
+practice: false
+summary: "Host pool type, load balancing, licensing, OS choice, and where the resources live. Hands-on starts on day 2."
+focus: "Skills measured: plan host pools and session hosts (infrastructure, 40–45%)."
+tags:
+  - AZ-140-infra
+resources:
+  - { label: "Path: Plan an Azure Virtual Desktop implementation", url: "https://learn.microsoft.com/en-us/training/paths/plan-azure-virtual-desktop-implementation/", kind: course }
+  - { label: "Azure Virtual Desktop architecture", url: "https://learn.microsoft.com/en-us/training/modules/azure-virtual-desktop-architecture/", kind: course }
+  - { label: "Design the Azure Virtual Desktop architecture", url: "https://learn.microsoft.com/en-us/training/modules/design-azure-virtual-desktop-architecture/", kind: course }
+  - { label: "AZ-140 study guide", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-140", kind: learn }
+videos:
+  - label: Introduction
+    action: watch
+    note: Watch once, then use the plan section.
+    lectures:
+      - Welcome to the course!
+      - Order of concepts covered in the course
+      - "DO NOT SKIP: Portals renamed!"
+  - label: Plan host pools and session hosts
+    action: watch
+    lectures:
+      - Recommend resource groups, subscriptions, and management groups
+      - Recommend an operating system (OS) for an Azure Virtual Desktop implementation
+      - Recommend an appropriate licensing model for Azure Virtual Desktop
+      - Plan a host pools architecture
+      - Configuration for performance requirements
+      - Calculate and recommend a configuration for Azure Virtual Machines capacity
+  - label: (OPTIONAL) Other foundation knowledge
+    action: skip
+    note: Skip unless virtual networks or PowerShell are new. The firewall lessons spend Azure credit.
+officialLabs: []
+lab: []
+outOfScopeNote: Do not build the host pool today. Lab 1 on day 2 is the deploy lab.
+tldr:
+  - "A pooled host pool shares session hosts. A personal host pool assigns one desktop to one user."
+  - "Breadth-first spreads sessions. Depth-first fills a session host before using the next one, and it needs a max session limit."
+  - "Windows 11 Enterprise multi-session is an Azure Virtual Desktop entitlement. Windows Server session hosts still need RDS CALs."
+  - "Management groups organize subscriptions. Session hosts are virtual machines in a resource group."
+trap: "A Microsoft 365 E3 or E5 license does not cover a Windows Server session host. That host needs an RDS CAL."
+videoTip: "Watch the plan section before the deploy labs. Licensing and pooled versus personal show up in almost every scenario."
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="az140-d1-q1">
+One hundred users need a Windows 11 desktop, and several users can share each virtual machine. Profiles must follow the user. Which host pool do you plan?
+
+- [x] Pooled, with a Windows 11 Enterprise multi-session image and FSLogix profile containers
+- [ ] Personal, with one Windows 11 Enterprise virtual machine per user and no profile product
+- [ ] Pooled, with Windows Server session hosts and no extra license
+- [ ] A single shared virtual machine that is not in a host pool
+
+Pooled host pools share session hosts. Windows 11 Enterprise multi-session exists for that model. FSLogix holds the profile because the user may land on a different host next time. Personal pools are one user per desktop. Windows Server hosts need RDS CALs.
+
+[Source: Host pool load balancing](https://learn.microsoft.com/en-us/azure/virtual-desktop/host-pool-load-balancing)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Pooled host pools serve many users from a set of session hosts. Personal host pools assign a user to one desktop. Multi-session Windows 10 or 11 Enterprise is the usual pooled image. A personal desktop is typically single-session Windows Enterprise or Windows Server.
+
+</details>
+
+<Quiz id="az140-d1-q2">
+You set the load-balancing algorithm to depth-first. Which statement matches the algorithm?
+
+- [x] New sessions fill the session host with the most sessions, up to the max session limit, before the next host is used
+- [ ] New sessions always go to the session host with the fewest sessions
+- [ ] The max session limit is ignored, because depth-first has no limit
+- [ ] Depth-first applies only to personal host pools
+
+Depth-first saturates one host, then moves on. It requires a max session limit. Breadth-first spreads users across available hosts, and the max session limit is optional for that algorithm.
+
+[Source: Configure host pool load balancing](https://learn.microsoft.com/en-us/azure/virtual-desktop/host-pool-load-balancing)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Breadth-first is the spread algorithm. Depth-first is the fill algorithm and needs a max session limit so a host cannot take unlimited sessions. The official deploy lab uses breadth-first and notes that the max session limit is optional in that case.
+
+</details>
+
+<Quiz id="az140-d1-q3">
+Which license story is valid for Azure Virtual Desktop?
+
+- [x] A user with Microsoft 365 E3 can use a Windows 11 Enterprise multi-session session host. A Windows Server session host still needs an RDS CAL.
+- [ ] Microsoft 365 E3 covers both Windows 11 multi-session and Windows Server session hosts
+- [ ] Azure Virtual Desktop includes Windows Server CALs, so you never buy RDS CALs
+- [ ] Only a Windows 365 license can be used for Azure Virtual Desktop
+
+Eligible per-user licenses (including Microsoft 365 E3, E5, A3, A5, and F3, and Windows Enterprise E3 or E5) entitle the user to Windows 10 or 11 client session hosts, including multi-session. Windows Server session hosts are a separate RDS CAL requirement. You still pay for compute, storage, and networking.
+
+[Source: Azure Virtual Desktop licensing](https://learn.microsoft.com/en-us/azure/virtual-desktop/licensing)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+The exam separates the control-plane entitlement from Azure resource charges. Client Windows session hosts ride on an eligible user license. Windows Server session hosts need RDS CALs with Software Assurance or the equivalent subscription. Windows 365 is a different product (Cloud PC), not the license for an Azure Virtual Desktop host pool.
+
+</details>
+
+<Quiz id="az140-d1-q4">
+You are placing a new host pool in the subscription hierarchy. Which recommendation fits?
+
+- [x] Put the host pool and its session hosts in a resource group. Use management groups to organize subscriptions, not to hold the virtual machines.
+- [ ] Nest the session-host resource group inside another resource group
+- [ ] Create the session hosts in a management group and skip resource groups
+- [ ] Put each session host in a different subscription from the host pool so scaling works
+
+Resource groups hold the Azure resources. They cannot be nested. Management groups sit above subscriptions. Keep the host pool and its session hosts where you can apply the same policy and RBAC.
+
+[Source: Resource groups](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Management groups, subscriptions, and resource groups are different scopes. Azure Virtual Desktop objects (host pool, application group, workspace) and the session host virtual machines are resources. The deploy lab creates them in resource groups such as `az140-21e-RG`.
+
+</details>

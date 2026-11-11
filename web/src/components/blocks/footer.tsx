@@ -3,13 +3,18 @@ import { ArrowUpRight } from "lucide-react";
 import { GITHUB_URL } from "@/consts";
 import { withBase } from "@/lib/base";
 
-export function Footer() {
-  const navigation = [
-    { name: "Hub", href: withBase("/") },
-    { name: "Courses", href: withBase("/courses/") },
-    { name: "AB-650", href: withBase("/courses/ab-650/") },
-    { name: "Labs", href: withBase("/courses/ab-650/labs/") },
-  ];
+export function Footer({
+  items = [
+    { label: "Hub", href: "/" },
+    { label: "Courses", href: "/courses/" },
+  ],
+}: {
+  items?: { label: string; href: string }[];
+}) {
+  const navigation = items.map((item) => ({
+    name: item.label,
+    href: withBase(item.href),
+  }));
 
   return (
     <footer className="pt-16 lg:pt-20">

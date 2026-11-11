@@ -4,6 +4,14 @@ import { Button } from "@/components/ui/button";
 import { loadCourseProgress } from "@/lib/courseProgress";
 import { withBase } from "@/lib/base";
 
+export type CourseExternal = {
+  provider: string;
+  title: string;
+  url: string;
+  instructor?: string;
+  instructorUrl?: string;
+};
+
 export function CourseCard({
   slug,
   code,
@@ -12,6 +20,8 @@ export function CourseCard({
   status,
   color,
   total = 0,
+  labsHref,
+  external,
 }: {
   slug: string;
   code: string;
@@ -20,6 +30,8 @@ export function CourseCard({
   status: string;
   color: string;
   total?: number;
+  labsHref?: string;
+  external?: CourseExternal;
 }) {
   const [, setTick] = useState(0);
   void setTick;
@@ -28,15 +40,10 @@ export function CourseCard({
   const done = progress
     ? Object.values(progress.done).filter(Boolean).length
     : 0;
+  const planHref = withBase(`/courses/${slug}/`);
 
   return (
-    <a
-      href={soon ? undefined : withBase(`/courses/${slug}/`)}
-      className={`course-card group block p-6 shadow-xs transition-colors ${
-        soon ? "pointer-events-none opacity-70" : "hover:border-foreground/25"
-      }`}
-      aria-disabled={soon}
-    >
+    <article className="course-card flex h-full flex-col p-6 shadow-xs">
       <div className="mb-3 flex items-center gap-2">
         <span
           className="size-3 rounded-full"
@@ -44,28 +51,73 @@ export function CourseCard({
           aria-hidden
         />
         <p className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-          {code} · {status}
+          {code}
+          {soon ? ` · ${status}` : ""}
         </p>
       </div>
       <h3 className="text-xl font-semibold tracking-tight">{title}</h3>
       <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
         {subtitle}
       </p>
+      {external && (
+        <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
+          <span className="text-foreground font-semibold">
+            {external.provider}:
+          </span>{" "}
+          <a
+            className="font-medium underline-offset-4 hover:underline"
+            href={external.url}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {external.title}
+          </a>
+          {external.instructor && (
+            <>
+              {" "}
+              ·{" "}
+              {external.instructorUrl ? (
+                <a
+                  className="underline-offset-4 hover:underline"
+                  href={external.instructorUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {external.instructor}
+                </a>
+              ) : (
+                external.instructor
+              )}
+            </>
+          )}
+        </p>
+      )}
       {!soon && total > 0 && (
         <p className="text-muted-foreground mt-3 text-xs">
           {done}/{total} days complete
         </p>
       )}
-      <div className="mt-5">
-        <Button variant="outline" className="gap-2" asChild>
-          <span>
-            {soon ? "Coming soon" : "Open course"}
-            {!soon && (
-              <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+      <div className="mt-5 flex flex-wrap gap-2">
+        {soon ? (
+          <Button variant="outline" disabled>
+            Coming soon
+          </Button>
+        ) : (
+          <>
+            <Button asChild>
+              <a href={planHref}>
+                10-day plan
+                <ArrowRight className="size-4" />
+              </a>
+            </Button>
+            {labsHref && (
+              <Button variant="outline" asChild>
+                <a href={withBase(labsHref)}>Official labs</a>
+              </Button>
             )}
-          </span>
-        </Button>
+          </>
+        )}
       </div>
-    </a>
+    </article>
   );
 }

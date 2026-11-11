@@ -1,0 +1,125 @@
+---
+day: 4
+title: Storage and FSLogix
+moduleTitle: Plan storage and FSLogix profile containers
+moduleId: d4-fslogix
+minutes: 60
+practice: false
+summary: "Profile containers, Office containers, Cloud Cache, Azure Files, and Azure NetApp Files. The Entra ID lab track has no FSLogix lab, so this day is Microsoft Learn plus the Udemy section."
+focus: "Skills measured: storage for user data, and plan and implement FSLogix."
+tags:
+  - AZ-140-infra
+  - AZ-140-apps
+resources:
+  - { label: "Implement and manage storage for Azure Virtual Desktop", url: "https://learn.microsoft.com/en-us/training/modules/implement-manage-storage-azure-virtual-desktop/", kind: course }
+  - { label: "Implement and manage FSLogix", url: "https://learn.microsoft.com/en-us/training/modules/implement-manage-fslogix/", kind: course }
+  - { label: "FSLogix profile containers", url: "https://learn.microsoft.com/en-us/azure/virtual-desktop/fslogix-profile-containers", kind: learn }
+videos:
+  - label: Plan and implement storage for Azure Virtual Desktop user data
+    action: watch
+    lectures:
+      - Plan storage for Azure Virtual Desktop user data
+      - Visualizing storage for FSLogix components
+      - Implement storage accounts
+      - Implement file shares
+      - Understanding Azure NetApp Files
+  - label: Plan and implement FSLogix
+    action: watch
+    lectures:
+      - Recommend FSLogix configuration
+      - Install and configure FSLogix
+      - Configure Profile Containers
+      - Office Containers and Cloud Cache
+officialLabs: []
+lab: []
+outOfScopeNote: Do not use the legacy AD DS profile lab. Microsoft Learning no longer maintains that track.
+tldr:
+  - "A profile container stores the Windows profile in a VHD or VHDX on an SMB share. The Office container (ODFC) is a separate disk for Office data."
+  - "Cloud Cache keeps a local cache and can write to more than one storage location."
+  - "Entra-joined hosts without Active Directory use Azure Files with Microsoft Entra Kerberos. Azure NetApp Files SMB still needs AD DS or Entra Domain Services."
+  - "FSLogix application masking hides apps. It does not deliver MSIX packages. That is App attach."
+trap: "Putting the profile on the session host OS disk defeats a pooled host pool. The next host will not see that profile."
+videoTip: "Watch the storage section and the FSLogix section. There is no Entra ID lab for this day."
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="az140-d4-q1">
+Pooled users must keep their Windows profile when they land on a different session host. What do you configure?
+
+- [x] An FSLogix profile container on an SMB share the session hosts can reach
+- [ ] A local profile on drive C of each session host
+- [ ] An MSIX app attach package for the profile
+- [ ] A scaling plan with a ramp-up schedule
+
+FSLogix mounts a profile VHD(X) from a file share at sign-in. A local profile stays on whichever host the user used last. App attach delivers applications, not the profile.
+
+[Source: FSLogix profile containers](https://learn.microsoft.com/en-us/azure/virtual-desktop/fslogix-profile-containers)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+`VHDLocations` (or Cloud Cache locations) points at the share. The share permissions must let the user create and mount their own container. OneDrive Known Folder Move can slim the profile, but it is not a substitute for the container when the whole profile must roam.
+
+</details>
+
+<Quiz id="az140-d4-q2">
+You need Outlook and Teams cache data in its own disk, separate from the Windows profile. Which FSLogix option is that?
+
+- [x] An Office container (ODFC)
+- [ ] Cloud Cache with a single SMB location
+- [ ] Application masking
+- [ ] A personal host pool
+
+The Office container stores Office data, including Outlook and Teams cache, in a second container. The profile container still holds the rest of the profile. You can use one, the other, or both.
+
+[Source: FSLogix Office container](https://learn.microsoft.com/en-us/fslogix/concepts-container-types)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Cloud Cache is not a container type. It is the way a container is stored: a local cache plus one or more remote locations. Application masking hides installed applications from selected users. A personal host pool does not split Office data into its own disk.
+
+</details>
+
+<Quiz id="az140-d4-q3">
+The profile share must survive a storage outage, and sign-in should keep working from a local cache. What do you enable?
+
+- [x] FSLogix Cloud Cache aimed at more than one storage location
+- [ ] A second host pool in the same region with no profile product
+- [ ] RDP Shortpath
+- [ ] Depth-first load balancing
+
+Cloud Cache reads and writes through a local cache and can replicate to multiple SMB locations. If one location is down, the other can still serve the profile. Shortpath and load balancing do not store user data.
+
+[Source: Cloud Cache](https://learn.microsoft.com/en-us/fslogix/concepts-container-storage-options)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Cloud Cache adds sign-in I/O on the session host because the cache disk is local. Size that disk. Use it when you need resiliency across storage accounts or regions, not as the default for every small pool.
+
+</details>
+
+<Quiz id="az140-d4-q4">
+Session hosts are Microsoft Entra joined and there is no domain controller. Which storage pairing fits FSLogix?
+
+- [x] Azure Files with Microsoft Entra Kerberos
+- [ ] Azure NetApp Files SMB with no directory service
+- [ ] A storage account that allows only shared-key access from the public internet
+- [ ] The session host temporary disk
+
+Microsoft Entra Kerberos lets Entra-joined clients use identity-based access to Azure Files. Azure NetApp Files SMB authentication uses Active Directory Domain Services or Microsoft Entra Domain Services, not Entra Kerberos alone. Shared-key access is not the per-user model FSLogix needs.
+
+[Source: Microsoft Entra Kerberos for Azure Files](https://learn.microsoft.com/en-us/azure/storage/files/storage-files-identity-auth-hybrid-identities-enable)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Azure Files is the usual share for profile containers. Premium file shares are the performance choice the storage lectures use. Azure NetApp Files is the large, low-latency option and still expects an Active Directory identity for SMB. Either share must be on a network the session hosts can reach.
+
+</details>

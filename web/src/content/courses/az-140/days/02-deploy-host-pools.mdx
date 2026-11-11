@@ -1,0 +1,122 @@
+---
+day: 2
+title: Deploy host pools
+moduleTitle: Deploy Entra-joined host pools and session hosts
+moduleId: d2-deploy
+minutes: 75
+practice: false
+summary: "Create the pooled host pool, Entra-joined session hosts, application groups, and workspace. This is official lab 1."
+focus: "Skills measured: implement host pools and session hosts. Do lab 1 instead of copying the steps here."
+tags:
+  - AZ-140-infra
+resources:
+  - { label: "Path: Implement an Azure Virtual Desktop infrastructure", url: "https://learn.microsoft.com/en-us/training/paths/implement-azure-virtual-infrastructure/", kind: course }
+  - { label: "Create and configure host pools and session hosts", url: "https://learn.microsoft.com/en-us/training/modules/create-configure-host-pools-session-hosts/", kind: course }
+  - { label: "Create a host pool", url: "https://learn.microsoft.com/en-us/azure/virtual-desktop/create-host-pools-azure-marketplace", kind: learn }
+videos:
+  - label: Implement host pools and session hosts
+    action: watch
+    lectures:
+      - Create host pools and session hosts by using the Azure portal
+      - Automate creation of AVD using PowerShell, Azure CLI, ARM Templates, and Bicep
+      - Configure host pool and session host settings
+      - Apply a Windows client or Windows Server license to a session host
+  - label: Setting up for hands on
+    action: skim
+    note: Skim only if you still need an Azure subscription for practice.
+    lectures:
+      - Creating a free Azure Account
+      - Activating an Entra ID P2 license
+officialLabs:
+  - labId: lab-1
+lab: []
+tldr:
+  - "The supported Microsoft Learning track joins session hosts to Microsoft Entra ID. Active Directory Domain Services is still an exam option, but it is not this lab."
+  - "A host pool has a desktop application group, a RemoteApp application group, or both. Users are assigned on the application group."
+  - "Register the Microsoft.DesktopVirtualization resource provider before you create the host pool."
+  - "The lab uses a pooled host pool, breadth-first, Trusted Launch, and Windows 11 Enterprise multi-session with Microsoft 365 Apps."
+trap: "Assigning a user the Owner role on the subscription does not publish the desktop. Assign the user or group to the application group."
+videoTip: "Watch the portal lecture, then do lab 1. The automation lecture covers PowerShell, CLI, ARM, and Bicep, which the exam still measures."
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="az140-d2-q1">
+The current Microsoft Learning AZ-140 labs join the session hosts to which directory?
+
+- [x] Microsoft Entra ID
+- [ ] Active Directory Domain Services only
+- [ ] Microsoft Entra Domain Services only
+- [ ] A local SAM account database, with no directory
+
+The maintained lab track is Labs_EntraID. Session hosts are Microsoft Entra joined. AD DS and Entra Domain Services remain identity options on the exam, and their old labs are no longer maintained.
+
+[Source: Entra joined session hosts](https://learn.microsoft.com/en-us/azure/virtual-desktop/azure-ad-joined-session-hosts)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+When you create the host pool, "Select which directory you would like to join" is set to Microsoft Entra ID in lab 1. Hybrid and domain-join options still exist. Know which one a scenario requires instead of assuming every host is domain-joined.
+
+</details>
+
+<Quiz id="az140-d2-q2">
+Users in the AVD-DAG group must see a full desktop. Where do you grant that access?
+
+- [x] On the desktop application group, assign the group
+- [ ] On the virtual network, add the group to the subnet
+- [ ] On each session host, add the group to the local Administrators group
+- [ ] On the workspace only, with no application group assignment
+
+Users receive desktops and RemoteApps through application group assignments. The workspace is what the client subscribes to. Local administrator rights are not how you publish a desktop.
+
+[Source: Built-in Azure Virtual Desktop roles](https://learn.microsoft.com/en-us/azure/virtual-desktop/rbac)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Lab 1 creates or uses a desktop application group (`az140-21-hp1-DAG`) and a RemoteApp application group, then assigns Entra groups to them. The Desktop Virtualization User role is the built-in role for using published resources.
+
+</details>
+
+<Quiz id="az140-d2-q3">
+Lab 1 sets the host pool type to pooled and the load-balancing algorithm to breadth-first. What is true about the max session limit?
+
+- [x] It is optional for breadth-first
+- [ ] It is required for breadth-first and optional for depth-first
+- [ ] It applies only to personal host pools
+- [ ] It replaces the need to choose an image
+
+The lab note says the max session limit is optional when you use breadth-first. Depth-first needs the limit so one host stops accepting sessions.
+
+[Source: Host pool load balancing](https://learn.microsoft.com/en-us/azure/virtual-desktop/host-pool-load-balancing)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Preferred app group type in the lab is Desktop. You can still create a RemoteApp application group later. The preferred type is the default experience, not a ban on the other type.
+
+</details>
+
+<Quiz id="az140-d2-q4">
+The session hosts in the deploy lab use Trusted Launch. What is Trusted Launch?
+
+- [x] A virtual machine security type that uses Secure Boot and vTPM
+- [ ] The Azure Bastion SKU used for user connections
+- [ ] A scaling plan mode
+- [ ] An FSLogix container type
+
+Trusted Launch is the security type on the session host virtual machine (Secure Boot, vTPM, and related boot protection). It is not the remote desktop client and not Bastion. The exam also lists confidential VMs as a separate security option.
+
+[Source: Trusted Launch](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+The lab sets Security type to Trusted launch virtual machines, public inbound ports to No, and the image to Windows 11 Enterprise multi-session plus Microsoft 365 Apps. Users connect through Azure Virtual Desktop, not through a public RDP port.
+
+</details>

@@ -1,0 +1,120 @@
+---
+day: 8
+title: Apps and clients
+moduleTitle: RemoteApp, App attach, and the Remote Desktop client
+moduleId: d8-apps
+minutes: 60
+practice: false
+summary: "Connect with the Windows client, then place RemoteApp, App attach, OneDrive, and Teams. Official lab 4 needs labs 1 and 2."
+focus: "Skills measured: client settings, and install and configure apps on a session host."
+tags:
+  - AZ-140-apps
+resources:
+  - { label: "Install and configure apps on a session host", url: "https://learn.microsoft.com/en-us/training/modules/install-configure-apps-session-host/", kind: course }
+  - { label: "App attach", url: "https://learn.microsoft.com/en-us/azure/virtual-desktop/app-attach-overview", kind: learn }
+  - { label: "Windows App", url: "https://learn.microsoft.com/en-us/azure/virtual-desktop/users/connect-windows", kind: learn }
+videos:
+  - label: Install and configure apps on a session host
+    action: watch
+    lectures:
+      - Choose a method for deploying an app to Azure Virtual Desktop
+      - Dynamic application delivery by using MSIX app attach
+      - Create and configure an application group
+      - Publish an application as a RemoteApp
+      - Assign users to application groups
+      - Implement FSLogix application masking
+      - "Manage OneDrive, Teams, Apps & Browsers within AVD multisessions"
+officialLabs:
+  - labId: lab-4
+lab: []
+outOfScopeNote: RemoteApp assignment is already in lab 1. Use that lab for the portal steps. This day adds the client connection and the Learn module for App attach. There is no separate Entra ID lab for App attach.
+tldr:
+  - "A RemoteApp application group publishes individual apps. Users must be assigned to that group."
+  - "App attach delivers MSIX packages from a file share without baking the app into the image. FSLogix application masking only hides an app that is already installed."
+  - "Microsoft 365 Apps on multi-session Windows use shared computer activation. OneDrive on multi-session uses the per-machine install."
+  - "Teams media uses the Remote Desktop multimedia redirection stack so audio and video are handled on the client."
+trap: "App attach and FSLogix application masking are different. Masking does not deploy a package. App attach does not roam the profile."
+videoTip: "Watch the apps section. Lab 4 is the client connection, not the packaging lab."
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="az140-d8-q1">
+Accountants need only the finance application, not a full desktop. What do you publish?
+
+- [x] A RemoteApp in a RemoteApp application group, assigned to the accountants group
+- [ ] A second personal desktop for each accountant
+- [ ] An FSLogix profile container that includes the executable
+- [ ] A private endpoint for the application
+
+RemoteApp publishes selected applications from a session host. Assignment is on the RemoteApp application group. Lab 1 already creates that group and assigns the AVD-RemoteApp group. A profile container does not publish an app to the client.
+
+[Source: Publish applications](https://learn.microsoft.com/en-us/azure/virtual-desktop/publish-applications)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+A host pool can have a desktop application group and a RemoteApp application group. The preferred app group type is the default, not a lock. Users only see what their assignments include. The same session host image can back both groups.
+
+</details>
+
+<Quiz id="az140-d8-q2">
+You must deliver an MSIX application to pooled session hosts without rebuilding the image. What do you use?
+
+- [x] App attach, with the package on a share the session hosts can read
+- [ ] FSLogix application masking
+- [ ] A scaling plan
+- [ ] RDP Shortpath
+
+App attach (the current name of the MSIX app attach model) expands an MSIX package from a virtual disk or CIM on a file share and attaches it for the users you assign. Masking hides an application that is already on the image. It does not deliver a new package.
+
+[Source: App attach](https://learn.microsoft.com/en-us/azure/virtual-desktop/app-attach-overview)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Create the package, stage it on a share, register it with the host pool, and assign it. The image stays smaller and app updates do not require a new gallery version. The maintained Entra ID labs do not include a packaging lab. Use the Learn module for the steps.
+
+</details>
+
+<Quiz id="az140-d8-q3">
+You install Microsoft 365 Apps and OneDrive on Windows 11 Enterprise multi-session. Which pair is required?
+
+- [x] Shared computer activation for Microsoft 365 Apps, and the per-machine OneDrive install
+- [ ] One Microsoft 365 Apps install per user profile, and the per-user OneDrive setup
+- [ ] An RDS CAL for Microsoft 365 Apps, and no OneDrive
+- [ ] App attach for Word, and a local profile for OneDrive
+
+Multi-session hosts share the Windows installation. Microsoft 365 Apps must use shared computer activation so each user activates in their session. OneDrive must be installed per machine so every user on that host can run it. Per-user installers fight a multi-session image.
+
+[Source: Microsoft 365 Apps on multi-session](https://learn.microsoft.com/en-us/azure/virtual-desktop/install-office-on-wvd-master-image)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Browsers on a multi-session image should be installed once for the machine, with user data in the profile container. Do not confuse this with App attach. Office in the image is a common choice. App attach is for apps you want to assign dynamically.
+
+</details>
+
+<Quiz id="az140-d8-q4">
+Teams meetings on the session host are using too much CPU. Which fix matches the exam skill?
+
+- [x] Use Teams media optimization with the Remote Desktop WebRTC redirector so media is processed on the client
+- [ ] Turn off RDP Shortpath
+- [ ] Put the Teams cache in a public blob container
+- [ ] Publish Teams only as a RemoteApp and disable the redirector
+
+Media optimization keeps the Teams media stack on the user's device. The session host sends the UI, not every video frame. The WebRTC redirector service on the session host is part of that path. Shortpath helps latency. It is not the Teams optimization feature.
+
+[Source: Teams on Azure Virtual Desktop](https://learn.microsoft.com/en-us/azure/virtual-desktop/teams-on-avd)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Install the recommended Teams version for Azure Virtual Desktop and the multimedia redirection components on the image. Test with the client the users actually have (Windows App or the older Remote Desktop client). Lab 4 is where you install the client and subscribe to the workspace.
+
+</details>

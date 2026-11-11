@@ -1,0 +1,21 @@
+---
+import DefaultLayout from "@/layouts/DefaultLayout.astro";
+import { OfficialLabsOverview } from "@/components/courses/OfficialLabsOverview";
+import { withBase } from "@/lib/base";
+---
+
+<DefaultLayout
+  title="AZ-140 hands-on labs"
+  description="Official Microsoft Learning AZ-140 Entra ID labs with progress tracking"
+>
+  <div class="course-shell ms-lab-theme container pt-28 pb-20 lg:pt-40">
+    <nav class="text-muted-foreground mb-6 flex flex-wrap gap-2 text-sm">
+      <a class="hover:text-foreground" href={withBase("/courses/")}>Courses</a>
+      <span>/</span>
+      <a class="hover:text-foreground" href={withBase("/courses/az-140/")}>AZ-140</a>
+      <span>/</span>
+      <span class="text-foreground">Labs</span>
+    </nav>
+    <OfficialLabsOverview client:only="react" code="AZ-140" courseSlug="az-140" />
+  </div>
+</DefaultLayout>
