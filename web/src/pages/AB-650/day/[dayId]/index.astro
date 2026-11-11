@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro'
+import Ab650Day from '../../../../components/ab650/Ab650Day'
+import { curriculum } from '../../../../data/curriculum'
+import '../../../../styles/ab650.css'
+
+export function getStaticPaths() {
+  return curriculum.map((day) => ({
+    params: { dayId: day.id },
+  }))
+}
+
+const { dayId } = Astro.params
+---
+<BaseLayout title={`AB-650 Day — ${dayId}`} description="AB-650 study day">
+  <Ab650Day client:load dayId={dayId!} />
+</BaseLayout>
