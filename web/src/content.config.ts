@@ -51,17 +51,25 @@ const courses = defineCollection({
 
 const courseDays = defineCollection({
   loader: glob({
-    pattern: "*/days/*.{md,mdx}",
+    pattern: "*/sessions/*.{md,mdx}",
     base: "./src/content/courses",
   }),
   schema: z.object({
-    day: z.number(),
+    session: z.number(),
+    week: z.number(),
+    kind: z.enum(["learn", "review", "mock"]).default("learn"),
     title: z.string(),
     moduleTitle: z.string(),
     moduleId: z.string(),
     minutes: z.number(),
-    practice: z.boolean().default(false),
+    budget: z
+      .array(z.object({ label: z.string(), minutes: z.number() }))
+      .default([]),
+    /** Cut from the hour. Shown on the week review, not deleted. */
+    optional: z.array(z.string()).default([]),
     summary: z.string(),
+    /** What this hour includes. Longer lab work stays in the week optional list. */
+    hourNote: z.string().optional(),
     focus: z.string(),
     tags: z.array(z.string()).default([]),
     resources: z.array(resourceSchema).default([]),

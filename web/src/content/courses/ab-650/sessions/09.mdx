@@ -1,10 +1,11 @@
 ---
-day: 8
+week: 2
+kind: learn
+session: 9
 title: Agents and Agent 365
 moduleTitle: "Implement, manage, and govern agents"
 moduleId: d8-agents
 minutes: 60
-practice: false
 summary: "Agent identity, the agent registry, owners, and Agent 365 governance."
 focus: "Entra Agent ID, registry lifecycle, owners, access packages/CA for agents, tools, and Agent 365 governance."
 tags:
@@ -37,7 +38,7 @@ videos:
       - Evaluate compliance gaps by using Agent 365
 officialLabs:
   - labId: lab-7
-    exerciseIds: [lab7-ex1, lab7-ex2, lab7-ex3, lab7-ex4]
+    exerciseIds: [lab7-ex1]
 lab:
   - "If your E5/Frontier SKU does not expose Agent Registry / Agent 365 UI, complete Lab 7 conceptually from the official steps and note the gap — exam still expects the control-plane ideas."
 tldr:
@@ -47,7 +48,15 @@ tldr:
   - "Beyond build/publish: operate agents."
 trap: "Agent ID is the identity. The registry approves what is published. Access packages and Conditional Access secure how the agent is used."
 videoTip: Watch both AB-650 agent sections. This is pure net-new vs classic MS-102.
+hourNote: "Do lab 7 exercise 1 (agent identity, 30 min). The registry, sharing, and monitoring exercises are later or optional."
+budget:
+  - { label: "Udemy", minutes: 20 }
+  - { label: "Lab", minutes: 30 }
+  - { label: "Knowledge check", minutes: 10 }
+optional: []
+
 ---
+
 
 import { Quiz } from 'starlight-quiz/components';
 

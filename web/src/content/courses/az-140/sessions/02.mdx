@@ -1,10 +1,11 @@
 ---
-day: 3
+week: 1
+kind: learn
+session: 2
 title: Networking and Private Link
 moduleTitle: Plan networking, Shortpath, and Private Link
 moduleId: d3-network
-minutes: 75
-practice: false
+minutes: 60
 summary: "Capacity, RDP Shortpath, RDP Multipath, QoS, and Private Link. The hands-on is official lab 6, which needs the host pool from day 2."
 focus: "Skills measured: plan, implement, and manage networking for Azure Virtual Desktop."
 tags:
@@ -33,7 +34,15 @@ tldr:
   - "Private Link uses private endpoints for the host pool connection, feed download, and initial feed discovery."
 trap: "Private Link is not a substitute for the session host subnet, and Shortpath is not a reason to open RDP to the internet."
 videoTip: "The networking section is the watch list. Lab 6 is Private Link only; it assumes lab 1 is already done."
+hourNote: "In lab 6, do tasks 3 and 4 only (private endpoint for the host pool connection and feed download). The other tasks are optional setup or teardown."
+budget:
+  - { label: "Udemy", minutes: 25 }
+  - { label: "Lab", minutes: 25 }
+  - { label: "Knowledge check", minutes: 10 }
+optional: []
+
 ---
+
 
 import { Quiz } from 'starlight-quiz/components';
 

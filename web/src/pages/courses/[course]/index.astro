@@ -7,6 +7,7 @@ import {
   getCourse,
   getCourseDays,
   getCourses,
+  weeksIn,
 } from "@/lib/courses";
 import { getLabCatalog } from "@/data/officialLabs";
 import { withBase } from "@/lib/base";
@@ -103,7 +104,7 @@ const labs = data.hasLabs ? getLabCatalog(data.code) : undefined;
             >
               {data.external.instructor}
             </a>
-            . Each day has a watch checklist of lecture titles from this course.
+            . Each session has a one-hour budget. Lecture titles that are not on the exam sit in Optional / deeper dive.
             Microsoft Learn and the official labs stay the primary material.
           </p>
           {data.external.note && (
@@ -137,18 +138,41 @@ const labs = data.hasLabs ? getLabCatalog(data.code) : undefined;
         }
 
         <section>
-          <h2 class="mb-3 text-xl font-semibold">Curriculum</h2>
+          <h2 class="mb-3 text-xl font-semibold">
+            {weeksIn(days)} weeks · 1 hour each weekday
+          </h2>
           <CurriculumAccordion
             client:only="react"
             code={data.code}
             courseSlug={slug}
-            days={days.map((d) => ({
-              day: d.data.day,
+            sessions={days.map((d) => ({
+              session: d.data.session,
+              week: d.data.week,
               title: d.data.title,
               minutes: d.data.minutes,
-              practice: d.data.practice,
+              kind: d.data.kind,
             }))}
           />
+          {
+            Array.from(new Set(days.map((d) => d.data.week))).map((week) => {
+              const notes = days
+                .filter((d) => d.data.week === week)
+                .flatMap((d) => d.data.optional);
+              if (notes.length === 0) return null;
+              return (
+                <section class="course-card mt-4 p-5">
+                  <h3 class="text-sm font-semibold">
+                    Week {week} · Optional / deeper dive
+                  </h3>
+                  <ul class="text-muted-foreground mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed">
+                    {notes.map((note) => (
+                      <li>{note}</li>
+                    ))}
+                  </ul>
+                </section>
+              );
+            })
+          }
         </section>
       </div>
 

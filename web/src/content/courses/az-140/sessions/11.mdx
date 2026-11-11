@@ -1,10 +1,11 @@
 ---
-day: 8
+week: 3
+kind: learn
+session: 11
 title: Apps and clients
 moduleTitle: RemoteApp, App attach, and the Remote Desktop client
 moduleId: d8-apps
 minutes: 60
-practice: false
 summary: "Connect with the Windows client, then place RemoteApp, App attach, OneDrive, and Teams. Official lab 4 needs labs 1 and 2."
 focus: "Skills measured: client settings, and install and configure apps on a session host."
 tags:
@@ -35,7 +36,15 @@ tldr:
   - "Teams media uses the Remote Desktop multimedia redirection stack so audio and video are handled on the client."
 trap: "App attach and FSLogix application masking are different. Masking does not deploy a package. App attach does not roam the profile."
 videoTip: "Watch the apps section. Lab 4 is the client connection, not the packaging lab."
+hourNote: "Lab 4 is the 20-minute client connection. App attach packaging is not in the Entra ID labs; the quiz covers it."
+budget:
+  - { label: "Udemy", minutes: 30 }
+  - { label: "Lab", minutes: 20 }
+  - { label: "Knowledge check", minutes: 10 }
+optional: []
+
 ---
+
 
 import { Quiz } from 'starlight-quiz/components';
 

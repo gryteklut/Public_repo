@@ -1,10 +1,11 @@
 ---
-day: 9
+week: 3
+kind: learn
+session: 12
 title: Monitor and scale
 moduleTitle: Insights and host pool scaling plans
 moduleId: d9-monitor
-minutes: 80
-practice: false
+minutes: 60
 summary: "Azure Virtual Desktop Insights, then a scaling plan. Lab 3 needs labs 1 and 2. Lab 5 also needs lab 4."
 focus: "Skills measured: monitor and manage Azure Virtual Desktop services."
 tags:
@@ -34,7 +35,15 @@ tldr:
   - "Azure Advisor gives recommendations. It is not the Insights workbook."
 trap: "Deleting the scaling plan's role assignment leaves the plan in place and the virtual machines will not start or stop. Lab 5 assigns Desktop Virtualization Power On Contributor to the service principal first."
 videoTip: "Do lab 3 before lab 5. Lab 5 also expects you to have connected once (lab 4)."
+hourNote: "Lab 3 fits (25 min) if you skip provider registration. In lab 5, do tasks 4–6 (create the plan, see drain mode, disable it). Tasks 1–3 are optional."
+budget:
+  - { label: "Udemy", minutes: 15 }
+  - { label: "Lab", minutes: 35 }
+  - { label: "Knowledge check", minutes: 10 }
+optional: []
+
 ---
+
 
 import { Quiz } from 'starlight-quiz/components';
 

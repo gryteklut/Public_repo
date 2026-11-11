@@ -56,7 +56,7 @@ export function CompletionBar({ code, day }: { code: string; day: number }) {
         />
         <div>
           <Label htmlFor={`day-complete-${day}`}>
-            Mark day complete
+            Mark session complete
             {!unlocked && !done
               ? " (locked until knowledge check is 100%)"
               : ""}

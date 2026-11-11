@@ -6,8 +6,8 @@ import { withBase } from "@/lib/base";
 
 const features = [
   {
-    title: "Ten study days",
-    description: "One topic a day, then a knowledge check you must pass at 100%.",
+    title: "One hour each weekday",
+    description: "A 60-minute session, then a knowledge check you must pass at 100%.",
     icon: BookOpenCheck,
   },
   {
@@ -35,8 +35,8 @@ export const Hero = () => {
           </h1>
 
           <p className="text-muted-foreground mt-5 text-xl md:text-2xl">
-            Ten-day plans, official Microsoft Learning labs, and a companion
-            course for each exam.
+            One hour each weekday, official Microsoft Learning labs, and a
+            companion course for each exam.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">

@@ -1,0 +1,121 @@
+---
+week: 1
+kind: review
+session: 5
+title: "Week 1 review"
+moduleTitle: "Review tenant, workloads, identity, and sign-in"
+moduleId: ab-w1-review
+minutes: 60
+summary: "Retrieval on the week 1 skills. Nothing new."
+focus: "Tenant and licensing, Copilot grounding, Entra identities, Conditional Access."
+tags: [MS-102-core, AB-650-new]
+resources:
+  - { label: "AB-650 study guide", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650", kind: learn }
+videos: []
+lab: []
+officialLabs: []
+tldr:
+  - "One question from each session this week."
+  - "Misses go back to that session, not to a new lab."
+  - "Optional items below are not required for the hour."
+trap: "Portal selection still decides tenant, identity, and Conditional Access questions."
+budget:
+  - { label: "Retrieval", minutes: 50 }
+  - { label: "Plan next week", minutes: 10 }
+optional:
+  - "Lab 2 exercise 2, Correct exposure and verify discovery (35 min). Do it if Restricted Content Discovery is still fuzzy after the quiz."
+  - "Lab 4 exercise 1, authentication methods and SSPR clicks. The session 4 quiz covers SSPR; the hour itself is the access-decision exercise."
+  - "Udemy practice-lab setup that only creates a tenant. It is not a measured skill."
+  - "Udemy — (OPTIONAL) Setting Up a Practice Lab: (OPTIONAL) Setting Up a Practice Lab"
+  - "Udemy — MS-102: Implement and manage identity synchronization with Microsoft Entra tenant: MS-102: Implement and manage identity synchronization with Microsoft Entra tenant"
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="ab-s5-1">
+You need company branding (logo, sign-in background, and theme) to appear for users signing in to Microsoft 365. Where do you primarily configure this?
+
+- [x] Microsoft Entra admin center — Company branding
+- [ ] Exchange admin center — Organization
+- [ ] Microsoft Purview portal — Settings
+- [ ] SharePoint admin center — Branding
+
+Sign-in and company branding for the Microsoft 365 experience is configured in Microsoft Entra ID (Company branding), not in workload admin centers.
+
+[Source: Add company branding to your sign-in page](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-customize-branding)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+
+
+AB-650 expects you to configure tenant branding including logo, company URL, themes, and backgrounds. For Microsoft Entra sign-in experiences, use Entra admin center → Company branding. Organizational profile details (name, address, technical contact) live under Microsoft 365 admin center → Settings → Org settings. Know which portal owns which setting — exam questions often test portal selection.
+
+</details>
+
+<Quiz id="ab-s5-1">
+Why do SharePoint and OneDrive permissions matter specifically for Microsoft 365 Copilot on AB-650?
+
+- [x] Copilot grounds responses on content the user can access; oversharing becomes an AI data readiness problem
+- [ ] Copilot ignores SharePoint permissions and only uses public web search
+- [ ] Copilot can only read content labeled as Public
+- [ ] Copilot requires every site to be a Teams-connected site
+
+Copilot respects the user’s existing permissions. Oversharing and broad permissions therefore surface as Copilot data readiness / oversharing issues on the exam.
+
+[Source: Prevent oversharing with Copilot](https://learn.microsoft.com/en-us/microsoft-365-copilot/guidance/copilot-oversharing)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+
+
+AB-650 links workload configuration to Copilot quality. Create/manage SharePoint sites and permissions, then use SharePoint Advanced Management, Microsoft Search controls, and site exclusions so Copilot does not surface content that should not be discoverable. Restricted Content Discovery, Restricted SharePoint Search, and Restricted Access Control are high-value distinctions for exam scenarios.
+
+</details>
+
+<Quiz id="ab-s5-1">
+You need helpdesk staff to manage only users in the Norway division. Which Entra feature best scopes their admin rights?
+
+- [x] Administrative units with scoped role assignments
+- [ ] A single Global Administrator account shared by helpdesk
+- [ ] Disabling PIM for all roles
+- [ ] Assigning Exchange Online-only licenses
+
+Administrative units let you scope role permissions to a subset of users/groups/devices — a measured AB-650 identity skill.
+
+[Source: Administrative units in Microsoft Entra ID](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/administrative-units)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+
+
+Administrative units (AUs) partition a tenant for delegated administration. Combine AUs with scoped directory roles so operators can manage only their population. This is preferred over over-privileged global roles.
+
+</details>
+
+<Quiz id="ab-s5-1">
+Which statement best describes Microsoft Entra Conditional Access?
+
+- [x] It evaluates signals and enforces controls such as MFA or blocking access based on policy conditions
+- [ ] It is a Purview retention label type
+- [ ] It replaces DNS verification for custom domains
+- [ ] It is only available for on-premises Active Directory Domain Services
+
+Conditional Access is the policy engine that uses conditions (user, app, location, risk, device) to grant, require MFA, or block.
+
+[Source: What is Conditional Access?](https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+
+
+AB-650 includes implementing Conditional Access policies, including Microsoft Entra ID Protection and multifactor authentication. Master assignments (users/groups/roles), cloud apps, conditions, grant controls, session controls, and report-only mode. Know how ID Protection risk states feed CA.
+
+</details>

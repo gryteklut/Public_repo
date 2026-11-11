@@ -1,10 +1,11 @@
 ---
-day: 4
+week: 1
+kind: learn
+session: 3
 title: Storage and FSLogix
 moduleTitle: Plan storage and FSLogix profile containers
 moduleId: d4-fslogix
 minutes: 60
-practice: false
 summary: "Profile containers, Office containers, Cloud Cache, Azure Files, and Azure NetApp Files. The Entra ID lab track has no FSLogix lab, so this day is Microsoft Learn plus the Udemy section."
 focus: "Skills measured: storage for user data, and plan and implement FSLogix."
 tags:
@@ -40,7 +41,15 @@ tldr:
   - "FSLogix application masking hides apps. It does not deliver MSIX packages. That is App attach."
 trap: "Putting the profile on the session host OS disk defeats a pooled host pool. The next host will not see that profile."
 videoTip: "Watch the storage section and the FSLogix section. There is no Entra ID lab for this day."
+hourNote: "The Entra ID lab track has no FSLogix lab. Use the quiz for profile containers, Office containers, Cloud Cache, and Entra Kerberos."
+budget:
+  - { label: "Udemy", minutes: 35 }
+  - { label: "Exam traps", minutes: 15 }
+  - { label: "Knowledge check", minutes: 10 }
+optional: []
+
 ---
+
 
 import { Quiz } from 'starlight-quiz/components';
 

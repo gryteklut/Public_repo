@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { loadCourseProgress } from "@/lib/courseProgress";
+import { estimateFinishDate, formatFinishDate } from "@/lib/sessionSchedule";
 import { withBase } from "@/lib/base";
 
 export type CourseExternal = {
@@ -20,6 +21,7 @@ export function CourseCard({
   status,
   color,
   total = 0,
+  weeks = 1,
   labsHref,
   external,
 }: {
@@ -30,6 +32,7 @@ export function CourseCard({
   status: string;
   color: string;
   total?: number;
+  weeks?: number;
   labsHref?: string;
   external?: CourseExternal;
 }) {
@@ -38,8 +41,11 @@ export function CourseCard({
   const soon = status !== "live";
   const progress = soon ? null : loadCourseProgress(code);
   const done = progress
-    ? Object.values(progress.done).filter(Boolean).length
+    ? Array.from({ length: total }, (_, i) => progress.done[String(i + 1)]).filter(
+        Boolean,
+      ).length
     : 0;
+  const finish = estimateFinishDate(Math.max(0, total - done));
   const planHref = withBase(`/courses/${slug}/`);
 
   return (
@@ -93,9 +99,13 @@ export function CourseCard({
         </p>
       )}
       {!soon && total > 0 && (
-        <p className="text-muted-foreground mt-3 text-xs">
-          {done}/{total} days complete
-        </p>
+        <div className="text-muted-foreground mt-3 space-y-1 text-xs">
+          <p>~{weeks} weeks at 1 h/workday</p>
+          <p>
+            {done}/{total} sessions
+            {finish ? ` · finish ${formatFinishDate(finish)}` : " · finished"}
+          </p>
+        </div>
       )}
       <div className="mt-5 flex flex-wrap gap-2">
         {soon ? (
@@ -106,7 +116,7 @@ export function CourseCard({
           <>
             <Button asChild>
               <a href={planHref}>
-                10-day plan
+                Sessions
                 <ArrowRight className="size-4" />
               </a>
             </Button>

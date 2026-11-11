@@ -6,15 +6,16 @@ import { withBase } from "@/lib/base";
 export function CurriculumAccordion({
   code,
   courseSlug,
-  days,
+  sessions,
 }: {
   code: string;
   courseSlug: string;
-  days: {
-    day: number;
+  sessions: {
+    session: number;
+    week: number;
     title: string;
     minutes: number;
-    practice?: boolean;
+    kind?: "learn" | "review" | "mock";
   }[];
 }) {
   const [, setTick] = useState(0);
@@ -23,12 +24,25 @@ export function CurriculumAccordion({
 
   return (
     <ol className="divide-border course-card divide-y overflow-hidden">
-      {days.map((d) => {
-        const done = Boolean(progress.done[String(d.day)]);
+      {sessions.map((item, index) => {
+        const done = Boolean(progress.done[String(item.session)]);
+        const showWeek =
+          index === 0 || item.week !== sessions[index - 1]?.week;
+        const label =
+          item.kind === "mock"
+            ? "Mock exam"
+            : item.kind === "review"
+              ? "Review"
+              : `Session ${item.session}`;
         return (
-          <li key={d.day}>
+          <li key={item.session}>
+            {showWeek && (
+              <p className="bg-muted/40 text-muted-foreground px-4 py-2 text-xs font-semibold tracking-wider uppercase">
+                Week {item.week}
+              </p>
+            )}
             <a
-              href={withBase(`/courses/${courseSlug}/day-${d.day}/`)}
+              href={withBase(`/courses/${courseSlug}/session-${item.session}/`)}
               className="hover:bg-muted/40 flex items-center gap-3 px-4 py-3 transition-colors"
             >
               {done ? (
@@ -38,12 +52,11 @@ export function CurriculumAccordion({
               )}
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium">
-                  Day {d.day}: {d.title}
-                  {d.practice ? " · Practice" : ""}
+                  {label}: {item.title}
                 </p>
               </div>
               <span className="text-muted-foreground text-xs">
-                ~{d.minutes}m
+                ~{item.minutes}m
               </span>
             </a>
           </li>

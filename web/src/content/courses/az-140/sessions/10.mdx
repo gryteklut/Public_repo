@@ -1,0 +1,91 @@
+---
+week: 2
+kind: review
+session: 10
+title: "Week 2 review"
+moduleTitle: "Review images, identity, security, and clients"
+moduleId: az-w2-review
+minutes: 60
+summary: "Retrieval on images, identity, security, and session settings."
+focus: "Compute Gallery, Entra join, Conditional Access, Bastion, Start VM on Connect."
+tags: [AZ-140-identity, AZ-140-infra]
+resources:
+  - { label: "AZ-140 study guide", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-140", kind: learn }
+videos: []
+lab: []
+officialLabs: []
+tldr:
+  - "Identity and security is 15–20%."
+  - "User settings continue next week with RemoteApp."
+trap: "Trusted Launch is a virtual-machine security type, not Bastion and not a scaling plan."
+budget:
+  - { label: "Retrieval", minutes: 50 }
+  - { label: "Plan next week", minutes: 10 }
+optional:
+  - "Lab 7 tasks 1–4 and 8: resource-provider registration, managed identity, the custom RBAC role, permission wiring, and deploying hosts from the finished image."
+  - "Waiting for the image template build to finish. The exam tests the gallery and the generalize step, not the wait."
+  - "Lab 2 task 1: adding more session hosts. That repeats lab 1."
+  - "Udemy simulation that only creates an NSG from scratch, once you can already name the required outbound endpoints."
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="az-s10-1">
+You built a Windows 11 multi-session virtual machine and will deploy many session hosts from it. What do you do before you capture the image?
+
+- [x] Generalize it with Sysprep, then capture a version into Azure Compute Gallery
+- [ ] Join it to Entra ID and capture it while it is running
+- [ ] Enable public RDP and snapshot the OS disk as the only copy
+- [ ] Store the VHD on the FSLogix profile share
+
+A golden image that will be cloned is generalized so each new virtual machine gets its own identity. Azure Compute Gallery holds the image definition and versions. A snapshot of a running domain-joined machine is not the reusable image the exam wants.
+
+[Source: Create a custom image](https://learn.microsoft.com/en-us/azure/virtual-desktop/set-up-customize-master-image)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+The manual path is: build the virtual machine, install apps, generalize, deallocate, capture. The gallery image definition describes the operating system, and each build is a version. Session hosts are then created from a chosen version.
+
+</details>
+
+<Quiz id="az-s10-1">
+Which set lists the identity scenarios the AZ-140 study guide measures for session hosts?
+
+- [x] Active Directory Domain Services, Microsoft Entra ID, and Microsoft Entra Domain Services
+- [ ] Microsoft Entra ID only, because the other two were removed from the exam
+- [ ] Active Directory only, because Entra join cannot host a session
+- [ ] Microsoft accounts and a local administrator password
+
+You pick the model that matches the environment. Entra ID join is fully supported and is what the current labs use. AD DS is still the hybrid and Kerberos-heavy option. Entra Domain Services is the managed domain option. The exam asks which requirements go with which choice.
+
+[Source: Identity in Azure Virtual Desktop](https://learn.microsoft.com/en-us/azure/virtual-desktop/authentication)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Entra-joined hosts sign users in with Entra accounts and support single sign-on. Domain-joined hosts need line-of-sight to domain controllers and DNS. Entra Domain Services is not the same thing as Entra ID join. Passwordless, smart card, and multifactor authentication are all in this skill.
+
+</details>
+
+<Quiz id="az-s10-1">
+Users must print to a local printer and map a local drive into the session. Where do you set that for the whole host pool?
+
+- [x] RDP properties on the host pool
+- [ ] The session host image definition in Azure Compute Gallery
+- [ ] A Conditional Access grant control
+- [ ] The FSLogix VHDLocations value
+
+Host pool RDP properties control redirection (drives, clipboard, printers, cameras) for connections to that pool. The image does not store the user's client devices. FSLogix stores the profile.
+
+[Source: RDP properties](https://learn.microsoft.com/en-us/azure/virtual-desktop/customize-rdp-properties)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Lab 2 configures RDP properties after it adds session hosts and reviews load balancing. Intune or Group Policy still configures settings inside Windows, such as Universal Print or a timeout that you also want enforced if someone signs in another way. Know which layer the question is pointing at.
+
+</details>

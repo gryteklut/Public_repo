@@ -1,10 +1,11 @@
 ---
-day: 4
+week: 1
+kind: learn
+session: 4
 title: Authentication and Conditional Access
 moduleTitle: Implement and manage authentication and access
 moduleId: d4-auth
 minutes: 60
-practice: false
 summary: "Authentication methods, Password Protection, self-service password reset, Conditional Access, MFA, and sign-in troubleshooting."
 focus: "Auth methods, Password Protection, SSPR, troubleshooting, Conditional Access, MFA, and ID Protection."
 tags:
@@ -31,7 +32,7 @@ videos:
       - Implement multi-factor authentication (MFA) by using conditional access policies
 officialLabs:
   - labId: lab-4
-    exerciseIds: [lab4-ex1, lab4-ex2]
+    exerciseIds: [lab4-ex2]
 lab: []
 tldr:
   - "AB-650 includes implementing Conditional Access policies, including Microsoft Entra ID Protection and multifactor authentication."
@@ -40,7 +41,15 @@ tldr:
   - "Investigate and resolve authentication issues using Entra sign-in logs, authentication methods registration, CA “What If” / report-only results, and MFA prompt errors."
 trap: "Conditional Access decides the sign-in. Password Protection and self-service password reset are separate controls."
 videoTip: Full watch — this section maps cleanly to AB-650 authentication and Conditional Access skills.
+hourNote: "Do lab 4 exercise 2 (the access decision, 30 min). Exercise 1 is optional; the quiz still covers SSPR."
+budget:
+  - { label: "Udemy", minutes: 20 }
+  - { label: "Lab", minutes: 30 }
+  - { label: "Knowledge check", minutes: 10 }
+optional: []
+
 ---
+
 
 import { Quiz } from 'starlight-quiz/components';
 

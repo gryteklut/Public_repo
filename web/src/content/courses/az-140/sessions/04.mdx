@@ -1,10 +1,11 @@
 ---
-day: 2
+week: 1
+kind: learn
+session: 4
 title: Deploy host pools
 moduleTitle: Deploy Entra-joined host pools and session hosts
 moduleId: d2-deploy
-minutes: 75
-practice: false
+minutes: 60
 summary: "Create the pooled host pool, Entra-joined session hosts, application groups, and workspace. This is official lab 1."
 focus: "Skills measured: implement host pools and session hosts. Do lab 1 instead of copying the steps here."
 tags:
@@ -37,7 +38,15 @@ tldr:
   - "The lab uses a pooled host pool, breadth-first, Trusted Launch, and Windows 11 Enterprise multi-session with Microsoft 365 Apps."
 trap: "Assigning a user the Owner role on the subscription does not publish the desktop. Assign the user or group to the application group."
 videoTip: "Watch the portal lecture, then do lab 1. The automation lecture covers PowerShell, CLI, ARM, and Bicep, which the exam still measures."
+hourNote: "In lab 1, do tasks 2, 3, and 5 (Entra-joined host pool, application group, and access). Tasks 1 and 4 are optional portal setup."
+budget:
+  - { label: "Udemy", minutes: 15 }
+  - { label: "Lab", minutes: 35 }
+  - { label: "Knowledge check", minutes: 10 }
+optional: []
+
 ---
+
 
 import { Quiz } from 'starlight-quiz/components';
 

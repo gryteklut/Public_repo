@@ -1,0 +1,113 @@
+---
+week: 1
+kind: review
+session: 5
+title: "Week 1 review"
+moduleTitle: "Review planning, network, profiles, and host pools"
+moduleId: az-w1-review
+minutes: 60
+summary: "Retrieval on the infrastructure skills from this week."
+focus: "Licensing, Shortpath and Private Link, FSLogix storage, Entra-joined host pools."
+tags: [AZ-140-infra]
+resources:
+  - { label: "AZ-140 study guide", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-140", kind: learn }
+videos: []
+lab: []
+officialLabs: []
+tldr:
+  - "Infrastructure is 40–45% of the exam."
+  - "A Windows Server host still needs an RDS CAL."
+trap: "Breadth-first does not require a max session limit. Depth-first does."
+budget:
+  - { label: "Retrieval", minutes: 50 }
+  - { label: "Plan next week", minutes: 10 }
+optional:
+  - "Udemy introduction lectures on Active Directory domains, RAS, DMZ, and virtualization. They are background, not AZ-140 skills."
+  - "Udemy: creating a free Azure account, renaming the account, registering a toy domain, building a domain controller, and installing Azure AD Connect."
+  - "Udemy section “(OPTIONAL) Other foundation knowledge”, including the Azure Firewall build and the vNet simulations. Firewall concepts return in week 2 as exam traps, not as that build."
+  - "Lab 6 tasks 1, 2, 5, 6, and 7: re-register the provider, create the subnet, initial feed discovery, validation, and turning public access back on."
+  - "Lab 1 tasks 1 and 4: the virtual-network wizard and the workspace tab."
+  - "Udemy — (OPTIONAL) Other foundation knowledge: (OPTIONAL) Other foundation knowledge"
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="az-s5-1">
+One hundred users need a Windows 11 desktop, and several users can share each virtual machine. Profiles must follow the user. Which host pool do you plan?
+
+- [x] Pooled, with a Windows 11 Enterprise multi-session image and FSLogix profile containers
+- [ ] Personal, with one Windows 11 Enterprise virtual machine per user and no profile product
+- [ ] Pooled, with Windows Server session hosts and no extra license
+- [ ] A single shared virtual machine that is not in a host pool
+
+Pooled host pools share session hosts. Windows 11 Enterprise multi-session exists for that model. FSLogix holds the profile because the user may land on a different host next time. Personal pools are one user per desktop. Windows Server hosts need RDS CALs.
+
+[Source: Host pool load balancing](https://learn.microsoft.com/en-us/azure/virtual-desktop/host-pool-load-balancing)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Pooled host pools serve many users from a set of session hosts. Personal host pools assign a user to one desktop. Multi-session Windows 10 or 11 Enterprise is the usual pooled image. A personal desktop is typically single-session Windows Enterprise or Windows Server.
+
+</details>
+
+<Quiz id="az-s5-1">
+You want the remote desktop transport to use a direct UDP path when the network allows it. Which feature is that?
+
+- [x] RDP Shortpath
+- [ ] A public inbound rule for TCP 3389 on the session host
+- [ ] Azure Bastion
+- [ ] A scaling plan
+
+RDP Shortpath establishes a direct UDP connection (STUN, or TURN when a relay is required). Sign-in and brokering still use Azure Virtual Desktop. Opening TCP 3389 to the internet is the pattern you avoid.
+
+[Source: RDP Shortpath](https://learn.microsoft.com/en-us/azure/virtual-desktop/rdp-shortpath)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Shortpath can run over a public network or a managed network (VPN or ExpressRoute). For a managed network you also plan DNS so the client can resolve the session host. Bandwidth planning still matters: graphics, printing, and file copy cost more than keyboard input.
+
+</details>
+
+<Quiz id="az-s5-1">
+Pooled users must keep their Windows profile when they land on a different session host. What do you configure?
+
+- [x] An FSLogix profile container on an SMB share the session hosts can reach
+- [ ] A local profile on drive C of each session host
+- [ ] An MSIX app attach package for the profile
+- [ ] A scaling plan with a ramp-up schedule
+
+FSLogix mounts a profile VHD(X) from a file share at sign-in. A local profile stays on whichever host the user used last. App attach delivers applications, not the profile.
+
+[Source: FSLogix profile containers](https://learn.microsoft.com/en-us/azure/virtual-desktop/fslogix-profile-containers)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+`VHDLocations` (or Cloud Cache locations) points at the share. The share permissions must let the user create and mount their own container. OneDrive Known Folder Move can slim the profile, but it is not a substitute for the container when the whole profile must roam.
+
+</details>
+
+<Quiz id="az-s5-1">
+The current Microsoft Learning AZ-140 labs join the session hosts to which directory?
+
+- [x] Microsoft Entra ID
+- [ ] Active Directory Domain Services only
+- [ ] Microsoft Entra Domain Services only
+- [ ] A local SAM account database, with no directory
+
+The maintained lab track is Labs_EntraID. Session hosts are Microsoft Entra joined. AD DS and Entra Domain Services remain identity options on the exam, and their old labs are no longer maintained.
+
+[Source: Entra joined session hosts](https://learn.microsoft.com/en-us/azure/virtual-desktop/azure-ad-joined-session-hosts)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+When you create the host pool, "Select which directory you would like to join" is set to Microsoft Entra ID in lab 1. Hybrid and domain-join options still exist. Know which one a scenario requires instead of assuming every host is domain-joined.
+
+</details>

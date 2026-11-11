@@ -1,0 +1,93 @@
+---
+week: 3
+kind: learn
+session: 13
+title: "Govern and secure retrieval"
+moduleTitle: "Retrieval: identity, Defender, and Purview"
+moduleId: ab-s13
+minutes: 60
+summary: "Second pass on the 40–45% govern and secure area."
+focus: "Conditional Access, Defender for Office 365, DLP, DSPM for AI."
+tags: [MS-102-updated, AB-650-new]
+resources:
+  - { label: "AB-650 study guide", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650", kind: learn }
+videos: []
+lab: []
+officialLabs: []
+tldr:
+  - "This is the largest weight."
+  - "Office 365 security, not full Defender XDR."
+trap: "A Conditional Access policy on the Azure portal does not protect Exchange or Copilot unless those apps are targeted."
+budget:
+  - { label: "Knowledge check", minutes: 50 }
+  - { label: "Trap review", minutes: 10 }
+optional: []
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="ab-s13-1">
+Which statement best describes Microsoft Entra Conditional Access?
+
+- [x] It evaluates signals and enforces controls such as MFA or blocking access based on policy conditions
+- [ ] It is a Purview retention label type
+- [ ] It replaces DNS verification for custom domains
+- [ ] It is only available for on-premises Active Directory Domain Services
+
+Conditional Access is the policy engine that uses conditions (user, app, location, risk, device) to grant, require MFA, or block.
+
+[Source: What is Conditional Access?](https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+
+
+AB-650 includes implementing Conditional Access policies, including Microsoft Entra ID Protection and multifactor authentication. Master assignments (users/groups/roles), cloud apps, conditions, grant controls, session controls, and report-only mode. Know how ID Protection risk states feed CA.
+
+</details>
+
+<Quiz id="ab-s13-1">
+Compared with classic MS-102, how is security coverage framed on AB-650?
+
+- [x] Threat protection objectives center on Defender for Office 365 for email and collaboration
+- [ ] You must exclusively configure Defender for Endpoint onboarding policies
+- [ ] Security is removed entirely from the exam
+- [ ] Only on-premises antimalware is tested
+
+AB-650 skills measured list Defender for Office 365 alerts, threat policies, investigation, and attack simulations — not the full prior XDR breadth.
+
+[Source: Microsoft Defender for Office 365](https://learn.microsoft.com/en-us/defender-office-365/mdo-about)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+
+
+Secure Microsoft 365 workloads on AB-650 means: manage alerts in Defender for Office 365; configure threat policies and rules; investigate/respond to email and collaboration threats; configure attack simulations including training campaigns. Broad Defender XDR literacy helps contextually, but exam bullets are Office 365-centric.
+
+</details>
+
+<Quiz id="ab-s13-1">
+AB-650 Purview objectives emphasize that you can:
+
+- [x] Identify requirements for DLP, information protection, and data lifecycle management across Microsoft 365 and Copilot
+- [ ] Only configure on-premises file server quotas
+- [ ] Replace all Conditional Access with retention labels
+- [ ] Disable Graph PowerShell permanently as a compliance control
+
+Skills measured use “identify requirements” for DLP, information protection, and retention — including Copilot locations — plus review DLP alerts and DSPM for AI.
+
+[Source: AB-650 study guide — Purview skills](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+
+
+Know when to recommend DLP policies (Exchange, SharePoint, OneDrive, Teams, endpoints, Copilot), sensitivity information types/labels/policies, and retention labels vs retention policies. You may not always be asked to click every blade — you must map business requirements to the right Purview control.
+
+</details>

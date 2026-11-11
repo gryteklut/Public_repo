@@ -1,10 +1,11 @@
 ---
-day: 6
+week: 2
+kind: learn
+session: 7
 title: Identity and security
 moduleTitle: Plan identity integration and session host security
 moduleId: d6-identity
-minutes: 70
-practice: false
+minutes: 60
 summary: "Entra ID, AD DS, Entra Domain Services, Conditional Access, RBAC, Defender, and Bastion or just-in-time access. There is no maintained lab for this domain."
 focus: "Skills measured: plan and implement identity and security (15–20%)."
 tags:
@@ -50,11 +51,16 @@ tldr:
   - "Admin access to a session host is Bastion or just-in-time, not a public RDP port. App Control for Business and Controlled Folder Access are the threat-protection features on the host."
 trap: "A Conditional Access policy aimed only at the Azure portal does not gate the Remote Desktop client. Target Azure Virtual Desktop."
 videoTip: "Watch both identity and security sections. The AD DS and AD Connect lectures are optional hybrid context."
+hourNote: "Identity half of the old day: Entra ID, AD DS, Entra Domain Services, Conditional Access, SSO, and RBAC. No lab — the legacy CA lab is not maintained."
+budget:
+  - { label: "Udemy", minutes: 40 }
+  - { label: "Knowledge check", minutes: 20 }
+optional: []
 ---
 
 import { Quiz } from 'starlight-quiz/components';
 
-<Quiz id="az140-d6-q1">
+<Quiz id="s7-1">
 Which set lists the identity scenarios the AZ-140 study guide measures for session hosts?
 
 - [x] Active Directory Domain Services, Microsoft Entra ID, and Microsoft Entra Domain Services
@@ -74,7 +80,7 @@ Entra-joined hosts sign users in with Entra accounts and support single sign-on.
 
 </details>
 
-<Quiz id="az140-d6-q2">
+<Quiz id="s7-2">
 You must require multifactor authentication when users connect to Azure Virtual Desktop. What do you configure?
 
 - [x] A Conditional Access policy that targets the Azure Virtual Desktop cloud app
@@ -91,45 +97,5 @@ Conditional Access uses the Azure Virtual Desktop app as the target, then a gran
 <summary>Study this topic</summary>
 
 Single sign-on for Entra-joined session hosts changes how often the user sees a prompt. Plan the policy so it covers the client (Windows App or the web client) and does not lock out the service accounts that register session hosts. Per-user MFA is the older switch. Conditional Access is the control the study guide names.
-
-</details>
-
-<Quiz id="az140-d6-q3">
-A user should see a published desktop and nothing else in the subscription. Which role fits?
-
-- [x] Desktop Virtualization User on the application group
-- [ ] Owner on the subscription
-- [ ] Desktop Virtualization Host Pool Contributor
-- [ ] Virtual Machine Contributor on every session host
-
-Desktop Virtualization User is the role for using desktops and apps. Host Pool Contributor and Virtual Machine Contributor are management roles. Owner is far too broad.
-
-[Source: Built-in Azure Virtual Desktop roles](https://learn.microsoft.com/en-us/azure/virtual-desktop/rbac)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Split admin roles the same way the resources split: host pool, application group, workspace, and session hosts. Local group membership on the session host is a separate decision (who is a local admin inside Windows). The exam asks for both Azure RBAC and the rights on the session host.
-
-</details>
-
-<Quiz id="az140-d6-q4">
-Administrators must reach a session host to troubleshoot it. Users connect only through Azure Virtual Desktop. What do you use for the administrators?
-
-- [x] Azure Bastion or just-in-time VM access, with no public RDP port
-- [ ] An inbound NSG rule for TCP 3389 from Any
-- [ ] RDP Multipath as the admin jump host
-- [ ] A Conditional Access exclusion for all administrators and a public IP
-
-Bastion and just-in-time access are the study-guide options for administrative access. User sessions do not need a public RDP port. App Control for Business (WDAC) and Controlled Folder Access protect what runs on the host. Defender for Cloud, Defender Antivirus, and Defender for Endpoint are the other security layers, and they are not interchangeable.
-
-[Source: Azure Bastion](https://learn.microsoft.com/en-us/azure/bastion/bastion-overview)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Network security for the session host subnet is NSGs, user-defined routes, and Azure Firewall, including the required outbound endpoints. Trusted Launch and confidential VMs are host security types from the infrastructure skills. Do not treat Defender Antivirus definition updates as a substitute for Defender for Endpoint onboarding.
 
 </details>

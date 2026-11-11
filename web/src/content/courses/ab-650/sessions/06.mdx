@@ -1,10 +1,11 @@
 ---
-day: 5
+week: 2
+kind: learn
+session: 6
 title: Defender for Office 365
 moduleTitle: Secure Microsoft 365 workloads
 moduleId: d5-defender
 minutes: 60
-practice: false
 summary: "Defender for Office 365: alerts, threat policies, investigation, and attack simulation."
 focus: "Threat protection narrowed to email and collaboration: alerts, policies, investigation, attack simulation."
 tags:
@@ -26,12 +27,6 @@ videos:
   - label: "MS-102: Review & respond to security reports & alerts by Microsoft Defender XDR"
     action: skim
     note: Useful context only — AB-650 does not weight full XDR admin the way MS-102 did.
-  - label: "MS-102: Implement & manage endpoint protection by using MS Defender for Endpoint"
-    action: skip
-    note: MS-102-oriented. Do not spend AB-650 study time here.
-  - label: "MS-102: Implement and manage Microsoft Defender for Cloud Apps"
-    action: skip
-    note: MS-102-oriented. Out of AB-650 focus.
 officialLabs:
   - labId: lab-4
     exerciseIds: [lab4-ex3, lab4-ex4]
@@ -44,7 +39,15 @@ tldr:
   - "Investigate and respond using alerts, incidents (where correlated), Email entity pages, Threat Explorer/Real-time detections (Plan dependent), and remediation actions (soft delete, etc.)."
 trap: "AB-650 security tasks are Defender for Office 365. Full Defender for Endpoint or Cloud Apps admin is out of scope."
 videoTip: AB-650 centers on Defender for Office 365. Skim XDR reports lightly; skip Endpoint and Cloud Apps sections.
+hourNote: "Do lab 4 exercises 3 and 4 (threat protection and attack simulation). Skip the sign-in exercises from session 4."
+budget:
+  - { label: "Udemy", minutes: 5 }
+  - { label: "Lab", minutes: 45 }
+  - { label: "Knowledge check", minutes: 10 }
+optional: []
+
 ---
+
 
 import { Quiz } from 'starlight-quiz/components';
 

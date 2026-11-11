@@ -1,10 +1,11 @@
 ---
-day: 6
+week: 2
+kind: learn
+session: 7
 title: Purview and DSPM for AI
 moduleTitle: Protect data with Microsoft Purview
 moduleId: d6-purview
 minutes: 60
-practice: false
 summary: "Purview requirements for DLP, sensitivity labels, retention, and DSPM for AI."
 focus: "Identify DLP, information protection, and retention requirements — plus AI activity monitoring with DSPM for AI."
 tags:
@@ -33,6 +34,7 @@ videos:
       - "Retention labels, retention label policies, and retention policies"
 officialLabs:
   - labId: lab-5
+    exerciseIds: [lab5-ex2]
 lab: []
 tldr:
   - "Know when to recommend DLP policies (Exchange, SharePoint, OneDrive, Teams, endpoints, Copilot), sensitivity information types/labels/policies, and retention labels vs retention policies."
@@ -41,7 +43,15 @@ tldr:
   - "DLP alert management: triage alert severity, matched SITs, user/activity context, and respond (notify, confirm false positive, escalate)."
 trap: "DLP, sensitivity labels, and retention answer different requirements. DSPM for AI is the AI-activity view, not a DLP policy."
 videoTip: Watch Purview for DLP / labels / retention requirements and alert response. Pair with Microsoft Learn for DSPM for AI if the Udemy section is light there.
+hourNote: "Do lab 5 exercise 2 (DLP and lifecycle, 35 min). Exercise 1, labels, is optional; the quiz still asks it."
+budget:
+  - { label: "Udemy", minutes: 15 }
+  - { label: "Lab", minutes: 35 }
+  - { label: "Knowledge check", minutes: 10 }
+optional: []
+
 ---
+
 
 import { Quiz } from 'starlight-quiz/components';
 

@@ -4,7 +4,7 @@ import { Background } from "@/components/background";
 import { Hero } from "@/components/blocks/hero";
 import { CourseCard } from "@/components/courses/CourseCard";
 import DefaultLayout from "@/layouts/DefaultLayout.astro";
-import { courseSlugFromId, getCourseDays, getCourses } from "@/lib/courses";
+import { courseSlugFromId, getCourseDays, getCourses, weeksIn } from "@/lib/courses";
 
 const courses = await getCourses();
 const cards = [];
@@ -19,6 +19,7 @@ for (const course of courses) {
     status: course.data.status,
     color: course.data.color,
     total: days.length,
+    weeks: weeksIn(days),
     labsHref: course.data.hasLabs ? `/courses/${slug}/labs/` : undefined,
     external: course.data.external,
   });
@@ -32,8 +33,8 @@ for (const course of courses) {
       <div class="mb-8 max-w-2xl">
         <h2 class="text-2xl tracking-tight md:text-3xl">Courses</h2>
         <p class="text-muted-foreground mt-2 text-sm leading-relaxed">
-          Title, companion course, progress on this device, the 10-day plan, and
-          the official labs.
+          Title, companion course, sessions done, finish date, and the official labs.
+          About one hour each weekday.
         </p>
       </div>
       <div class="grid gap-4 md:grid-cols-2">
@@ -48,6 +49,7 @@ for (const course of courses) {
               status={card.status}
               color={card.color}
               total={card.total}
+              weeks={card.weeks}
               labsHref={card.labsHref}
               external={card.external}
             />

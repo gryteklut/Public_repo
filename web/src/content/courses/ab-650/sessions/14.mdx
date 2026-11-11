@@ -1,0 +1,93 @@
+---
+week: 3
+kind: learn
+session: 14
+title: "AI services retrieval"
+moduleTitle: "Retrieval: Copilot, agents, and monitoring"
+moduleId: ab-s14
+minutes: 60
+summary: "Second pass on the 35–40% AI services area."
+focus: "Copilot controls, agent registry, and usage reports."
+tags: [AB-650-new]
+resources:
+  - { label: "AB-650 study guide", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650", kind: learn }
+videos: []
+lab: []
+officialLabs: []
+tldr:
+  - "AI is the area most MS-102 holders have not sat before."
+  - "Agent identity is Entra, not a SharePoint setting."
+trap: "Copilot usage in the Microsoft 365 admin center is not the same report as Defender incidents."
+budget:
+  - { label: "Knowledge check", minutes: 50 }
+  - { label: "Trap review", minutes: 10 }
+optional: []
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="ab-s14-1">
+What is a primary tenant readiness concern before enabling Copilot broadly?
+
+- [x] Data oversharing and permissions hygiene so Copilot does not surface content users should not see
+- [ ] Disabling TLS on all endpoints
+- [ ] Removing all sensitivity labels
+- [ ] Turning off Service health notifications permanently
+
+Assess readiness and remediate data leaks/oversharing/compliance issues — core Copilot enablement skills.
+
+[Source: Prevent oversharing with Microsoft 365 Copilot](https://learn.microsoft.com/en-us/microsoft-365-copilot/guidance/copilot-oversharing)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+
+
+Enable and manage Copilot starts with readiness: licenses, in-app experiences, and especially data readiness. Copilot uses Microsoft Graph content the user can access. Oversharing (Everyone links, broad group membership) becomes an AI risk. Remediate with permissions cleanup, SAM controls, labels/DLP, and site restrictions.
+
+</details>
+
+<Quiz id="ab-s14-1">
+Microsoft Entra Agent ID is primarily about:
+
+- [x] Giving agents identities with lifecycle workflows you can manage like other identities needing ownership and access control
+- [ ] Replacing MX records for email delivery
+- [ ] A Safe Attachments policy template
+- [ ] A SharePoint hub site template
+
+Manage lifecycle workflows for agent identities using Microsoft Entra Agent ID is a first-class AB-650 skill.
+
+[Source: Microsoft Entra Agent ID overview](https://learn.microsoft.com/en-us/entra/agent-id/overview)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+
+
+Agents are not just bots in a gallery — they have identities. Manage lifecycle (create, own, sponsor, retire), secure access with access packages and Conditional Access, and manage owners. When an owner leaves, governance must cover transfer/disable patterns.
+
+</details>
+
+<Quiz id="ab-s14-1">
+Where do you commonly monitor Copilot workload-level adoption details in Microsoft 365?
+
+- [x] Usage reports in the Microsoft 365 admin center (Copilot adoption/usage experiences)
+- [ ] Only DNS secondary zones
+- [ ] Only the Windows Event Viewer on a domain controller
+- [ ] Only Exchange Offline Address Book generation logs
+
+AB-650 lists monitoring usage reports for Copilot in the Microsoft 365 admin center, including workload-level adoption details.
+
+[Source: Microsoft 365 Copilot usage report](https://learn.microsoft.com/en-us/microsoft-365/admin/activity-reports/microsoft-365-copilot-usage)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+
+
+Monitor usage reports for Copilot in the Microsoft 365 admin center, including workload-level adoption. Know what adoption metrics help you prove value and spot underused workloads after license assignment.
+
+</details>
