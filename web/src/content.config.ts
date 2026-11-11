@@ -50,7 +50,17 @@ const courseDays = defineCollection({
     tags: z.array(z.string()).default([]),
     resources: z.array(resourceSchema).default([]),
     videos: z.array(videoSchema).default([]),
+    /** Portal-only tips (not duplicated from official MS Learning labs) */
     lab: z.array(z.string()).default([]),
+    /** Primary hands-on practice → official AB-650 labs in /courses/ab-650/labs/ */
+    officialLabs: z
+      .array(
+        z.object({
+          labId: z.string(),
+          exerciseIds: z.array(z.string()).optional(),
+        }),
+      )
+      .default([]),
     outOfScopeNote: z.string().optional(),
     tldr: z.array(z.string()).default([]),
     trap: z.string(),

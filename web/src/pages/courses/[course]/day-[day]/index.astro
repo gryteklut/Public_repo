@@ -1,9 +1,9 @@
 ---
 import DefaultLayout from "@/layouts/DefaultLayout.astro";
 import { CompletionBar } from "@/components/courses/CompletionBar";
-import { LabChecklist } from "@/components/courses/LabChecklist";
 import { LessonPlan } from "@/components/courses/LessonPlan";
 import { MicrosoftTraining } from "@/components/courses/MicrosoftTraining";
+import { OfficialLabDayPanel } from "@/components/courses/OfficialLabDayPanel";
 import { SourceToggle } from "@/components/courses/SourceToggle";
 import { WatchChecklist } from "@/components/courses/WatchChecklist";
 import { render } from "astro:content";
@@ -53,6 +53,10 @@ const docLinks = d.resources.filter(
   (r) => r.kind !== "course" && r.kind !== "skillsup",
 );
 const skillsResources = d.resources.filter((r) => r.kind === "skillsup");
+const primaryOfficialLabId = d.officialLabs?.[0]?.labId;
+const officialLabHref = primaryOfficialLabId
+  ? withBase(`/courses/ab-650/labs/${primaryOfficialLabId}/`)
+  : undefined;
 ---
 
 <DefaultLayout title={`${d.moduleTitle} · ${code}`} description={d.summary}>
@@ -112,9 +116,9 @@ const skillsResources = d.resources.filter((r) => r.kind === "skillsup");
               {
                 [
                   "Take the Microsoft Learn training for this day",
+                  "Do the official Microsoft Learning hands-on lab",
                   "Do the Udemy watch checklist",
-                  "Review TL;DR + exam trap",
-                  "Prove with knowledge check",
+                  "Review TL;DR + exam trap, then knowledge check",
                 ].map((step, i) => (
                   <li class="bg-muted/50 rounded-xl border px-3 py-2 text-sm leading-relaxed">
                     <span class="text-muted-foreground mr-2 text-xs font-semibold">
@@ -174,26 +178,13 @@ const skillsResources = d.resources.filter((r) => r.kind === "skillsup");
                 </>
               )
             }
-            {
-              d.lab.length > 0 ? (
-                <>
-                  <h3 class="mt-4 font-semibold">Optional E5 lab</h3>
-                  <div class="mt-2">
-                    <LabChecklist
-                      client:only="react"
-                      code={code}
-                      day={d.day}
-                      steps={d.lab}
-                    />
-                  </div>
-                </>
-              ) : (
-                <p class="text-muted-foreground mt-2 text-sm">
-                  No lab checklist for this day — use the Microsoft Learn
-                  training above.
-                </p>
-              )
-            }
+            <OfficialLabDayPanel
+              client:only="react"
+              code={code}
+              day={d.day}
+              pointers={d.officialLabs ?? []}
+              portalTips={d.lab}
+            />
             {
               d.outOfScopeNote && (
                 <p class="bg-muted text-muted-foreground mt-4 rounded-xl p-3 text-sm leading-relaxed">
@@ -225,6 +216,21 @@ const skillsResources = d.resources.filter((r) => r.kind === "skillsup");
               </span>
             </div>
             <div class="prose-course space-y-4 p-4 md:p-6">
+              {
+                officialLabHref && (
+                  <p class="text-muted-foreground rounded-xl border border-[var(--course-line)] bg-[var(--ms-soft)]/50 px-3 py-2 text-sm leading-relaxed">
+                    Step-by-step admin practice is in the{" "}
+                    <a
+                      class="font-semibold text-[var(--ms-accent)]"
+                      href={officialLabHref}
+                    >
+                      official Microsoft Learning lab
+                    </a>
+                    . Study notes below stay exam-focused (portal choice, MS-102
+                    vs AB-650 framing) — they are not a second lab walkthrough.
+                  </p>
+                )
+              }
               <Content />
               <CompletionBar client:only="react" code={code} day={d.day} />
             </div>
@@ -263,6 +269,7 @@ const skillsResources = d.resources.filter((r) => r.kind === "skillsup");
           focus={d.focus}
           videoLabels={watchLabels}
           resources={d.resources}
+          officialLabHref={officialLabHref}
         />
       </div>
     </div>

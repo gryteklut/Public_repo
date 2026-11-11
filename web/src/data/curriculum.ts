@@ -35,12 +35,7 @@ export const curriculum: Day[] = [
             url: 'https://learn.microsoft.com/en-us/microsoft-365/admin/manage/assign-licenses-to-users',
           },
         ],
-        labSteps: [
-          'In your E5 dev tenant, open Microsoft 365 admin center → Settings → Org settings and review company profile, security & privacy.',
-          'Review Domains and note primary vs custom domain verification status.',
-          'Open Billing → Licenses and identify group-based licensing options for a security group.',
-          'Open Health → Service health and configure a sample notification preference.',
-        ],
+        labSteps: [],
         outOfScopeNote:
           'AB-650 does not emphasize hybrid directory sync (Entra Connect) the way older MS-102 did. Do not spend time on sync troubleshooting for this exam.',
         questions: [
@@ -152,12 +147,7 @@ export const curriculum: Day[] = [
             url: 'https://learn.microsoft.com/en-us/microsoft-365/backup/backup-overview',
           },
         ],
-        labSteps: [
-          'Create a shared mailbox and a Microsoft 365 group-backed Team in the E5 tenant.',
-          'Locate Teams meeting policies related to transcription / Copilot.',
-          'In SharePoint admin center, explore Restricted SharePoint Search / site access restriction concepts for Copilot readiness.',
-          'Review Microsoft 365 Backup setup documentation against what your tenant SKU allows.',
-        ],
+        labSteps: [],
         questions: [
           {
             id: 'd2q1',
@@ -267,12 +257,7 @@ export const curriculum: Day[] = [
             url: 'https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/administrative-units',
           },
         ],
-        labSteps: [
-          'Create a user, a Microsoft 365 group, and a security group.',
-          'Invite a guest and review External collaboration settings.',
-          'Create an administrative unit and assign a scoped role if licensing allows.',
-          'Open PIM and review an eligible role assignment workflow.',
-        ],
+        labSteps: [],
         outOfScopeNote:
           'Hybrid identity / Entra Connect sync troubleshooting is largely out of AB-650 scope compared with classic MS-102.',
         questions: [
@@ -384,12 +369,7 @@ export const curriculum: Day[] = [
             url: 'https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-howitworks',
           },
         ],
-        labSteps: [
-          'Review Authentication methods policy in Entra.',
-          'Confirm SSPR registration and reset portal behavior for a test user.',
-          'Create a report-only Conditional Access policy requiring MFA for admins.',
-          'Review Identity Protection risk detections at a high level.',
-        ],
+        labSteps: [],
         questions: [
           {
             id: 'd4q1',
@@ -499,11 +479,7 @@ export const curriculum: Day[] = [
             url: 'https://learn.microsoft.com/en-us/defender-office-365/attack-simulation-training-get-started',
           },
         ],
-        labSteps: [
-          'In Defender portal, review Email & collaboration alerts.',
-          'Inspect preset security policies vs custom anti-phishing / safe links / safe attachments.',
-          'Open Attack simulation training and review campaign concepts.',
-        ],
+        labSteps: [],
         outOfScopeNote:
           'Deep configuration of Defender for Endpoint, Identity, and Cloud Apps as separate MS-102 XDR domains is not the AB-650 focus. Know XDR exists; configure for Office 365 threats.',
         questions: [
@@ -615,11 +591,7 @@ export const curriculum: Day[] = [
             url: 'https://learn.microsoft.com/en-us/purview/dspm-for-ai',
           },
         ],
-        labSteps: [
-          'In Purview portal, review DLP policy locations including modern locations relevant to Copilot/AI if shown.',
-          'Inspect an existing sensitivity label policy and retention policy structure.',
-          'Open DSPM for AI overview docs and map reports/controls to Copilot prompts/responses.',
-        ],
+        labSteps: [],
         questions: [
           {
             id: 'd6q1',
@@ -730,9 +702,7 @@ export const curriculum: Day[] = [
           },
         ],
         labSteps: [
-          'In E5 tenant, review Copilot-related settings in Microsoft 365 admin center (what your license exposes).',
-          'Map data readiness: pick one SharePoint site and evaluate sharing links / membership sprawl.',
-          'At work (no admin portal), use Copilot Cowork as an end user and note admin-controlled behaviors you cannot change.',
+          'At work (no admin portal): use Copilot Cowork as an end user and note which behaviors look admin-controlled — not covered as a step in the official lab tenant.',
         ],
         questions: [
           {
@@ -863,9 +833,7 @@ export const curriculum: Day[] = [
           },
         ],
         labSteps: [
-          'Read Entra Agent ID lifecycle docs and sketch owner vs sponsor vs agent identity.',
-          'In whatever admin experiences your E5/Frontier licensing exposes, locate agent registry / Agent 365 blades — note gaps if SKU-limited.',
-          'Map Conditional Access / access package ideas onto agent identities (conceptually if UI unavailable).',
+          'If your E5/Frontier SKU does not expose Agent Registry / Agent 365 UI, complete Lab 7 conceptually from the official steps and note the gap — exam still expects the control-plane ideas.',
         ],
         questions: [
           {
@@ -977,9 +945,7 @@ export const curriculum: Day[] = [
           },
         ],
         labSteps: [
-          'In Microsoft 365 admin center, open Reports / Copilot-related adoption experiences available in your tenant.',
-          'Read Copilot Control System docs for usage, adoption, cost, and service health monitoring.',
-          'List your incomplete portal modules and schedule redo before Day 10.',
+          'List incomplete portal days (by AB-650-new / MS-102 tags) and schedule redo before Day 10 — catch-up is portal study strategy, not an official lab step.',
         ],
         questions: [
           {
