@@ -5,7 +5,7 @@ moduleTitle: Secure Microsoft 365 workloads
 moduleId: d5-defender
 minutes: 60
 practice: false
-summary: "MS-102-updated: AB-650 focuses Defender coverage on Office 365 rather than full XDR admin across every Defender workload."
+summary: "Defender for Office 365: alerts, threat policies, investigation, and attack simulation."
 focus: "Threat protection narrowed to email and collaboration: alerts, policies, investigation, attack simulation."
 tags:
   - MS-102-updated
@@ -38,19 +38,18 @@ officialLabs:
 lab: []
 outOfScopeNote: "Deep configuration of Defender for Endpoint, Identity, and Cloud Apps as separate MS-102 XDR domains is not the AB-650 focus. Know XDR exists; configure for Office 365 threats."
 tldr:
-  - "Secure Microsoft 365 workloads on AB-650 means: manage alerts in Defender for Office 365; configure threat policies and rules; investigat…"
+  - "Secure Microsoft 365 workloads on AB-650 means: manage alerts in Defender for Office 365; configure threat policies and rules; investigate/respond to email and collaboration threats; configure attack simulations including training campaigns."
   - "Threat policies include anti-phishing, anti-spam, anti-malware, Safe Links, Safe Attachments, and related presets."
-  - "Configure and manage attack simulations, including training campaigns: select payloads, target groups, schedule simulations, and assign t…"
-  - "Investigate and respond using alerts, incidents (where correlated), Email entity pages, Threat Explorer/Real-time detections (Plan depend…"
-trap: "Exam trap: read the AB-650 skill stem carefully for “Defender for Office 365” — distractors often mix MS-102-only tasks."
+  - "Configure and manage attack simulations, including training campaigns: select payloads, target groups, schedule simulations, and assign training based on results."
+  - "Investigate and respond using alerts, incidents (where correlated), Email entity pages, Threat Explorer/Real-time detections (Plan dependent), and remediation actions (soft delete, etc.)."
+trap: "AB-650 security tasks are Defender for Office 365. Full Defender for Endpoint or Cloud Apps admin is out of scope."
 videoTip: AB-650 centers on Defender for Office 365. Skim XDR reports lightly; skip Endpoint and Cloud Apps sections.
 ---
 
 import { Quiz } from 'starlight-quiz/components';
 
-Learn the topic, then prove it with the knowledge checks below.
 
-<Quiz id="d5q1" title="Compared with classic MS-102, how is security coverage framed on AB-650?">
+<Quiz id="d5q1">
 Compared with classic MS-102, how is security coverage framed on AB-650?
 
 - [x] Threat protection objectives center on Defender for Office 365 for email and collaboration
@@ -68,11 +67,11 @@ AB-650 skills measured list Defender for Office 365 alerts, threat policies, inv
 
 
 
-_Hands-on depth: [Lab 4 Ex 3–4](../labs/lab-4/#lab4-ex3) (Defender for Office 365 protection & training). Exam note:_ Secure Microsoft 365 workloads on AB-650 means: manage alerts in Defender for Office 365; configure threat policies and rules; investigate/respond to email and collaboration threats; configure attack simulations including training campaigns. Broad Defender XDR literacy helps contextually, but exam bullets are Office 365-centric.
+Secure Microsoft 365 workloads on AB-650 means: manage alerts in Defender for Office 365; configure threat policies and rules; investigate/respond to email and collaboration threats; configure attack simulations including training campaigns. Broad Defender XDR literacy helps contextually, but exam bullets are Office 365-centric.
 
 </details>
 
-<Quiz id="d5q2" title="Safe Links and Safe Attachments are examples of:">
+<Quiz id="d5q2">
 Safe Links and Safe Attachments are examples of:
 
 - [x] Defender for Office 365 threat protection policies
@@ -90,11 +89,11 @@ Safe Links/Safe Attachments are core Defender for Office 365 threat policies pro
 
 
 
-_Hands-on depth: [Lab 4 Ex 3–4](../labs/lab-4/#lab4-ex3) (Defender for Office 365 protection & training). Exam note:_ Threat policies include anti-phishing, anti-spam, anti-malware, Safe Links, Safe Attachments, and related presets. Know who policies apply to, priority/order concepts at a high level, and how overrides/allow/block lists can affect outcomes.
+Threat policies include anti-phishing, anti-spam, anti-malware, Safe Links, Safe Attachments, and related presets. Know who policies apply to, priority/order concepts at a high level, and how overrides/allow/block lists can affect outcomes.
 
 </details>
 
-<Quiz id="d5q3" title="Security team wants to measure user susceptibility to phishing and assign traini">
+<Quiz id="d5q3">
 Security team wants to measure user susceptibility to phishing and assign training. Which capability fits?
 
 - [x] Attack simulation training campaigns in Defender for Office 365
@@ -112,11 +111,11 @@ Attack simulation training (including campaigns) is an explicit AB-650 Defender 
 
 
 
-_Hands-on depth: [Lab 4 Ex 3–4](../labs/lab-4/#lab4-ex3) (Defender for Office 365 protection & training). Exam note:_ Configure and manage attack simulations, including training campaigns: select payloads, target groups, schedule simulations, and assign training based on results. This is both a security control and a measured exam skill.
+Configure and manage attack simulations, including training campaigns: select payloads, target groups, schedule simulations, and assign training based on results. This is both a security control and a measured exam skill.
 
 </details>
 
-<Quiz id="d5q4" title="An alert indicates a user clicked a malicious link in email. Where do you primar">
+<Quiz id="d5q4">
 An alert indicates a user clicked a malicious link in email. Where do you primarily investigate email/collaboration threats?
 
 - [x] Microsoft Defender portal — email & collaboration investigation / alerts / Explorer (as licensed)
@@ -134,7 +133,7 @@ Investigation and response for email/collaboration threats is done in the Defend
 
 
 
-_Hands-on depth: [Lab 4 Ex 3–4](../labs/lab-4/#lab4-ex3) (Defender for Office 365 protection & training). Exam note:_ Investigate and respond using alerts, incidents (where correlated), Email entity pages, Threat Explorer/Real-time detections (Plan dependent), and remediation actions (soft delete, etc.). Tie alerts management to triage workflow.
+Investigate and respond using alerts, incidents (where correlated), Email entity pages, Threat Explorer/Real-time detections (Plan dependent), and remediation actions (soft delete, etc.). Tie alerts management to triage workflow.
 
 </details>
 

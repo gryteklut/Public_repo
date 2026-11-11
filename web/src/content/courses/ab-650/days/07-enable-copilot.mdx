@@ -5,7 +5,7 @@ moduleTitle: Enable and manage Microsoft 365 Copilot
 moduleId: d7-copilot
 minutes: 60
 practice: false
-summary: Highest priority new domain content for MS-102 holders. Use E5 tenant for admin settings; use work Copilot Cowork for end-user familiarity.
+summary: "Copilot readiness, oversharing, web search, tenant settings, Cowork, and connectors."
 focus: "AB-650-new core: readiness, oversharing, web search, Copilot Search, tenant settings, Cowork, connectors, third-party AI."
 tags:
   - AB-650-new
@@ -45,15 +45,14 @@ tldr:
   - AB-650 lists managing Copilot user experiences and specifically Microsoft 365 Copilot Cowork.
   - Configure Copilot connectors and manage third-party AI providers.
   - "Study Copilot settings as a map: licensing, data readiness, web grounding, Search, connectors, user experiences, Cowork, and third-party AI."
-trap: "Exam trap: portal selection for “Enable and manage Copilot” — know which admin center owns the setting."
+trap: "Readiness, oversharing, and Copilot settings are different tasks. Web search, connectors, and Cowork are not the same control."
 videoTip: Highest-priority AB-650-new Udemy section for MS-102 holders. Watch end-to-end.
 ---
 
 import { Quiz } from 'starlight-quiz/components';
 
-Learn the topic, then prove it with the knowledge checks below.
 
-<Quiz id="d7q1" title="What is a primary tenant readiness concern before enabling Copilot broadly?">
+<Quiz id="d7q1">
 What is a primary tenant readiness concern before enabling Copilot broadly?
 
 - [x] Data oversharing and permissions hygiene so Copilot does not surface content users should not see
@@ -71,11 +70,11 @@ Assess readiness and remediate data leaks/oversharing/compliance issues — core
 
 
 
-_Hands-on depth: [Lab 6 — Copilot & Cowork](../labs/lab-6/). Exam note:_ Enable and manage Copilot starts with readiness: licenses, in-app experiences, and especially data readiness. Copilot uses Microsoft Graph content the user can access. Oversharing (Everyone links, broad group membership) becomes an AI risk. Remediate with permissions cleanup, SAM controls, labels/DLP, and site restrictions.
+Enable and manage Copilot starts with readiness: licenses, in-app experiences, and especially data readiness. Copilot uses Microsoft Graph content the user can access. Oversharing (Everyone links, broad group membership) becomes an AI risk. Remediate with permissions cleanup, SAM controls, labels/DLP, and site restrictions.
 
 </details>
 
-<Quiz id="d7q2" title="Managing web search for Copilot / Copilot Chat primarily controls:">
+<Quiz id="d7q2">
 Managing web search for Copilot / Copilot Chat primarily controls:
 
 - [x] Whether Copilot can ground on public web content in addition to tenant content (per policy/config)
@@ -93,11 +92,11 @@ Web search grounding is an admin-governed Copilot capability called out in AB-65
 
 
 
-_Hands-on depth: [Lab 6 — Copilot & Cowork](../labs/lab-6/). Exam note:_ Manage web search for Copilot and Microsoft 365 Copilot Chat, and configure Copilot Search. Understand tenant settings such as self-service purchases, Copilot in admin centers, release preferences, AI disclaimer, and video/image generation. Know where these toggles live conceptually in admin experiences / Control System.
+Manage web search for Copilot and Microsoft 365 Copilot Chat, and configure Copilot Search. Understand tenant settings such as self-service purchases, Copilot in admin centers, release preferences, AI disclaimer, and video/image generation. Know where these toggles live conceptually in admin experiences / Control System.
 
 </details>
 
-<Quiz id="d7q3" title="Microsoft 365 Copilot Cowork is best described as:">
+<Quiz id="d7q3">
 Microsoft 365 Copilot Cowork is best described as:
 
 - [x] A Copilot experience/capability admins must be able to manage as part of Copilot user experiences
@@ -115,11 +114,11 @@ Manage Microsoft 365 Copilot Cowork is an explicit bullet under Enable and manag
 
 
 
-_Hands-on depth: [Lab 6 — Copilot & Cowork](../labs/lab-6/). Exam note:_ AB-650 lists managing Copilot user experiences and specifically Microsoft 365 Copilot Cowork. Learn what Cowork is positioned as in current Microsoft documentation, how it differs from classic chat/in-app Copilot surfaces, and which admin controls govern availability. Hands-on at work helps memorably, even without job admin rights.
+AB-650 lists managing Copilot user experiences and specifically Microsoft 365 Copilot Cowork. Learn what Cowork is positioned as in current Microsoft documentation, how it differs from classic chat/in-app Copilot surfaces, and which admin controls govern availability. Hands-on at work helps memorably, even without job admin rights.
 
 </details>
 
-<Quiz id="d7q4" title="Copilot connectors are used to:">
+<Quiz id="d7q4">
 Copilot connectors are used to:
 
 - [x] Bring external/line-of-business data into Microsoft Graph so Copilot can ground on it (when configured and permitted)
@@ -137,11 +136,11 @@ Configure Copilot connectors is measured; connectors expand grounding beyond bui
 
 
 
-_Hands-on depth: [Lab 6 — Copilot & Cowork](../labs/lab-6/). Exam note:_ Configure Copilot connectors and manage third-party AI providers. Connectors index external content into Graph with schema/permissions considerations. Third-party AI provider governance is about what non-Microsoft AI is allowed and how it is controlled in the tenant.
+Configure Copilot connectors and manage third-party AI providers. Connectors index external content into Graph with schema/permissions considerations. Third-party AI provider governance is about what non-Microsoft AI is allowed and how it is controlled in the tenant.
 
 </details>
 
-<Quiz id="d7q5" title="Which admin mindset matches AB-650 Copilot configuration questions?">
+<Quiz id="d7q5">
 Which admin mindset matches AB-650 Copilot configuration questions?
 
 - [x] Know which control and which portal/experience configures a stated Copilot behavior
@@ -159,7 +158,7 @@ Exam items are framed around configure/manage/govern — portal and control sele
 
 
 
-_Hands-on depth: [Lab 6 — Copilot & Cowork](../labs/lab-6/). Exam note:_ Study Copilot settings as a map: licensing, data readiness, web grounding, Search, connectors, user experiences, Cowork, and third-party AI. The Copilot Control System is increasingly the governance/monitoring umbrella — Day 9 expands cost/usage/health monitoring there.
+Study Copilot settings as a map: licensing, data readiness, web grounding, Search, connectors, user experiences, Cowork, and third-party AI. The Copilot Control System is increasingly the governance/monitoring umbrella — Day 9 expands cost/usage/health monitoring there.
 
 </details>
 

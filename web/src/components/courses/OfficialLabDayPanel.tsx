@@ -62,9 +62,8 @@ export function OfficialLabDayPanel({
       {resolved.length > 0 && (
         <div className="space-y-3">
           <p className="text-muted-foreground text-sm leading-relaxed">
-            Primary practice is the official Microsoft Learning lab (more
-            detailed than the old E5 skim). Work it there; checkboxes on the
-            labs page track the full 450 minutes.
+            Do the official lab. Check off exercises on the lab page — that
+            progress is the 450-minute total.
           </p>
           {resolved.map(({ lab, exercises }) => {
             const doneCount = exercises.filter((ex) =>
@@ -153,10 +152,7 @@ export function OfficialLabDayPanel({
 
       {portalTips.length > 0 && (
         <div>
-          <h3 className="font-semibold">Portal-only notes</h3>
-          <p className="text-muted-foreground mt-1 text-sm">
-            Extra exam/study tips not covered as steps in the official labs.
-          </p>
+          <h3 className="font-semibold">Also</h3>
           <ul className="mt-2 space-y-2">
             {portalTips.map((tip) => {
               const id = `portal-tip-${day}-${tip}`;

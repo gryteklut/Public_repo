@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Github } from "lucide-react";
 
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -26,6 +26,13 @@ export const Navbar = () => {
   useEffect(() => {
     setPathname(window.location.pathname);
   }, []);
+
+  const current = ITEMS.filter((link) => {
+    const path = withBase(link.href).replace(/\/$/, "") || "/";
+    const here = pathname.replace(/\/$/, "") || "/";
+    if (link.href === "/") return here === path;
+    return here === path || here.startsWith(`${path}/`);
+  }).sort((a, b) => b.href.length - a.href.length)[0];
 
   return (
     <section
@@ -51,11 +58,11 @@ export const Navbar = () => {
               <NavigationMenuItem key={link.label}>
                 <a
                   href={withBase(link.href)}
+                  aria-current={current?.href === link.href ? "page" : undefined}
                   className={cn(
                     "relative bg-transparent px-1.5 text-sm font-medium transition-opacity hover:opacity-75",
-                    pathname.includes(withBase(link.href).replace(/\/$/, "")) &&
-                      link.href !== "/" &&
-                      "text-muted-foreground",
+                    current?.href === link.href &&
+                      "font-semibold text-[var(--ms-accent)]",
                   )}
                 >
                   {link.label}
@@ -67,11 +74,6 @@ export const Navbar = () => {
 
         <div className="flex items-center gap-2.5">
           <ThemeToggle />
-          <a href={withBase("/courses/")} className="max-lg:hidden">
-            <Button variant="outline">
-              <span className="relative z-10">Courses</span>
-            </Button>
-          </a>
           <a
             href={GITHUB_URL}
             className="text-muted-foreground hover:text-foreground transition-colors"
@@ -103,12 +105,23 @@ export const Navbar = () => {
         </div>
       </div>
 
+      {isMenuOpen &&
+        createPortal(
+          <button
+            type="button"
+            className="fixed inset-0 z-40 bg-black/25 lg:hidden"
+            aria-label="Close menu"
+            onClick={() => setIsMenuOpen(false)}
+          />,
+          document.body,
+        )}
+
       <div
         className={cn(
-          "bg-background fixed inset-x-0 top-[calc(100%+1rem)] flex flex-col rounded-2xl border p-6 transition-all duration-300 ease-in-out lg:hidden",
+          "bg-card absolute inset-x-0 top-[calc(100%+0.75rem)] z-50 flex flex-col rounded-2xl border p-6 shadow-xl transition-all duration-300 ease-in-out lg:hidden",
           isMenuOpen
             ? "visible translate-y-0 opacity-100"
-            : "invisible -translate-y-4 opacity-0",
+            : "invisible -translate-y-2 opacity-0",
         )}
       >
         <nav className="divide-border flex flex-1 flex-col divide-y">

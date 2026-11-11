@@ -1,24 +1,24 @@
-import { ArrowRight, GraduationCap } from "lucide-react";
+import { ArrowRight, FlaskConical, GraduationCap } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { withBase } from "@/lib/base";
 
 const tools = [
   {
-    kicker: "Learning",
-    title: "Courses",
+    kicker: "Study plan",
+    title: "AB-650",
     description:
-      "Reusable study courses with soft-contrast day players, Udemy watch checklists, Microsoft Learn / SkillsUp, and gated knowledge checks.",
-    href: "/courses/",
+      "Ten days for the exam. Continue where you left off, or start at day 1.",
+    href: "/courses/ab-650/",
     icon: GraduationCap,
   },
   {
-    kicker: "Certification",
-    title: "AB-650",
+    kicker: "Practice",
+    title: "Hands-on labs",
     description:
-      "Administering Microsoft 365 and AI Services — ten 60-minute days on the courses platform.",
-    href: "/courses/ab-650/",
-    icon: GraduationCap,
+      "The seven official Microsoft Learning labs. Later labs reuse what you create earlier.",
+    href: "/courses/ab-650/labs/",
+    icon: FlaskConical,
   },
 ];
 
@@ -26,10 +26,7 @@ export function Tools() {
   return (
     <section className="container pb-24 lg:pb-32">
       <div className="mb-8 max-w-2xl">
-        <h2 className="text-2xl tracking-tight md:text-3xl">Available tools</h2>
-        <p className="text-muted-foreground mt-2">
-          More cards can land here later without moving AB-650 off its path.
-        </p>
+        <h2 className="text-2xl tracking-tight md:text-3xl">Where to start</h2>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         {tools.map((tool) => {
@@ -68,4 +65,4 @@ export function Tools() {
       </div>
     </section>
   );
-}
+};

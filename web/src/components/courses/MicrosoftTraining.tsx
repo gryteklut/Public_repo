@@ -20,16 +20,7 @@ export function MicrosoftTraining({
 
   return (
     <section className="course-card border-[color:var(--course-highlight)] p-5 shadow-xs md:p-6">
-      <p className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-        Microsoft Learn · for this day
-      </p>
-      <h2 className="mt-1 text-xl font-semibold tracking-tight">
-        Training to take
-      </h2>
-      <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
-        Official AB-650-aligned modules and paths. Open these first when you
-        study with Microsoft Learn.
-      </p>
+      <h2 className="text-xl font-semibold tracking-tight">Microsoft Learn</h2>
       {courses.length > 0 && (
         <ul className="mt-4 space-y-2">
           {courses.map((link) => (

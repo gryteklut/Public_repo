@@ -5,7 +5,7 @@ moduleTitle: Manage Microsoft 365 workloads
 moduleId: d2-workloads
 minutes: 60
 practice: false
-summary: "Workload admin overlaps MS-102, but AB-650 ties Teams transcription/Copilot and SharePoint Advanced Management to Copilot grounding quality."
+summary: "Exchange, Teams, and SharePoint or OneDrive settings that affect Copilot, plus Microsoft 365 Backup."
 focus: "Exchange, Teams, SharePoint/OneDrive administration with Copilot-aware settings, plus Microsoft 365 Backup."
 tags:
   - MS-102-updated
@@ -42,15 +42,14 @@ tldr:
   - "Under “Manage Microsoft 365 workloads,” AB-650 includes configuring settings for Copilot in Teams meetings, including transcription."
   - Microsoft 365 Backup is called out on AB-650 tenant skills.
   - "When preparing a tenant for Copilot, you often need to exclude or restrict sites from search/discovery while fixing oversharing."
-trap: "Exam trap: Copilot/agent wording is precise — readiness, oversharing, and governance are different skills."
+trap: "Copilot grounding follows SharePoint permissions. Restricting discovery is a different task from fixing who can open the file."
 videoTip: This is an AB-650-labelled section in Udemy — prioritize Teams Copilot/transcription and SharePoint Advanced Management.
 ---
 
 import { Quiz } from 'starlight-quiz/components';
 
-Learn the topic, then prove it with the knowledge checks below.
 
-<Quiz id="d2q1" title="Why do SharePoint and OneDrive permissions matter specifically for Microsoft 365">
+<Quiz id="d2q1">
 Why do SharePoint and OneDrive permissions matter specifically for Microsoft 365 Copilot on AB-650?
 
 - [x] Copilot grounds responses on content the user can access; oversharing becomes an AI data readiness problem
@@ -68,11 +67,11 @@ Copilot respects the user’s existing permissions. Oversharing and broad permis
 
 
 
-_Hands-on depth: [Lab 2 — collaboration](../labs/lab-2/) (Backup readiness also in [Lab 1 Ex 3](../labs/lab-1/#lab1-ex3)). Exam note:_ AB-650 links workload configuration to Copilot quality. Create/manage SharePoint sites and permissions, then use SharePoint Advanced Management, Microsoft Search controls, and site exclusions so Copilot does not surface content that should not be discoverable. Restricted Content Discovery, Restricted SharePoint Search, and Restricted Access Control are high-value distinctions for exam scenarios.
+AB-650 links workload configuration to Copilot quality. Create/manage SharePoint sites and permissions, then use SharePoint Advanced Management, Microsoft Search controls, and site exclusions so Copilot does not surface content that should not be discoverable. Restricted Content Discovery, Restricted SharePoint Search, and Restricted Access Control are high-value distinctions for exam scenarios.
 
 </details>
 
-<Quiz id="d2q2" title="You need Copilot available in Teams meetings with transcription support governed">
+<Quiz id="d2q2">
 You need Copilot available in Teams meetings with transcription support governed by policy. Where do you typically control meeting-related Copilot behavior?
 
 - [x] Teams meeting policies / admin settings for Copilot and transcription
@@ -90,11 +89,11 @@ Teams meeting policies and related admin settings govern Copilot/transcription b
 
 
 
-_Hands-on depth: [Lab 2 — collaboration](../labs/lab-2/) (Backup readiness also in [Lab 1 Ex 3](../labs/lab-1/#lab1-ex3)). Exam note:_ Under “Manage Microsoft 365 workloads,” AB-650 includes configuring settings for Copilot in Teams meetings, including transcription. Know that meeting policies can allow/limit Copilot experiences and that transcription/recap features interact with compliance and privacy settings in the tenant.
+Under “Manage Microsoft 365 workloads,” AB-650 includes configuring settings for Copilot in Teams meetings, including transcription. Know that meeting policies can allow/limit Copilot experiences and that transcription/recap features interact with compliance and privacy settings in the tenant.
 
 </details>
 
-<Quiz id="d2q3" title="Which statement about Microsoft 365 Backup aligns with AB-650 skills measured?">
+<Quiz id="d2q3">
 Which statement about Microsoft 365 Backup aligns with AB-650 skills measured?
 
 - [x] Admins should know how to set up, restore, and monitor Microsoft 365 Backup
@@ -112,11 +111,11 @@ AB-650 lists configure and use Microsoft 365 Backup including setup, restore, an
 
 
 
-_Hands-on depth: [Lab 2 — collaboration](../labs/lab-2/) (Backup readiness also in [Lab 1 Ex 3](../labs/lab-1/#lab1-ex3)). Exam note:_ Microsoft 365 Backup is called out on AB-650 tenant skills. Understand product purpose (operational restore for supported workloads), high-level setup, restore workflows, and monitoring — distinct from Purview retention (compliance) and from Defender threat protection.
+Microsoft 365 Backup is called out on AB-650 tenant skills. Understand product purpose (operational restore for supported workloads), high-level setup, restore workflows, and monitoring — distinct from Purview retention (compliance) and from Defender threat protection.
 
 </details>
 
-<Quiz id="d2q4" title="A site contains sensitive drafts that should not be discoverable by Copilot whil">
+<Quiz id="d2q4">
 A site contains sensitive drafts that should not be discoverable by Copilot while a permissions review is underway. Which control family is most relevant?
 
 - [x] SharePoint restriction / exclusion controls (for example Restricted Content Discovery or related SAM controls)
@@ -134,7 +133,7 @@ SharePoint Advanced Management and Copilot-related restriction/exclusion control
 
 
 
-_Hands-on depth: [Lab 2 — collaboration](../labs/lab-2/) (Backup readiness also in [Lab 1 Ex 3](../labs/lab-1/#lab1-ex3)). Exam note:_ When preparing a tenant for Copilot, you often need to exclude or restrict sites from search/discovery while fixing oversharing. Learn the difference between cutting off Copilot discovery versus changing permissions versus applying sensitivity/DLP. Exam scenarios frequently describe “permissions review in progress” as the trigger.
+When preparing a tenant for Copilot, you often need to exclude or restrict sites from search/discovery while fixing oversharing. Learn the difference between cutting off Copilot discovery versus changing permissions versus applying sensitivity/DLP. Exam scenarios frequently describe “permissions review in progress” as the trigger.
 
 </details>
 

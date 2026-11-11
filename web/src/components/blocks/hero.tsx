@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpenCheck, Layers3, ShieldCheck } from "lucide-react";
+import { BookOpenCheck, ClipboardCheck, Timer } from "lucide-react";
 
 import { DashedLine } from "@/components/dashed-line";
 import { Button } from "@/components/ui/button";
@@ -6,20 +6,19 @@ import { withBase } from "@/lib/base";
 
 const features = [
   {
-    title: "Learn-first modules",
-    description:
-      "Study panels before control questions, with all-correct gating.",
+    title: "Ten study days",
+    description: "One topic a day, then a knowledge check you must pass at 100%.",
     icon: BookOpenCheck,
   },
   {
-    title: "Hub-ready paths",
-    description: "Root stays open for more tools; AB-650 lives under /AB-650/.",
-    icon: Layers3,
+    title: "Official labs",
+    description: "Seven Microsoft Learning labs, 450 minutes, in order.",
+    icon: Timer,
   },
   {
-    title: "Local progress",
-    description: "Export/import JSON so you can move between devices.",
-    icon: ShieldCheck,
+    title: "Progress on this device",
+    description: "Export or import a JSON file when you switch browsers.",
+    icon: ClipboardCheck,
   },
 ];
 
@@ -29,33 +28,23 @@ export const Hero = () => {
       <div className="container flex flex-col justify-between gap-8 md:gap-14 lg:flex-row lg:gap-20">
         <div className="flex-1">
           <p className="text-muted-foreground mb-3 text-sm font-medium tracking-wide uppercase">
-            gryteklut / Public_repo
+            Exam AB-650
           </p>
           <h1 className="text-foreground max-w-160 text-3xl tracking-tight md:text-4xl lg:text-5xl">
-            Public tools hub
+            Administer Microsoft 365 and AI services
           </h1>
 
           <p className="text-muted-foreground mt-5 text-xl md:text-2xl">
-            GitHub Pages hub powered by the Mainline Astro theme. Start with the
-            AB-650 study portal.
+            Microsoft Learn modules, the official hands-on labs, and a
+            knowledge check for each day.
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-4 lg:flex-nowrap">
+          <div className="mt-8 flex flex-wrap items-center gap-4">
             <Button asChild>
-              <a href={withBase("/AB-650/")}>Open AB-650 portal</a>
+              <a href={withBase("/courses/ab-650/")}>Start AB-650</a>
             </Button>
-            <Button
-              variant="outline"
-              className="from-background h-auto gap-2 bg-linear-to-r to-transparent shadow-md"
-              asChild
-            >
-              <a
-                href="https://github.com/shadcnblocks/mainline-astro-template"
-                className="max-w-56 truncate text-start md:max-w-none"
-              >
-                Mainline theme
-                <ArrowRight className="stroke-3" />
-              </a>
+            <Button variant="outline" asChild>
+              <a href={withBase("/courses/ab-650/labs/")}>Open the labs</a>
             </Button>
           </div>
         </div>

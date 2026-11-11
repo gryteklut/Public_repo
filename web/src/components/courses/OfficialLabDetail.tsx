@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { LabRichText } from "@/components/courses/LabRichText";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
@@ -88,10 +89,11 @@ function LabDetailInner({ lab }: { lab: OfficialLab }) {
         </div>
         <div className="space-y-2">
           <div className="flex flex-wrap justify-between gap-2 text-sm">
-            <span className="font-semibold">This lab</span>
+            <span className="font-semibold">
+              {doneMinutes} of {lab.duration} min
+            </span>
             <span className="text-muted-foreground">
-              {doneMinutes} / {lab.duration} min · {minutesLeft} min remaining
-              across all labs
+              {minutesLeft} min left in the set
             </span>
           </div>
           <Progress value={labPercent} className="h-2" />
@@ -109,11 +111,6 @@ function LabDetailInner({ lab }: { lab: OfficialLab }) {
               </a>
             </Button>
           )}
-          <Button variant="outline" asChild>
-            <a href={lab.sourceUrl} target="_blank" rel="noreferrer">
-              Source markdown
-            </a>
-          </Button>
         </div>
         {lab.labFiles.length > 0 && (
           <p className="text-muted-foreground text-sm">
@@ -196,7 +193,7 @@ function LabDetailInner({ lab }: { lab: OfficialLab }) {
               </div>
               {ex.scenario && (
                 <p className="text-muted-foreground text-sm leading-relaxed">
-                  {ex.scenario}
+                  <LabRichText text={ex.scenario} />
                 </p>
               )}
               {ex.tasks.map((task) => (
@@ -210,8 +207,11 @@ function LabDetailInner({ lab }: { lab: OfficialLab }) {
                   </summary>
                   <ol className="space-y-2 border-t border-[var(--course-line)] px-4 py-3 text-sm leading-relaxed">
                     {task.steps.map((step, idx) => (
-                      <li key={`${task.id}-${idx}`} className="ml-4 list-decimal">
-                        {step}
+                      <li
+                        key={`${task.id}-${idx}`}
+                        className="ml-4 list-decimal"
+                      >
+                        <LabRichText text={step} />
                       </li>
                     ))}
                   </ol>

@@ -34,44 +34,45 @@ const { data } = course;
       <span class="text-foreground">{data.code}</span>
     </nav>
 
-    <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
-      <div class="space-y-8">
-        <header class="course-card p-6 md:p-8">
-          <p
-            class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-          >
-            {data.code} · {data.level} · {data.status}
-          </p>
-          <h1 class="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
-            {data.title}
-          </h1>
-          <p
-            class="text-muted-foreground mt-3 max-w-3xl text-base leading-relaxed"
-          >
-            {data.subtitle}
-          </p>
+    <header class="course-card mb-8 p-6 md:p-8">
+      <p
+        class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+      >
+        {data.code} · {data.level}
+        {data.status !== "live" ? ` · ${data.status}` : ""}
+      </p>
+      <h1 class="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
+        {data.title}
+      </h1>
+      <p
+        class="text-muted-foreground mt-3 max-w-3xl text-base leading-relaxed"
+      >
+        {data.subtitle}
+      </p>
+      {
+        slug === "ab-650" && (
           <p class="mt-4 flex flex-wrap gap-2">
-            {
-              slug === "ab-650" && (
-                <a
-                  class="course-pill inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-semibold"
-                  href={withBase("/courses/ab-650/labs/")}
-                >
-                  Hands-on labs (450 min)
-                </a>
-              )
-            }
+            <a
+              class="course-pill inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-semibold"
+              href={withBase("/courses/ab-650/labs/")}
+            >
+              Hands-on labs (450 min)
+            </a>
             <a
               class="inline-flex items-center rounded-lg border border-[var(--course-line)] bg-[var(--card)] px-3 py-1.5 text-sm font-semibold"
-              href="https://learn.microsoft.com/en-us/training/browse/?roles=administrator&terms=Microsoft%20365%20and%20AI%20Services"
+              href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650"
               target="_blank"
               rel="noreferrer"
             >
-              Browse Microsoft 365 and AI Services training
+              Exam study guide
             </a>
           </p>
-        </header>
+        )
+      }
+    </header>
 
+    <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
+      <div class="space-y-8">
         {
           data.learn.length > 0 && (
             <section class="course-card p-6">
@@ -107,7 +108,7 @@ const { data } = course;
         </section>
       </div>
 
-      <div class="lg:sticky lg:top-28 lg:self-start">
+      <div class="order-first lg:sticky lg:top-28 lg:order-none lg:self-start">
         <ProgressCard
           client:only="react"
           courseSlug={slug}

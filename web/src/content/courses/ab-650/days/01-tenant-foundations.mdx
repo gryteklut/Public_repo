@@ -5,7 +5,7 @@ moduleTitle: Configure and manage a Microsoft 365 tenant
 moduleId: d1-tenant
 minutes: 60
 practice: false
-summary: "Cover the AB-650 tenant bullets that overlap MS-102, plus AI licensing and Backup awareness for later days."
+summary: "Branding, domains, org settings, licensing (including Copilot), service health, and network insights."
 focus: "Refresh tenant admin: branding, domains, org settings, licensing, service health, and network insights."
 tags:
   - MS-102-core
@@ -46,18 +46,17 @@ lab: []
 outOfScopeNote: AB-650 does not emphasize hybrid directory sync (Entra Connect) the way older MS-102 did. Do not spend time on sync troubleshooting for this exam.
 tldr:
   - "AB-650 expects you to configure tenant branding including logo, company URL, themes, and backgrounds."
-  - "Implementing domains on AB-650 includes adding a domain in the Microsoft 365 admin center, verifying ownership with DNS records, and conf…"
-  - "AB-650 explicitly measures managing Microsoft 365 licenses including group-based licensing and pay-as-you-go, plus AI service licenses (C…"
+  - "Implementing domains on AB-650 includes adding a domain in the Microsoft 365 admin center, verifying ownership with DNS records, and configuring required records (for example MX, CNAME, TXT) so workloads like Exchange and Teams can use the domain."
+  - "AB-650 explicitly measures managing Microsoft 365 licenses including group-based licensing and pay-as-you-go, plus AI service licenses (Copilot, Agent 365, Copilot Studio)."
   - "Monitor Microsoft 365 service health in the admin center, including configuring notifications."
-trap: "Exam trap: portal selection for “Tenant foundations” — know which admin center owns the setting."
+trap: "Sign-in branding is Entra company branding. Org profile and service health are in the Microsoft 365 admin center."
 videoTip: "Start with the short AB-650 vs MS-102 intro once, then the tenant section. AI license + Backup lectures are high value for AB-650."
 ---
 
 import { Quiz } from 'starlight-quiz/components';
 
-Learn the topic, then prove it with the knowledge checks below.
 
-<Quiz id="d1q1" title="You need company branding (logo, sign-in background, and theme) to appear for us">
+<Quiz id="d1q1">
 You need company branding (logo, sign-in background, and theme) to appear for users signing in to Microsoft 365. Where do you primarily configure this?
 
 - [x] Microsoft Entra admin center — Company branding
@@ -75,11 +74,11 @@ Sign-in and company branding for the Microsoft 365 experience is configured in M
 
 
 
-_Hands-on depth: [Lab 1 — Operate the Microsoft 365 tenant](../labs/lab-1/). Exam note:_ AB-650 expects you to configure tenant branding including logo, company URL, themes, and backgrounds. For Microsoft Entra sign-in experiences, use Entra admin center → Company branding. Organizational profile details (name, address, technical contact) live under Microsoft 365 admin center → Settings → Org settings. Know which portal owns which setting — exam questions often test portal selection.
+AB-650 expects you to configure tenant branding including logo, company URL, themes, and backgrounds. For Microsoft Entra sign-in experiences, use Entra admin center → Company branding. Organizational profile details (name, address, technical contact) live under Microsoft 365 admin center → Settings → Org settings. Know which portal owns which setting — exam questions often test portal selection.
 
 </details>
 
-<Quiz id="d1q2" title="A custom domain was added but users cannot use it for email yet. What must typic">
+<Quiz id="d1q2">
 A custom domain was added but users cannot use it for email yet. What must typically be true before the domain is fully usable for Exchange Online?
 
 - [x] The domain must be verified (DNS TXT/MX as required) and set up for services
@@ -97,11 +96,11 @@ Custom domains require DNS verification and service setup (including MX for mail
 
 
 
-_Hands-on depth: [Lab 1 — Operate the Microsoft 365 tenant](../labs/lab-1/). Exam note:_ Implementing domains on AB-650 includes adding a domain in the Microsoft 365 admin center, verifying ownership with DNS records, and configuring required records (for example MX, CNAME, TXT) so workloads like Exchange and Teams can use the domain. A domain can be verified but still incomplete for a workload until the right records exist.
+Implementing domains on AB-650 includes adding a domain in the Microsoft 365 admin center, verifying ownership with DNS records, and configuring required records (for example MX, CNAME, TXT) so workloads like Exchange and Teams can use the domain. A domain can be verified but still incomplete for a workload until the right records exist.
 
 </details>
 
-<Quiz id="d1q3" title="You must assign Microsoft 365 Copilot licenses to 2,000 users with minimal ongoi">
+<Quiz id="d1q3">
 You must assign Microsoft 365 Copilot licenses to 2,000 users with minimal ongoing admin work. Which approach best matches AB-650 licensing objectives?
 
 - [x] Use group-based licensing so membership drives license assignment
@@ -119,11 +118,11 @@ Group-based licensing scales assignment and removal with group membership. Share
 
 
 
-_Hands-on depth: [Lab 1 — Operate the Microsoft 365 tenant](../labs/lab-1/). Exam note:_ AB-650 explicitly measures managing Microsoft 365 licenses including group-based licensing and pay-as-you-go, plus AI service licenses (Copilot, Agent 365, Copilot Studio). For large populations, assign licenses via groups in Entra ID. Also know that AI services may involve usage-based billing you monitor separately from named seats.
+AB-650 explicitly measures managing Microsoft 365 licenses including group-based licensing and pay-as-you-go, plus AI service licenses (Copilot, Agent 365, Copilot Studio). For large populations, assign licenses via groups in Entra ID. Also know that AI services may involve usage-based billing you monitor separately from named seats.
 
 </details>
 
-<Quiz id="d1q4" title="You want admins notified when Exchange Online has an active incident. Which Micr">
+<Quiz id="d1q4">
 You want admins notified when Exchange Online has an active incident. Which Microsoft 365 capability should you configure?
 
 - [x] Service health notifications in the Microsoft 365 admin center
@@ -141,7 +140,7 @@ Service health (and its notification preferences) is how you monitor Microsoft 3
 
 
 
-_Hands-on depth: [Lab 1 — Operate the Microsoft 365 tenant](../labs/lab-1/). Exam note:_ Monitor Microsoft 365 service health in the admin center, including configuring notifications. Pair this with network connectivity insights when diagnosing client connectivity issues. These are classic tenant-admin skills that remain on AB-650 under “configure and manage a Microsoft 365 tenant.”
+Monitor Microsoft 365 service health in the admin center, including configuring notifications. Pair this with network connectivity insights when diagnosing client connectivity issues. These are classic tenant-admin skills that remain on AB-650 under “configure and manage a Microsoft 365 tenant.”
 
 </details>
 

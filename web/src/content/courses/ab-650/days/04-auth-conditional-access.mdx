@@ -5,7 +5,7 @@ moduleTitle: Implement and manage authentication and access
 moduleId: d4-auth
 minutes: 60
 practice: false
-summary: Classic MS-102-core strength. Be sharp on CA policy logic and auth method strength.
+summary: "Authentication methods, Password Protection, self-service password reset, Conditional Access, MFA, and sign-in troubleshooting."
 focus: "Auth methods, Password Protection, SSPR, troubleshooting, Conditional Access, MFA, and ID Protection."
 tags:
   - MS-102-core
@@ -35,18 +35,17 @@ officialLabs:
 lab: []
 tldr:
   - "AB-650 includes implementing Conditional Access policies, including Microsoft Entra ID Protection and multifactor authentication."
-  - "Configure SSPR: who is in scope, which authentication methods are required for reset, registration campaign, and writeback considerations…"
-  - "Implement and manage Microsoft Entra Password Protection: global banned password list, custom banned passwords, and how it applies to cha…"
-  - "Investigate and resolve authentication issues using Entra sign-in logs, authentication methods registration, CA “What If” / report-only r…"
-trap: "Exam trap: read the AB-650 skill stem carefully for “Authentication and Conditional Access” — distractors often mix MS-102-only tasks."
+  - "Configure SSPR: who is in scope, which authentication methods are required for reset, registration campaign, and writeback considerations if hybrid existed (remember hybrid is de-emphasized on AB-650)."
+  - "Implement and manage Microsoft Entra Password Protection: global banned password list, custom banned passwords, and how it applies to change/reset flows."
+  - "Investigate and resolve authentication issues using Entra sign-in logs, authentication methods registration, CA “What If” / report-only results, and MFA prompt errors."
+trap: "Conditional Access decides the sign-in. Password Protection and self-service password reset are separate controls."
 videoTip: Full watch — this section maps cleanly to AB-650 authentication and Conditional Access skills.
 ---
 
 import { Quiz } from 'starlight-quiz/components';
 
-Learn the topic, then prove it with the knowledge checks below.
 
-<Quiz id="d4q1" title="Which statement best describes Microsoft Entra Conditional Access?">
+<Quiz id="d4q1">
 Which statement best describes Microsoft Entra Conditional Access?
 
 - [x] It evaluates signals and enforces controls such as MFA or blocking access based on policy conditions
@@ -64,11 +63,11 @@ Conditional Access is the policy engine that uses conditions (user, app, locatio
 
 
 
-_Hands-on depth: [Lab 4 Ex 1–2](../labs/lab-4/#lab4-ex1) (auth methods, SSPR, Conditional Access). Exam note:_ AB-650 includes implementing Conditional Access policies, including Microsoft Entra ID Protection and multifactor authentication. Master assignments (users/groups/roles), cloud apps, conditions, grant controls, session controls, and report-only mode. Know how ID Protection risk states feed CA.
+AB-650 includes implementing Conditional Access policies, including Microsoft Entra ID Protection and multifactor authentication. Master assignments (users/groups/roles), cloud apps, conditions, grant controls, session controls, and report-only mode. Know how ID Protection risk states feed CA.
 
 </details>
 
-<Quiz id="d4q2" title="Users must reset forgotten passwords without a helpdesk ticket. Which capability">
+<Quiz id="d4q2">
 Users must reset forgotten passwords without a helpdesk ticket. Which capability do you configure?
 
 - [x] Self-service password reset (SSPR)
@@ -86,11 +85,11 @@ SSPR lets users reset passwords after registering authentication methods — an 
 
 
 
-_Hands-on depth: [Lab 4 Ex 1–2](../labs/lab-4/#lab4-ex1) (auth methods, SSPR, Conditional Access). Exam note:_ Configure SSPR: who is in scope, which authentication methods are required for reset, registration campaign, and writeback considerations if hybrid existed (remember hybrid is de-emphasized on AB-650). Also know how to investigate authentication issues from sign-in logs.
+Configure SSPR: who is in scope, which authentication methods are required for reset, registration campaign, and writeback considerations if hybrid existed (remember hybrid is de-emphasized on AB-650). Also know how to investigate authentication issues from sign-in logs.
 
 </details>
 
-<Quiz id="d4q3" title="Microsoft Entra Password Protection helps primarily by:">
+<Quiz id="d4q3">
 Microsoft Entra Password Protection helps primarily by:
 
 - [x] Blocking banned/weak passwords and enforcing custom banned password lists
@@ -108,11 +107,11 @@ Password Protection detects and blocks known weak/banned passwords for cloud (an
 
 
 
-_Hands-on depth: [Lab 4 Ex 1–2](../labs/lab-4/#lab4-ex1) (auth methods, SSPR, Conditional Access). Exam note:_ Implement and manage Microsoft Entra Password Protection: global banned password list, custom banned passwords, and how it applies to change/reset flows. This is a discrete bullet under authentication skills.
+Implement and manage Microsoft Entra Password Protection: global banned password list, custom banned passwords, and how it applies to change/reset flows. This is a discrete bullet under authentication skills.
 
 </details>
 
-<Quiz id="d4q4" title="A user cannot complete MFA. Which admin artifact is most useful first when inves">
+<Quiz id="d4q4">
 A user cannot complete MFA. Which admin artifact is most useful first when investigating authentication issues?
 
 - [x] Microsoft Entra sign-in logs for the user (failure reason / MFA detail)
@@ -130,7 +129,7 @@ Sign-in logs provide failure reasons, CA results, and MFA details needed to trou
 
 
 
-_Hands-on depth: [Lab 4 Ex 1–2](../labs/lab-4/#lab4-ex1) (auth methods, SSPR, Conditional Access). Exam note:_ Investigate and resolve authentication issues using Entra sign-in logs, authentication methods registration, CA “What If” / report-only results, and MFA prompt errors. Exam questions often describe a symptom and expect the correct diagnostic location.
+Investigate and resolve authentication issues using Entra sign-in logs, authentication methods registration, CA “What If” / report-only results, and MFA prompt errors. Exam questions often describe a symptom and expect the correct diagnostic location.
 
 </details>
 
