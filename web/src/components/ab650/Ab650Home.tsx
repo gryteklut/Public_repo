@@ -58,10 +58,9 @@ function HomeInner() {
           Administering Microsoft 365 and AI Services
         </h1>
         <p className="text-muted-foreground mt-3 max-w-3xl text-base md:text-lg">
-          Ten workdays built around retrieval practice and successive
-          relearning: quiz on the day page, study only what you miss, then
-          revisit on a spaced schedule. Unlock completion when every answer is
-          correct.
+          Ten workdays in the module workspace: Udemy map, study resources,
+          Learn/SkillsUp sidebar, and quizzes with successive relearning.
+          Unlock completion when every answer is correct.
         </p>
         <ProgressBar
           value={percentComplete}
@@ -71,8 +70,12 @@ function HomeInner() {
         <div className="mt-6 flex flex-wrap gap-3">
           {resume && (
             <Button asChild>
-              <a href={withBase(`/AB-650/day/${resume.day.id}/`)}>
-                Continue: Day {resume.day.dayNumber} · {resume.day.title}
+              <a
+                href={withBase(
+                  `/AB-650/day/${resume.day.id}/module/${resume.module.id}/`,
+                )}
+              >
+                Continue: {resume.module.title}
               </a>
             </Button>
           )}
@@ -120,7 +123,13 @@ function HomeInner() {
                   </span>
                 </span>
                 <Button size="sm" asChild>
-                  <a href={withBase(`/AB-650/day/${day.id}/`)}>Relearn</a>
+                  <a
+                    href={withBase(
+                      `/AB-650/day/${day.id}/module/${module.id}/`,
+                    )}
+                  >
+                    Relearn
+                  </a>
                 </Button>
               </li>
             ))}
@@ -165,7 +174,9 @@ function HomeInner() {
                   <h2 className="mt-1 text-lg font-semibold">
                     <a
                       className="hover:underline"
-                      href={withBase(`/AB-650/day/${day.id}/`)}
+                      href={withBase(
+                        `/AB-650/day/${day.id}/module/${modules[0].id}/`,
+                      )}
                     >
                       {day.title}
                     </a>
@@ -181,7 +192,9 @@ function HomeInner() {
                   <li key={module.id}>
                     <a
                       className="hover:bg-muted/60 flex items-start gap-2 rounded-lg p-1.5 transition-colors"
-                      href={withBase(`/AB-650/day/${day.id}/`)}
+                      href={withBase(
+                        `/AB-650/day/${day.id}/module/${module.id}/`,
+                      )}
                     >
                       <span
                         className={`mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full border text-[10px] ${
