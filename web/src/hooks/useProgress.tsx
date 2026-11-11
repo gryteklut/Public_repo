@@ -17,6 +17,7 @@ import {
   recordAttempt,
   resetModule,
   saveProgress,
+  setLectureWatched,
   setTagFilter,
 } from "../lib/progress";
 import { isReviewDue } from "../lib/relearning";
@@ -40,6 +41,8 @@ type ProgressContextValue = {
   setCompleted: (moduleId: string, completed: boolean) => void;
   startRelearn: (moduleId: string) => void;
   clearModule: (moduleId: string) => void;
+  isLectureWatched: (moduleId: string, lectureKey: string) => boolean;
+  setWatched: (moduleId: string, lectureKey: string, watched: boolean) => void;
   updateTagFilter: (filter: ContentTag | "all") => void;
   downloadBackup: () => void;
   uploadBackup: (file: File) => Promise<void>;
@@ -139,6 +142,19 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     [apply],
   );
 
+  const isLectureWatched = useCallback(
+    (moduleId: string, lectureKey: string) =>
+      Boolean(progress.modules[moduleId]?.watchedLectures?.[lectureKey]),
+    [progress.modules],
+  );
+
+  const setWatched = useCallback(
+    (moduleId: string, lectureKey: string, watched: boolean) => {
+      apply((prev) => setLectureWatched(prev, moduleId, lectureKey, watched));
+    },
+    [apply],
+  );
+
   const updateTagFilter = useCallback(
     (filter: ContentTag | "all") => {
       apply((prev) => setTagFilter(prev, filter));
@@ -191,6 +207,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       setCompleted,
       startRelearn,
       clearModule,
+      isLectureWatched,
+      setWatched,
       updateTagFilter,
       downloadBackup,
       uploadBackup,
@@ -209,6 +227,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       setCompleted,
       startRelearn,
       clearModule,
+      isLectureWatched,
+      setWatched,
       updateTagFilter,
       downloadBackup,
       uploadBackup,
