@@ -4,6 +4,6 @@ Public repo for public content
 
 ## AB-650 Study Portal
 
-Public course portal: after Pages is enabled, open https://gryteklut.github.io/Public_repo/
+Public course portal: after Pages is enabled, open https://gryteklut.github.io/Public_repo/AB-650/
 
 Source: `ab-650-portal/`
