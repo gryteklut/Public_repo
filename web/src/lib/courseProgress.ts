@@ -1,9 +1,16 @@
 import { createEmptyCard, fsrs, generatorParameters, type Card, type Grade } from "ts-fsrs";
 
+export type DaySources = {
+  microsoft: boolean;
+  udemy: boolean;
+};
+
 export type CourseStepState = {
   resourcesRead?: boolean;
   labChecked?: Record<string, boolean>;
   videosWatched?: Record<string, boolean>;
+  /** Which study companions to show for this day (default: both on). */
+  sources?: DaySources;
 };
 
 export type CourseProgress = {
@@ -246,4 +253,56 @@ export function setResourcesRead(
     last: dayKey,
     updatedAt: new Date().toISOString(),
   };
+}
+
+export const DEFAULT_DAY_SOURCES: DaySources = {
+  microsoft: true,
+  udemy: true,
+};
+
+export function getDaySources(
+  progress: CourseProgress,
+  dayKey: string,
+): DaySources {
+  const raw = progress.steps[dayKey]?.sources;
+  if (!raw) return { ...DEFAULT_DAY_SOURCES };
+  return {
+    microsoft: raw.microsoft !== false,
+    udemy: raw.udemy !== false,
+  };
+}
+
+export function setDaySources(
+  progress: CourseProgress,
+  dayKey: string,
+  sources: DaySources,
+): CourseProgress {
+  // Keep at least one source enabled
+  const next: DaySources =
+    sources.microsoft || sources.udemy
+      ? sources
+      : { microsoft: true, udemy: false };
+  const st = { ...(progress.steps[dayKey] ?? {}), sources: next };
+  return {
+    ...progress,
+    steps: { ...progress.steps, [dayKey]: st },
+    last: dayKey,
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+export const SOURCES_EVENT = "course-day-sources";
+
+export function applySourceVisibility(sources: DaySources): void {
+  if (typeof document === "undefined") return;
+  document.querySelectorAll<HTMLElement>("[data-source='microsoft']").forEach(
+    (el) => {
+      el.hidden = !sources.microsoft;
+    },
+  );
+  document.querySelectorAll<HTMLElement>("[data-source='udemy']").forEach(
+    (el) => {
+      el.hidden = !sources.udemy;
+    },
+  );
 }

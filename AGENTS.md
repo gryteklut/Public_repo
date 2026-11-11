@@ -38,9 +38,10 @@ Legacy React portal under `web/src/components/ab650/` and `web/src/data/*` remai
 Long study sessions: prefer soft contrast over pure white/black.
 
 - Light: cool soft-stone page (`--background`), charcoal ink (`--foreground` ~oklch 0.30), soft olive highlight (`--course-highlight`)
-- Dark: elevated charcoal surfaces, soft off-white text — never `#000` / `#fff` pairs
+- Dark: **dark grey** surfaces (not near-black), soft off-white text — never `#000` / `#fff` pairs
 - Course surfaces use `.course-shell`, `.course-card`, `.course-pill` in `web/src/styles/global.css`
 - Reading body: ~1.7 line-height, ~65ch measure (`.prose-course`)
+- Microsoft Learn **courses/paths/modules** (`kind: course`) only when they map to the day’s skills and the cert — prefer AB-650 Learn paths; add SC-300/SC-401 only for identity/Purview AI days
 
 ## Product rules (courses / AB-650)
 

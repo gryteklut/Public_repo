@@ -4,7 +4,8 @@ import { glob } from "astro/loaders";
 const resourceSchema = z.object({
   label: z.string(),
   url: z.string(),
-  kind: z.enum(["learn", "skillsup"]).default("learn"),
+  // learn = docs/articles; course = Learn course/path/module; skillsup = SkillsUp companions
+  kind: z.enum(["learn", "course", "skillsup"]).default("learn"),
 });
 
 const videoSchema = z.object({
