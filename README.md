@@ -21,6 +21,10 @@ npm run dev
 
 See [AGENTS.md](./AGENTS.md) for architecture, deploy, and editing rules for coding agents.
 
-## Legacy
+## Deploy
 
-`ab-650-portal/` is the old Vite SPA. It is deprecated; the Astro app in `web/` replaced it.
+Push to `main` (changes under `web/` or the workflow) deploys automatically. You can also run the **Deploy Public_repo hub (Astro)** workflow manually (`workflow_dispatch`).
+
+## Legacy (kept for revert)
+
+`ab-650-portal/` is the old Vite SPA. It stays in the repo so we can roll back if needed — see [`ab-650-portal/DEPRECATED.md`](./ab-650-portal/DEPRECATED.md). Live Pages always build from `web/` unless that workflow is pointed back.

@@ -24,7 +24,7 @@ Public GitHub Pages site for Kim (`gryteklut`):
 | Progress | `web/src/lib/progress.ts` + `useProgress` | `localStorage` key `ab650-portal-progress-v1` |
 | Deploy | `.github/workflows/deploy-ab650-portal.yml` | Builds `web/`, uploads `web/dist` to Pages |
 
-Legacy Vite app under `ab-650-portal/` is **deprecated** (replaced by Astro). Do not deploy it.
+Legacy Vite app under `ab-650-portal/` is **deprecated** but **kept in-repo for revert**. Do not deploy it unless rolling back — see `ab-650-portal/DEPRECATED.md`.
 
 ## Product rules (AB-650)
 
