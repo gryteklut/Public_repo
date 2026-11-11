@@ -16,8 +16,4 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  redirects: {
-    "/AB-650": "/courses/ab-650/",
-    "/AB-650/": "/courses/ab-650/",
-  },
 });
