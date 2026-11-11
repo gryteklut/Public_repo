@@ -16,10 +16,12 @@ export function ProgressCard({
   courseSlug,
   code,
   totalDays,
+  format = "days",
 }: {
   courseSlug: string;
   code: string;
   totalDays: number;
+  format?: "days" | "sessions";
 }) {
   const [, setTick] = useState(0);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -31,7 +33,11 @@ export function ProgressCard({
   const percent =
     totalDays === 0 ? 0 : Math.round((doneCount / totalDays) * 100);
   const continueDay = Number(progress.last ?? "1") || 1;
-  const finish = estimateFinishDate(Math.max(0, totalDays - doneCount));
+  const hourly = format === "sessions";
+  const finish = hourly
+    ? estimateFinishDate(Math.max(0, totalDays - doneCount))
+    : null;
+  const unit = hourly ? "session" : "day";
   const due = Array.from({ length: totalDays }, (_, i) => i + 1).filter((d) =>
     isReviewDue(progress.review[String(d)]),
   );
@@ -61,7 +67,7 @@ export function ProgressCard({
           {code} progress
         </p>
         <p className="mt-1 text-sm">
-          {doneCount} / {totalDays} sessions · {percent}%
+          {doneCount} / {totalDays} {hourly ? "sessions" : "days"} · {percent}%
         </p>
         {finish && (
           <p className="text-muted-foreground mt-1 text-xs">
@@ -71,10 +77,14 @@ export function ProgressCard({
         <Progress value={percent} className="mt-3 h-2" />
       </div>
       <Button className="w-full" asChild>
-        <a href={withBase(`/courses/${courseSlug}/session-${continueDay}/`)}>
+        <a
+          href={withBase(
+            `/courses/${courseSlug}/${unit}-${continueDay}/`,
+          )}
+        >
           {doneCount === 0
-            ? "Start session 1"
-            : `Continue session ${continueDay}`}
+            ? `Start ${unit} 1`
+            : `Continue ${unit} ${continueDay}`}
         </a>
       </Button>
       {catalog && (
@@ -135,7 +145,7 @@ export function ProgressCard({
       </div>
       {due.length > 0 && (
         <p className="text-muted-foreground text-xs">
-          Spaced review due: session {due.join(", ")}
+          Spaced review due: {unit} {due.join(", ")}
         </p>
       )}
     </div>

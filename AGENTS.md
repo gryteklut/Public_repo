@@ -48,9 +48,8 @@ Long study sessions: prefer soft contrast over pure white/black.
 - UI + questions in **English**
 - **Day player layout** mirrors the sweet module view: Watch checklist (persisted), study resources + lab checklist, TL;DR / exam trap, knowledge check, Learn/SkillsUp sidebar (`LessonPlan`)
 - Prefer exact Udemy lecture titles in watch checklists (not fragile `3.xx` numbers)
-- **Mark session complete** unlocks only when the knowledge-check score is **100%**
-- Each course is a sequence of **60-minute sessions**, five to a week (Mon–Fri). End each week with review. End the course with a mock exam. Weight sessions by the study-guide percentages. Anything that is not a measured skill goes in that week's **Optional / deeper dive** list.
-- URLs are `/courses/<slug>/session-<n>/`. Old `/day-<n>/` URLs redirect. Progress key stays `courses:<code>:v1`; day numbers migrate onto the matching sessions. Lab exercise checks are kept.
+- **Mark day complete** or **Mark session complete** unlocks only when the knowledge-check score is **100%**
+- `format` on `course.yaml` is `days` or `sessions`. AB-650 stays `days` (10-day plan, `/day-<n>/`). AZ-140 is `sessions` (one hour each weekday, `/session-<n>/`, old day URLs redirect). Exam-only cuts for a sessions course go in that week's **Optional / deeper dive** list.
 - Progress export/import is one JSON bundle for all courses
 - Tags: `MS-102-core`, `MS-102-updated`, `AB-650-new`
 
@@ -65,9 +64,9 @@ npm run build
 
 No route code changes — the hub and `/courses/` read `course.yaml` (`_template` is ignored). Set `hasLabs: true` only when `/courses/<slug>/labs/` exists.
 
-`external` on `course.yaml` is the non-Microsoft intro (shown on the hub card and the course page). Default instructor for a new course is **John Christopher** ([Udemy profile](https://www.udemy.com/user/john-christopher-32/)). Set `provider`, `title`, and the course `url` with no coupon query. Put exam lecture titles in each session's `videos` list. Put everything else in `optional` on the week's review session.
+`external` on `course.yaml` is the non-Microsoft intro (shown on the hub card and the course page). Default instructor for a new course is **John Christopher** ([Udemy profile](https://www.udemy.com/user/john-christopher-32/)). Set `provider`, `title`, and the course `url` with no coupon query.
 
-A session is one hour (`budget` lines should add to 60). `week` groups them Monday–Friday. `kind` is `learn`, `review`, or `mock`.
+`format: days` uses `days/*.mdx`. `format: sessions` uses `sessions/*.mdx`: 60-minute `budget`, `week`, and `kind` of `learn`, `review`, or `mock`. Put non-exam material in `optional` on the week's review session.
 
 Plan / brief: `docs/courses/courses-platform-plan.md`.
 

@@ -1,11 +1,10 @@
 ---
-week: 1
-kind: learn
-session: 2
+day: 2
 title: Workloads for Copilot grounding
 moduleTitle: Manage Microsoft 365 workloads
 moduleId: d2-workloads
 minutes: 60
+practice: false
 summary: "Exchange, Teams, and SharePoint or OneDrive settings that affect Copilot, plus Microsoft 365 Backup."
 focus: "Exchange, Teams, SharePoint/OneDrive administration with Copilot-aware settings, plus Microsoft 365 Backup."
 tags:
@@ -35,7 +34,8 @@ videos:
       - "Configure and use Microsoft 365 Backup, including setup, restore, etc"
 officialLabs:
   - labId: lab-2
-    exerciseIds: [lab2-ex1]
+  - labId: lab-1
+    exerciseIds: [lab1-ex3]
 lab: []
 tldr:
   - AB-650 links workload configuration to Copilot quality.
@@ -44,15 +44,7 @@ tldr:
   - "When preparing a tenant for Copilot, you often need to exclude or restrict sites from search/discovery while fixing oversharing."
 trap: "Copilot grounding follows SharePoint permissions. Restricting discovery is a different task from fixing who can open the file."
 videoTip: This is an AB-650-labelled section in Udemy — prioritize Teams Copilot/transcription and SharePoint Advanced Management.
-hourNote: "Do lab 2 exercise 1 only (the collaboration space, 35 min). Exercise 2 is on this week's optional list."
-budget:
-  - { label: "Udemy", minutes: 15 }
-  - { label: "Lab", minutes: 35 }
-  - { label: "Knowledge check", minutes: 10 }
-optional: []
-
 ---
-
 
 import { Quiz } from 'starlight-quiz/components';
 

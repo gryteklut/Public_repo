@@ -6,10 +6,12 @@ import { withBase } from "@/lib/base";
 export function CurriculumAccordion({
   code,
   courseSlug,
+  format = "sessions",
   sessions,
 }: {
   code: string;
   courseSlug: string;
+  format?: "days" | "sessions";
   sessions: {
     session: number;
     week: number;
@@ -29,11 +31,13 @@ export function CurriculumAccordion({
         const showWeek =
           index === 0 || item.week !== sessions[index - 1]?.week;
         const label =
-          item.kind === "mock"
-            ? "Mock exam"
-            : item.kind === "review"
-              ? "Review"
-              : `Session ${item.session}`;
+          format === "days"
+            ? `Day ${item.session}`
+            : item.kind === "mock"
+              ? "Mock exam"
+              : item.kind === "review"
+                ? "Review"
+                : `Session ${item.session}`;
         return (
           <li key={item.session}>
             {showWeek && (
@@ -42,7 +46,9 @@ export function CurriculumAccordion({
               </p>
             )}
             <a
-              href={withBase(`/courses/${courseSlug}/session-${item.session}/`)}
+              href={withBase(
+                `/courses/${courseSlug}/${format === "days" ? "day" : "session"}-${item.session}/`,
+              )}
               className="hover:bg-muted/40 flex items-center gap-3 px-4 py-3 transition-colors"
             >
               {done ? (

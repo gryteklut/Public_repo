@@ -46,18 +46,22 @@ const courses = defineCollection({
     /** Official labs live at /courses/<slug>/labs/ */
     hasLabs: z.boolean().default(false),
     studyGuide: z.string().optional(),
+    /** days = numbered study days. sessions = 1 hour each weekday. */
+    format: z.enum(["days", "sessions"]).default("days"),
   }),
 });
 
 const courseDays = defineCollection({
   loader: glob({
-    pattern: "*/sessions/*.{md,mdx}",
+    pattern: "*/{days,sessions}/*.{md,mdx}",
     base: "./src/content/courses",
   }),
   schema: z.object({
-    session: z.number(),
-    week: z.number(),
+    day: z.number().optional(),
+    session: z.number().optional(),
+    week: z.number().optional(),
     kind: z.enum(["learn", "review", "mock"]).default("learn"),
+    practice: z.boolean().default(false),
     title: z.string(),
     moduleTitle: z.string(),
     moduleId: z.string(),
@@ -89,6 +93,8 @@ const courseDays = defineCollection({
     tldr: z.array(z.string()).default([]),
     trap: z.string(),
     videoTip: z.string().optional(),
+  }).refine((entry) => entry.day != null || entry.session != null, {
+    message: "A unit needs day or session",
   }),
 });
 

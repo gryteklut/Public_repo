@@ -1,34 +1,245 @@
 ---
+import DefaultLayout from "@/layouts/DefaultLayout.astro";
+import { CompletionBar } from "@/components/courses/CompletionBar";
+import { LessonPlan } from "@/components/courses/LessonPlan";
+import { MicrosoftTraining } from "@/components/courses/MicrosoftTraining";
+import { OfficialLabDayPanel } from "@/components/courses/OfficialLabDayPanel";
+import { SourceToggle } from "@/components/courses/SourceToggle";
+import { WatchChecklist } from "@/components/courses/WatchChecklist";
+import { render } from "astro:content";
 import {
   courseSlugFromId,
   getCourse,
+  getCourseDay,
+  getCourseDays,
   getCourses,
   sessionPath,
 } from "@/lib/courses";
 import { LEGACY_DAY_TO_SESSION } from "@/lib/sessionSchedule";
 import { withBase } from "@/lib/base";
+import "starlight-quiz/styles";
 
 export async function getStaticPaths() {
   const courses = await getCourses();
   const paths = [];
-  for (const course of courses) {
-    const slug = courseSlugFromId(course.id);
-    const map = LEGACY_DAY_TO_SESSION[course.data.code] ?? {};
-    for (const day of Object.keys(map)) {
-      paths.push({ params: { course: slug, day } });
+  for (const c of courses) {
+    const slug = courseSlugFromId(c.id);
+    if (c.data.format === "sessions") {
+      for (const day of Object.keys(LEGACY_DAY_TO_SESSION[c.data.code] ?? {})) {
+        paths.push({ params: { course: slug, day } });
+      }
+      continue;
+    }
+    const days = await getCourseDays(slug);
+    for (const d of days) {
+      if (d.data.day == null) continue;
+      paths.push({
+        params: { course: slug, day: String(d.data.day) },
+      });
     }
   }
   return paths;
 }
 
 const slug = Astro.params.course!;
-const day = Astro.params.day!;
+const dayNum = Number(Astro.params.day);
 const course = await getCourse(slug);
-const session = course
-  ? LEGACY_DAY_TO_SESSION[course.data.code]?.[day]
-  : undefined;
-return Astro.redirect(
-  withBase(session ? sessionPath(slug, Number(session)) : `/courses/${slug}/`),
-  301,
+if (course?.data.format === "sessions") {
+  const session = LEGACY_DAY_TO_SESSION[course.data.code]?.[String(dayNum)];
+  return Astro.redirect(
+    withBase(
+      session ? sessionPath(slug, Number(session)) : `/courses/${slug}/`,
+    ),
+    301,
+  );
+}
+const dayEntry = await getCourseDay(slug, dayNum);
+const allDays = await getCourseDays(slug);
+
+if (!course || !dayEntry) {
+  return Astro.redirect(withBase("/courses/"));
+}
+
+const { Content } = await render(dayEntry);
+const d = dayEntry.data;
+const code = course.data.code;
+const courseLinks = d.resources.filter((r) => r.kind === "course");
+const docLinks = d.resources.filter(
+  (r) => r.kind !== "course" && r.kind !== "skillsup",
 );
+const skillsResources = d.resources.filter((r) => r.kind === "skillsup");
+const hasLab = (d.officialLabs?.length ?? 0) > 0 || d.lab.length > 0;
 ---
+
+<DefaultLayout title={`${d.moduleTitle} · ${code}`} description={d.summary}>
+  <div class="course-shell container pt-28 pb-16 lg:pt-40">
+    <div class="space-y-6">
+      <nav class="text-muted-foreground flex flex-wrap items-center gap-2 text-sm">
+        <a class="hover:text-foreground" href={withBase("/courses/")}>Courses</a>
+        <span>/</span>
+        <a class="hover:text-foreground" href={withBase(`/courses/${slug}/`)}
+          >{code}</a
+        >
+        <span>/</span>
+        <span class="text-foreground">Day {d.day}</span>
+      </nav>
+
+      <header class="course-card p-5 shadow-xs md:p-6">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p
+              class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+            >
+              Day {d.day}{d.practice ? " · Practice" : ""}
+            </p>
+            <h1 class="mt-1 text-3xl font-semibold tracking-tight">
+              {d.moduleTitle}
+            </h1>
+            <p
+              class="text-muted-foreground mt-2 max-w-3xl text-sm leading-relaxed md:text-base"
+            >
+              {d.summary}
+            </p>
+          </div>
+          <span class="bg-muted rounded-full px-3 py-1 text-xs font-medium"
+            >~{d.minutes} min</span
+          >
+        </div>
+      </header>
+
+      <SourceToggle client:only="react" code={code} day={d.day} />
+
+      <div
+        class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px] xl:grid-cols-[minmax(0,1fr)_300px]"
+      >
+        <div class="order-2 min-w-0 space-y-6 lg:order-1">
+          <div id="training" data-source="microsoft">
+            <MicrosoftTraining links={[...courseLinks, ...docLinks]} />
+          </div>
+
+          {
+            d.videos.length > 0 && (
+              <div id="watch" data-source="udemy">
+                <WatchChecklist
+                  client:only="react"
+                  code={code}
+                  day={d.day}
+                  tip={d.videoTip}
+                  sections={d.videos}
+                  courseUrl={course.data.external?.url}
+                />
+              </div>
+            )
+          }
+
+          <section
+            id="lab"
+            class="course-card p-5 shadow-xs md:p-6"
+            data-source="microsoft"
+          >
+            <h2 class="text-xl font-semibold">Lab</h2>
+            {
+              skillsResources.length > 0 && (
+                <>
+                  <h3 class="mt-2 font-semibold">SkillsUp</h3>
+                  <ul class="mt-2 space-y-2">
+                    {skillsResources.map((link) => (
+                      <li>
+                        <a
+                          class="text-sm font-medium underline-offset-4 hover:underline"
+                          href={link.url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {link.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )
+            }
+            <OfficialLabDayPanel
+              client:only="react"
+              code={code}
+              courseSlug={slug}
+              day={d.day}
+              pointers={d.officialLabs ?? []}
+              portalTips={d.lab}
+            />
+            {
+              d.outOfScopeNote && (
+                <p class="bg-muted text-muted-foreground mt-4 rounded-xl p-3 text-sm leading-relaxed">
+                  <strong class="text-foreground">Skip:</strong>{" "}
+                  {d.outOfScopeNote}
+                </p>
+              )
+            }
+          </section>
+
+          <section id="tldr" class="course-card p-5 md:p-6">
+            <h2 class="text-xl font-semibold">TL;DR</h2>
+            <ol class="mt-3 list-decimal space-y-2 pl-5 text-sm leading-relaxed">
+              {d.tldr.map((p) => <li>{p}</li>)}
+            </ol>
+            <div
+              class="border-border mt-4 rounded-xl border border-dashed bg-[color:var(--course-surface)] p-3 text-sm leading-relaxed"
+            >
+              <strong>Exam trap:</strong> {d.trap}
+            </div>
+          </section>
+
+          <section id="check" class="course-card overflow-hidden shadow-xs">
+            <div class="border-b px-4 py-3 md:px-5">
+              <span
+                class="course-pill inline-flex rounded-full px-3 py-1.5 text-sm font-semibold"
+              >
+                Knowledge check
+              </span>
+            </div>
+            <div class="prose-course space-y-4 p-4 md:p-6">
+              <Content />
+              <CompletionBar client:only="react" code={code} day={d.day} />
+            </div>
+          </section>
+
+          <div class="flex flex-wrap justify-between gap-3 pb-8">
+            {
+              d.day > 1 ? (
+                <a
+                  class="border-border bg-card hover:bg-muted inline-flex items-center rounded-lg border px-4 py-2 text-sm font-medium"
+                  href={withBase(`/courses/${slug}/day-${d.day - 1}/`)}
+                >
+                  Previous day
+                </a>
+              ) : (
+                <span />
+              )
+            }
+            {
+              d.day < allDays.length && (
+                <a
+                  class="course-pill inline-flex items-center rounded-lg px-4 py-2 text-sm font-semibold"
+                  href={withBase(`/courses/${slug}/day-${d.day + 1}/`)}
+                >
+                  Next day
+                </a>
+              )
+            }
+          </div>
+        </div>
+
+        <div class="order-1 lg:order-2">
+          <LessonPlan
+            client:only="react"
+            code={code}
+            day={d.day}
+            resources={d.resources}
+            hasWatch={d.videos.some((v) => v.action === "watch")}
+            hasLab={hasLab}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</DefaultLayout>

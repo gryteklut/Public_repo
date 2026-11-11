@@ -1,5 +1,8 @@
 import { createEmptyCard, fsrs, generatorParameters, type Card, type Grade } from "ts-fsrs";
-import { LEGACY_DAY_TO_SESSION } from "@/lib/sessionSchedule";
+import {
+  AB650_SESSION_TO_DAY,
+  LEGACY_DAY_TO_SESSION,
+} from "@/lib/sessionSchedule";
 
 export type DaySources = {
   microsoft: boolean;
@@ -33,7 +36,7 @@ export type CourseProgress = {
   last?: string; // session key
   lastOfficialLabId?: string;
   /** Set after day-number progress is remapped onto sessions. */
-  schedule?: "sessions-v1";
+  schedule?: "sessions-v1" | "days-v1";
   updatedAt: string;
 };
 
@@ -55,12 +58,32 @@ export function emptyCourseProgress(code: string): CourseProgress {
     done: {},
     steps: {},
     review: {},
-    schedule: "sessions-v1",
     updatedAt: new Date().toISOString(),
   };
 }
 
+function reverseAb650Sessions(progress: CourseProgress): CourseProgress {
+  if (progress.schedule === "days-v1") return progress;
+  if (progress.schedule !== "sessions-v1") {
+    return { ...progress, schedule: "days-v1" };
+  }
+  const done: Record<string, boolean> = {};
+  const steps: CourseProgress["steps"] = {};
+  const review: CourseProgress["review"] = {};
+  for (const [session, day] of Object.entries(AB650_SESSION_TO_DAY)) {
+    if (progress.done[session]) done[day] = true;
+    if (progress.steps[session]) steps[day] = progress.steps[session]!;
+    if (progress.review[session]) review[day] = progress.review[session]!;
+  }
+  const last =
+    progress.last && AB650_SESSION_TO_DAY[progress.last]
+      ? AB650_SESSION_TO_DAY[progress.last]
+      : progress.last;
+  return { ...progress, done, steps, review, last, schedule: "days-v1" };
+}
+
 function applySessionSchedule(progress: CourseProgress): CourseProgress {
+  if (progress.code === "AB-650") return reverseAb650Sessions(progress);
   if (progress.schedule === "sessions-v1") return progress;
   const map = LEGACY_DAY_TO_SESSION[progress.code];
   if (!map) return { ...progress, schedule: "sessions-v1" };

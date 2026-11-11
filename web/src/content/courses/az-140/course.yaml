@@ -1,6 +1,7 @@
 code: AZ-140
 title: Configuring and Operating Microsoft Azure Virtual Desktop
 subtitle: Three weeks, one hour each weekday. Microsoft Learn and the Entra ID labs come first, then the knowledge check.
+format: sessions
 level: Intermediate
 status: live
 color: "#3d5a80"
