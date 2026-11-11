@@ -1,6 +1,6 @@
 {
-  "name": "Mainline",
-  "short_name": "Mainline",
+  "name": "Public repo",
+  "short_name": "Public repo",
   "icons": [
     {
       "src": "/favicon/web-app-manifest-192x192.png",
