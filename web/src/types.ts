@@ -43,6 +43,15 @@ export type QuestionAttempt = {
 export type ModuleProgress = {
   completed: boolean
   completedAt?: string
+  /**
+   * Successive relearning: next spaced retrieval session (ISO).
+   * Set when a module is marked complete; cleared/pushed out after each relearn.
+   */
+  reviewDueAt?: string
+  /** How many spaced relearning sessions completed after initial mastery */
+  relearnCount?: number
+  /** True while the learner is in a spaced relearning pass */
+  inRelearnSession?: boolean
   attempts: Record<string, QuestionAttempt>
 }
 

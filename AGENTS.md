@@ -31,11 +31,13 @@ Legacy Vite app under `ab-650-portal/` is **deprecated** but **kept in-repo for 
 ## Product rules (AB-650)
 
 - UI + questions in **English**
-- Learn-first: expandable **Study this topic** above each question (open by default except practice day)
+- **Day overview is the workspace:** quiz box inline + Microsoft Learn + SkillsUp sidebar (inspiration: classroom lesson plan UI)
+- **Learning method — successive relearning / retrieval practice:** day quiz is retrieval-first (try before study); study opens after misses; correct answer choice stays hidden until criterion; spaced review due dates after mastery (`reviewDueAt`, intervals 2→4→7 days)
+- Full module view keeps learn-first option for deeper encoding + Udemy/labs
 - Checkbox **Mark module complete** unlocks only when **all** control questions are correct
 - Tags: `MS-102-core`, `MS-102-updated`, `AB-650-new`
-- Udemy companion panel on day/module pages
 - Progress export/import JSON (multi-device; no shared backend)
+- SkillsUp map: `web/src/data/skillsUpMap.ts`; relearning helpers: `web/src/lib/relearning.ts`
 
 ## Local development
 

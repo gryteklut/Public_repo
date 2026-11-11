@@ -1,4 +1,5 @@
 import type { ContentTag, ProgressState, QuestionAttempt } from '../types'
+import { nextReviewDueAt } from './relearning'
 
 const STORAGE_KEY = 'ab650-portal-progress-v1'
 
@@ -78,6 +79,28 @@ export function markModuleComplete(
     completed: false,
     attempts: {},
   }
+  const now = new Date().toISOString()
+  if (!completed) {
+    return {
+      ...state,
+      lastModuleId: moduleId,
+      modules: {
+        ...state.modules,
+        [moduleId]: {
+          ...existing,
+          completed: false,
+          completedAt: undefined,
+          reviewDueAt: undefined,
+          inRelearnSession: false,
+        },
+      },
+    }
+  }
+
+  const relearnCount = existing.inRelearnSession
+    ? (existing.relearnCount ?? 0) + 1
+    : (existing.relearnCount ?? 0)
+
   return {
     ...state,
     lastModuleId: moduleId,
@@ -85,8 +108,37 @@ export function markModuleComplete(
       ...state.modules,
       [moduleId]: {
         ...existing,
-        completed,
-        completedAt: completed ? new Date().toISOString() : undefined,
+        completed: true,
+        completedAt: now,
+        relearnCount,
+        inRelearnSession: false,
+        reviewDueAt: nextReviewDueAt(now, relearnCount),
+      },
+    },
+  }
+}
+
+/** Start a spaced relearning session: clear attempts, keep relearn schedule history. */
+export function beginRelearnSession(
+  state: ProgressState,
+  moduleId: string,
+): ProgressState {
+  const existing = state.modules[moduleId] ?? {
+    completed: false,
+    attempts: {},
+  }
+  return {
+    ...state,
+    lastModuleId: moduleId,
+    modules: {
+      ...state.modules,
+      [moduleId]: {
+        ...existing,
+        completed: false,
+        completedAt: undefined,
+        reviewDueAt: undefined,
+        inRelearnSession: true,
+        attempts: {},
       },
     },
   }

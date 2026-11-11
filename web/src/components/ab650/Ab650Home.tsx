@@ -24,6 +24,8 @@ function HomeInner() {
     totalCount,
     percentComplete,
     isModuleComplete,
+    isModuleReviewDue,
+    getModuleProgress,
     updateTagFilter,
     downloadBackup,
     uploadBackup,
@@ -34,6 +36,10 @@ function HomeInner() {
   const resume = progress.lastModuleId
     ? getAllModules().find((x) => x.module.id === progress.lastModuleId)
     : getAllModules().find((x) => !isModuleComplete(x.module.id));
+
+  const dueReviews = getAllModules().filter(({ module }) =>
+    isModuleReviewDue(module.id),
+  );
 
   const days = curriculum.map((day) => {
     const modules = day.modules.filter(
@@ -52,10 +58,10 @@ function HomeInner() {
           Administering Microsoft 365 and AI Services
         </h1>
         <p className="text-muted-foreground mt-3 max-w-3xl text-base md:text-lg">
-          Ten focused workdays. Each module highlights which Udemy section to
-          watch, then expandable study text before control questions. Unlock
-          completion when every answer is correct. Day 10 is quiz-first
-          practice.
+          Ten workdays built around retrieval practice and successive
+          relearning: quiz on the day page, study only what you miss, then
+          revisit on a spaced schedule. Unlock completion when every answer is
+          correct.
         </p>
         <ProgressBar
           value={percentComplete}
@@ -65,12 +71,8 @@ function HomeInner() {
         <div className="mt-6 flex flex-wrap gap-3">
           {resume && (
             <Button asChild>
-              <a
-                href={withBase(
-                  `/AB-650/day/${resume.day.id}/module/${resume.module.id}/`,
-                )}
-              >
-                Continue: {resume.module.title}
+              <a href={withBase(`/AB-650/day/${resume.day.id}/`)}>
+                Continue: Day {resume.day.dayNumber} · {resume.day.title}
               </a>
             </Button>
           )}
@@ -97,6 +99,34 @@ function HomeInner() {
           />
         </div>
       </header>
+
+      {dueReviews.length > 0 && (
+        <section className="bg-[#d8f56a]/30 rounded-2xl border border-[#d8f56a] p-5">
+          <h2 className="text-lg font-semibold">Spaced relearning due</h2>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Pull these modules back to criterion — spaced retrieval beats
+            one-time completion for exam retention.
+          </p>
+          <ul className="mt-4 space-y-2">
+            {dueReviews.map(({ day, module }) => (
+              <li
+                key={module.id}
+                className="bg-background/80 flex flex-wrap items-center justify-between gap-2 rounded-xl border px-3 py-2"
+              >
+                <span className="text-sm font-medium">
+                  Day {day.dayNumber}: {module.title}
+                  <span className="text-muted-foreground ml-2 text-xs">
+                    session #{(getModuleProgress(module.id)?.relearnCount ?? 0) + 1}
+                  </span>
+                </span>
+                <Button size="sm" asChild>
+                  <a href={withBase(`/AB-650/day/${day.id}/`)}>Relearn</a>
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="space-y-3">
         <span className="text-sm font-medium">Filter by tag</span>
@@ -151,9 +181,7 @@ function HomeInner() {
                   <li key={module.id}>
                     <a
                       className="hover:bg-muted/60 flex items-start gap-2 rounded-lg p-1.5 transition-colors"
-                      href={withBase(
-                        `/AB-650/day/${day.id}/module/${module.id}/`,
-                      )}
+                      href={withBase(`/AB-650/day/${day.id}/`)}
                     >
                       <span
                         className={`mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full border text-[10px] ${
