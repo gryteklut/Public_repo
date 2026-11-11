@@ -1,11 +1,12 @@
-name: Deploy AB-650 Study Portal
+name: Deploy Public_repo hub (Astro)
 
 on:
   push:
     branches: [main]
     paths:
-      - 'ab-650-portal/**'
+      - 'web/**'
       - '.github/workflows/deploy-ab650-portal.yml'
+      - 'AGENTS.md'
   workflow_dispatch:
 
 permissions:
@@ -14,7 +15,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages-ab650
+  group: pages-public-repo
   cancel-in-progress: true
 
 jobs:
@@ -22,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ab-650-portal
+        working-directory: web
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,7 +33,7 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-          cache-dependency-path: ab-650-portal/package-lock.json
+          cache-dependency-path: web/package-lock.json
 
       - name: Install
         run: npm ci
@@ -40,16 +41,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Stage site under /AB-650 only
-        working-directory: .
-        run: |
-          mkdir -p site/AB-650
-          cp -a ab-650-portal/dist/. site/AB-650/
-
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: web/dist
 
   deploy:
     needs: build
