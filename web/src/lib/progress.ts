@@ -159,3 +159,29 @@ export function resetModule(
   delete next[moduleId]
   return { ...state, modules: next }
 }
+
+export function setLectureWatched(
+  state: ProgressState,
+  moduleId: string,
+  lectureKey: string,
+  watched: boolean,
+): ProgressState {
+  const existing = state.modules[moduleId] ?? {
+    completed: false,
+    attempts: {},
+  }
+  return {
+    ...state,
+    lastModuleId: moduleId,
+    modules: {
+      ...state.modules,
+      [moduleId]: {
+        ...existing,
+        watchedLectures: {
+          ...(existing.watchedLectures ?? {}),
+          [lectureKey]: watched,
+        },
+      },
+    },
+  }
+}

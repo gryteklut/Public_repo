@@ -52,6 +52,8 @@ export type ModuleProgress = {
   relearnCount?: number
   /** True while the learner is in a spaced relearning pass */
   inRelearnSession?: boolean
+  /** Udemy / day-step lectures marked watched (key = lecture title) */
+  watchedLectures?: Record<string, boolean>
   attempts: Record<string, QuestionAttempt>
 }
 

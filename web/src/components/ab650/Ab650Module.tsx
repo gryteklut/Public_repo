@@ -112,7 +112,7 @@ function ModuleInner({
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_360px]">
         <div className="min-w-0 space-y-6">
-          {udemy && <UdemyWatch guide={udemy} />}
+          {udemy && <UdemyWatch moduleId={module.id} guide={udemy} />}
 
           <section className="bg-card rounded-2xl border p-5 shadow-xs md:p-6">
             <h2 className="text-xl font-semibold">Study resources</h2>
