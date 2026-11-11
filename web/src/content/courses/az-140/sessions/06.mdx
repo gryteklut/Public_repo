@@ -1,10 +1,11 @@
 ---
-day: 5
+week: 2
+kind: learn
+session: 6
 title: Session host images
 moduleTitle: Create and manage session host images
 moduleId: d5-images
-minutes: 90
-practice: false
+minutes: 60
 summary: "Golden images, custom image templates, and Azure Compute Gallery. Official lab 7 is standalone."
 focus: "Skills measured: create and manage session host images."
 tags:
@@ -33,7 +34,15 @@ tldr:
   - "Lab 7 does not need the host pool from lab 1."
 trap: "Capturing a specialized, domain-joined virtual machine and deploying it as-is leaves duplicate machine identity. Generalize first when the image will be reused."
 videoTip: "Watch the image section, then run lab 7. It is the 90-minute lab."
+hourNote: "In lab 7, do tasks 5, 6, and 7 only as far as the gallery, the template, and why the build is generalized. Do not wait out the image build. Tasks 1–4 and 8 are optional."
+budget:
+  - { label: "Udemy", minutes: 25 }
+  - { label: "Lab", minutes: 25 }
+  - { label: "Knowledge check", minutes: 10 }
+optional: []
+
 ---
+
 
 import { Quiz } from 'starlight-quiz/components';
 

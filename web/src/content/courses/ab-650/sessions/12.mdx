@@ -1,0 +1,93 @@
+---
+week: 3
+kind: learn
+session: 12
+title: "Tenant and workload retrieval"
+moduleTitle: "Retrieval: tenant and workloads"
+moduleId: ab-s12
+minutes: 60
+summary: "Second pass on the 20–25% tenant and workload area."
+focus: "Branding portal, licensing at scale, SharePoint grounding, Backup versus retention."
+tags: [MS-102-core]
+resources:
+  - { label: "AB-650 study guide", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650", kind: learn }
+videos: []
+lab: []
+officialLabs: []
+tldr:
+  - "Tenant plus workloads is the smaller area, not the one to camp in."
+  - "If the first quiz was clean, this hour is short."
+trap: "Microsoft 365 Backup is not Purview retention and not a Defender feature."
+budget:
+  - { label: "Knowledge check", minutes: 50 }
+  - { label: "Trap review", minutes: 10 }
+optional: []
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="ab-s12-1">
+A custom domain was added but users cannot use it for email yet. What must typically be true before the domain is fully usable for Exchange Online?
+
+- [x] The domain must be verified (DNS TXT/MX as required) and set up for services
+- [ ] You must enable Conditional Access for all users
+- [ ] You must create an administrative unit for the domain
+- [ ] You must enable Microsoft 365 Backup for the tenant
+
+Custom domains require DNS verification and service setup (including MX for mail) before they are fully usable. CA, AUs, and Backup are unrelated to domain readiness.
+
+[Source: Add a domain to Microsoft 365](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/add-domain)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+
+
+Implementing domains on AB-650 includes adding a domain in the Microsoft 365 admin center, verifying ownership with DNS records, and configuring required records (for example MX, CNAME, TXT) so workloads like Exchange and Teams can use the domain. A domain can be verified but still incomplete for a workload until the right records exist.
+
+</details>
+
+<Quiz id="ab-s12-2">
+You must assign Microsoft 365 Copilot licenses to 2,000 users with minimal ongoing admin work. Which approach best matches AB-650 licensing objectives?
+
+- [x] Use group-based licensing so membership drives license assignment
+- [ ] Ask each user to buy a self-service license from the Microsoft Store
+- [ ] Create one shared mailbox and assign the Copilot license to it
+- [ ] Enable pay-as-you-go only — named Copilot licenses are never assigned
+
+Group-based licensing scales assignment and removal with group membership. Shared mailboxes are not the model for Copilot user licensing; pay-as-you-go complements but does not replace user license assignment patterns tested on the exam.
+
+[Source: Assign licenses to a group](https://learn.microsoft.com/en-us/entra/identity/users/licensing-groups-assign)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+
+
+AB-650 explicitly measures managing Microsoft 365 licenses including group-based licensing and pay-as-you-go, plus AI service licenses (Copilot, Agent 365, Copilot Studio). For large populations, assign licenses via groups in Entra ID. Also know that AI services may involve usage-based billing you monitor separately from named seats.
+
+</details>
+
+<Quiz id="ab-s12-3">
+Why do SharePoint and OneDrive permissions matter specifically for Microsoft 365 Copilot on AB-650?
+
+- [x] Copilot grounds responses on content the user can access; oversharing becomes an AI data readiness problem
+- [ ] Copilot ignores SharePoint permissions and only uses public web search
+- [ ] Copilot can only read content labeled as Public
+- [ ] Copilot requires every site to be a Teams-connected site
+
+Copilot respects the user’s existing permissions. Oversharing and broad permissions therefore surface as Copilot data readiness / oversharing issues on the exam.
+
+[Source: Prevent oversharing with Copilot](https://learn.microsoft.com/en-us/microsoft-365-copilot/guidance/copilot-oversharing)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+
+
+AB-650 links workload configuration to Copilot quality. Create/manage SharePoint sites and permissions, then use SharePoint Advanced Management, Microsoft Search controls, and site exclusions so Copilot does not surface content that should not be discoverable. Restricted Content Discovery, Restricted SharePoint Search, and Restricted Access Control are high-value distinctions for exam scenarios.
+
+</details>

@@ -1,4 +1,5 @@
 import { createEmptyCard, fsrs, generatorParameters, type Card, type Grade } from "ts-fsrs";
+import { LEGACY_DAY_TO_SESSION } from "@/lib/sessionSchedule";
 
 export type DaySources = {
   microsoft: boolean;
@@ -29,8 +30,10 @@ export type CourseProgress = {
   review: Record<string, Card>;
   /** lab id → per-exercise checkboxes (official MS Learning labs) */
   officialLabs?: Record<string, OfficialLabProgress>;
-  last?: string; // day key
+  last?: string; // session key
   lastOfficialLabId?: string;
+  /** Set after day-number progress is remapped onto sessions. */
+  schedule?: "sessions-v1";
   updatedAt: string;
 };
 
@@ -52,7 +55,40 @@ export function emptyCourseProgress(code: string): CourseProgress {
     done: {},
     steps: {},
     review: {},
+    schedule: "sessions-v1",
     updatedAt: new Date().toISOString(),
+  };
+}
+
+function applySessionSchedule(progress: CourseProgress): CourseProgress {
+  if (progress.schedule === "sessions-v1") return progress;
+  const map = LEGACY_DAY_TO_SESSION[progress.code];
+  if (!map) return { ...progress, schedule: "sessions-v1" };
+  const grouped: Record<string, string[]> = {};
+  for (const [day, session] of Object.entries(map)) {
+    (grouped[session] ??= []).push(day);
+  }
+  const done: Record<string, boolean> = {};
+  for (const [session, days] of Object.entries(grouped)) {
+    if (days.every((day) => progress.done[day])) done[session] = true;
+  }
+  const steps: CourseProgress["steps"] = {};
+  const review: CourseProgress["review"] = {};
+  for (const [day, session] of Object.entries(map)) {
+    if (progress.steps[day]) {
+      steps[session] = { ...(steps[session] ?? {}), ...progress.steps[day] };
+    }
+    if (progress.review[day]) review[session] = progress.review[day]!;
+  }
+  const last =
+    progress.last && map[progress.last] ? map[progress.last] : progress.last;
+  return {
+    ...progress,
+    done,
+    steps,
+    review,
+    last,
+    schedule: "sessions-v1",
   };
 }
 
@@ -141,12 +177,18 @@ export function saveBundle(bundle: ProgressBundle): void {
   }
 }
 
+function settle(progress: CourseProgress): CourseProgress {
+  const next = applySessionSchedule(progress);
+  if (next !== progress) saveCourseProgress(next);
+  return next;
+}
+
 export function loadCourseProgress(code: string): CourseProgress {
   if (!canUseStorage()) {
     return emptyCourseProgress(code);
   }
   const bundle = loadBundle();
-  if (bundle.courses[code]) return bundle.courses[code]!;
+  if (bundle.courses[code]) return settle(bundle.courses[code]!);
   try {
     const raw = localStorage.getItem(storageKey(code));
     if (raw) {
@@ -154,7 +196,7 @@ export function loadCourseProgress(code: string): CourseProgress {
       if (parsed?.version === 1) {
         bundle.courses[code] = parsed;
         saveBundle(bundle);
-        return parsed;
+        return settle(parsed);
       }
     }
   } catch {

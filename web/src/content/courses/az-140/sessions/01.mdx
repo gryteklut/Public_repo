@@ -1,10 +1,11 @@
 ---
-day: 1
+week: 1
+kind: learn
+session: 1
 title: Plan host pools
 moduleTitle: Plan host pools, licensing, and capacity
 moduleId: d1-plan
 minutes: 60
-practice: false
 summary: "Host pool type, load balancing, licensing, OS choice, and where the resources live. Hands-on starts on day 2."
 focus: "Skills measured: plan host pools and session hosts (infrastructure, 40–45%)."
 tags:
@@ -31,9 +32,6 @@ videos:
       - Plan a host pools architecture
       - Configuration for performance requirements
       - Calculate and recommend a configuration for Azure Virtual Machines capacity
-  - label: (OPTIONAL) Other foundation knowledge
-    action: skip
-    note: Skip unless virtual networks or PowerShell are new. The firewall lessons spend Azure credit.
 officialLabs: []
 lab: []
 outOfScopeNote: Do not build the host pool today. Lab 1 on day 2 is the deploy lab.
@@ -44,7 +42,15 @@ tldr:
   - "Management groups organize subscriptions. Session hosts are virtual machines in a resource group."
 trap: "A Microsoft 365 E3 or E5 license does not cover a Windows Server session host. That host needs an RDS CAL."
 videoTip: "Watch the plan section before the deploy labs. Licensing and pooled versus personal show up in almost every scenario."
+hourNote: "No lab. This hour is the plan-host-pool lectures that match the study guide, then the check."
+budget:
+  - { label: "Udemy", minutes: 35 }
+  - { label: "Exam traps", minutes: 15 }
+  - { label: "Knowledge check", minutes: 10 }
+optional: []
+
 ---
+
 
 import { Quiz } from 'starlight-quiz/components';
 

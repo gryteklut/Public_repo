@@ -1,0 +1,127 @@
+---
+week: 3
+kind: learn
+session: 14
+title: "Skill-area retrieval"
+moduleTitle: "Retrieval across the four skill areas"
+moduleId: az-s14
+minutes: 60
+summary: "One more pass, weighted to infrastructure, then apps and monitoring."
+focus: "Host pools, Private Link, identity, RemoteApp, scaling."
+tags: [AZ-140-infra, AZ-140-apps, AZ-140-monitor]
+resources:
+  - { label: "AZ-140 study guide", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-140", kind: learn }
+videos: []
+lab: []
+officialLabs: []
+tldr:
+  - "Infrastructure about 40–45%, apps 20–25%, identity 15–20%, monitor 10–15%."
+  - "Use misses to pick one optional lab task, not a full lab."
+trap: "RDP Multipath does not replace the broker, and a scaling plan is not Start VM on Connect."
+budget:
+  - { label: "Knowledge check", minutes: 50 }
+  - { label: "Trap review", minutes: 10 }
+optional: []
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="az-s14-1">
+One hundred users need a Windows 11 desktop, and several users can share each virtual machine. Profiles must follow the user. Which host pool do you plan?
+
+- [x] Pooled, with a Windows 11 Enterprise multi-session image and FSLogix profile containers
+- [ ] Personal, with one Windows 11 Enterprise virtual machine per user and no profile product
+- [ ] Pooled, with Windows Server session hosts and no extra license
+- [ ] A single shared virtual machine that is not in a host pool
+
+Pooled host pools share session hosts. Windows 11 Enterprise multi-session exists for that model. FSLogix holds the profile because the user may land on a different host next time. Personal pools are one user per desktop. Windows Server hosts need RDS CALs.
+
+[Source: Host pool load balancing](https://learn.microsoft.com/en-us/azure/virtual-desktop/host-pool-load-balancing)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Pooled host pools serve many users from a set of session hosts. Personal host pools assign a user to one desktop. Multi-session Windows 10 or 11 Enterprise is the usual pooled image. A personal desktop is typically single-session Windows Enterprise or Windows Server.
+
+</details>
+
+<Quiz id="az-s14-1">
+You want the remote desktop transport to use a direct UDP path when the network allows it. Which feature is that?
+
+- [x] RDP Shortpath
+- [ ] A public inbound rule for TCP 3389 on the session host
+- [ ] Azure Bastion
+- [ ] A scaling plan
+
+RDP Shortpath establishes a direct UDP connection (STUN, or TURN when a relay is required). Sign-in and brokering still use Azure Virtual Desktop. Opening TCP 3389 to the internet is the pattern you avoid.
+
+[Source: RDP Shortpath](https://learn.microsoft.com/en-us/azure/virtual-desktop/rdp-shortpath)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Shortpath can run over a public network or a managed network (VPN or ExpressRoute). For a managed network you also plan DNS so the client can resolve the session host. Bandwidth planning still matters: graphics, printing, and file copy cost more than keyboard input.
+
+</details>
+
+<Quiz id="az-s14-1">
+Which set lists the identity scenarios the AZ-140 study guide measures for session hosts?
+
+- [x] Active Directory Domain Services, Microsoft Entra ID, and Microsoft Entra Domain Services
+- [ ] Microsoft Entra ID only, because the other two were removed from the exam
+- [ ] Active Directory only, because Entra join cannot host a session
+- [ ] Microsoft accounts and a local administrator password
+
+You pick the model that matches the environment. Entra ID join is fully supported and is what the current labs use. AD DS is still the hybrid and Kerberos-heavy option. Entra Domain Services is the managed domain option. The exam asks which requirements go with which choice.
+
+[Source: Identity in Azure Virtual Desktop](https://learn.microsoft.com/en-us/azure/virtual-desktop/authentication)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Entra-joined hosts sign users in with Entra accounts and support single sign-on. Domain-joined hosts need line-of-sight to domain controllers and DNS. Entra Domain Services is not the same thing as Entra ID join. Passwordless, smart card, and multifactor authentication are all in this skill.
+
+</details>
+
+<Quiz id="az-s14-1">
+Accountants need only the finance application, not a full desktop. What do you publish?
+
+- [x] A RemoteApp in a RemoteApp application group, assigned to the accountants group
+- [ ] A second personal desktop for each accountant
+- [ ] An FSLogix profile container that includes the executable
+- [ ] A private endpoint for the application
+
+RemoteApp publishes selected applications from a session host. Assignment is on the RemoteApp application group. Lab 1 already creates that group and assigns the AVD-RemoteApp group. A profile container does not publish an app to the client.
+
+[Source: Publish applications](https://learn.microsoft.com/en-us/azure/virtual-desktop/publish-applications)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+A host pool can have a desktop application group and a RemoteApp application group. The preferred app group type is the default, not a lock. Users only see what their assignments include. The same session host image can back both groups.
+
+</details>
+
+<Quiz id="az-s14-1">
+You need connection, host, and session reports for a host pool. What do you deploy?
+
+- [x] A Log Analytics workspace and the Azure Virtual Desktop Insights workbook
+- [ ] Only Azure Advisor
+- [ ] An FSLogix Cloud Cache share
+- [ ] A second workspace resource in Azure Virtual Desktop
+
+Lab 3 registers Microsoft.Insights, creates the workspace, and opens the Insights configuration workbook so diagnostic data lands in Log Analytics. The Azure Virtual Desktop workspace (the feed users subscribe to) is a different object. Advisor is recommendations, not the telemetry store.
+
+[Source: Azure Virtual Desktop Insights](https://learn.microsoft.com/en-us/azure/virtual-desktop/insights)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Turn on diagnostic settings for the host pool, workspace, and application groups you care about, and install or configure the agent path the workbook expects on session hosts. You can pin or edit the workbook. That is the "customize Azure Monitor workbooks" skill.
+
+</details>

@@ -29,16 +29,20 @@ export async function getCourseDays(slug: string) {
   const all = await getCollection("courseDays");
   return all
     .filter((d) => courseSlugFromId(d.id) === slug)
-    .sort((a, b) => a.data.day - b.data.day);
+    .sort((a, b) => a.data.session - b.data.session);
 }
 
-export async function getCourseDay(slug: string, dayNumber: number) {
+export async function getCourseDay(slug: string, sessionNumber: number) {
   const days = await getCourseDays(slug);
-  return days.find((d) => d.data.day === dayNumber);
+  return days.find((d) => d.data.session === sessionNumber);
 }
 
-export function dayPath(courseSlug: string, dayNumber: number): string {
-  return `/courses/${courseSlug}/day-${dayNumber}/`;
+export function sessionPath(courseSlug: string, sessionNumber: number): string {
+  return `/courses/${courseSlug}/session-${sessionNumber}/`;
+}
+
+export function weeksIn(sessions: { data: { week: number } }[]): number {
+  return sessions.reduce((max, session) => Math.max(max, session.data.week), 1);
 }
 
 export async function getCourseNav(): Promise<{ label: string; href: string }[]> {

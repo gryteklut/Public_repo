@@ -1,10 +1,11 @@
 ---
-day: 3
+week: 1
+kind: learn
+session: 3
 title: Entra identities
 moduleTitle: Manage identities in Microsoft Entra
 moduleId: d3-identity
 minutes: 60
-practice: false
 summary: "Cloud users, guests, groups, roles with PIM, administrative units, and bulk changes with Microsoft Graph PowerShell."
 focus: "Cloud identity governance: users, guests, groups, roles/PIM, administrative units, contacts, Graph PowerShell bulk ops."
 tags:
@@ -35,9 +36,6 @@ videos:
       - Perform bulk user management
       - Concepts of using Microsoft Graph with PowerShell management
       - "Create and manage users and groups, as well as bulk management with PowerShell"
-  - label: "MS-102: Implement and manage identity synchronization with Microsoft Entra tenant"
-    action: skip
-    note: Hybrid Entra Connect / Cloud Sync is MS-102-oriented and largely out of AB-650 scope.
 officialLabs:
   - labId: lab-3
 lab: []
@@ -49,7 +47,15 @@ tldr:
   - "Manage guest users and external access settings: invitation redemption, cross-tenant access, guest permissions (what guests can do), and how guests appear in groups/Teams."
 trap: "Stay on cloud identity. Guest access, PIM, and administrative units are in scope. Entra Connect sync troubleshooting is not."
 videoTip: Deep-dive Entra identities/roles/PIM/Graph. Skip the whole hybrid sync section for AB-650.
+hourNote: "Both lab 3 exercises fit this hour (20 + 20)."
+budget:
+  - { label: "Udemy", minutes: 10 }
+  - { label: "Lab", minutes: 40 }
+  - { label: "Knowledge check", minutes: 10 }
+optional: []
+
 ---
+
 
 import { Quiz } from 'starlight-quiz/components';
 

@@ -1,0 +1,153 @@
+---
+week: 3
+kind: mock
+session: 15
+title: "Mock exam"
+moduleTitle: "Mock exam"
+moduleId: az-mock
+minutes: 60
+summary: "Mixed questions in study-guide proportion. Score them before you book anything."
+focus: "Infrastructure, identity, apps, and monitoring."
+tags: [AZ-140-infra, AZ-140-identity, AZ-140-apps, AZ-140-monitor]
+resources:
+  - { label: "AZ-140 study guide", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-140", kind: learn }
+videos: []
+lab: []
+officialLabs: []
+tldr:
+  - "Infrastructure is the largest area."
+  - "Entra ID join is supported. AD DS and Entra Domain Services are still options."
+  - "Profiles live in FSLogix, not on the session host OS disk."
+trap: "Restoring a session host disk does not restore an FSLogix profile."
+budget:
+  - { label: "Mock exam", minutes: 55 }
+  - { label: "Score review", minutes: 5 }
+optional:
+  - "Lab 5 tasks 1–3: granting the power role again, deallocating every host, and tweaking pool settings before the plan exists."
+  - "Lab 3 task 1: registering Microsoft.Insights. Do the workspace and the Insights workbook."
+  - "Udemy: Cleaning up your Azure practice environment."
+  - "The legacy AD DS and Microsoft Entra Domain Services lab tracks. Microsoft Learning no longer maintains them. The identity choices are still on the quiz."
+  - "Udemy — Cleanup: Cleaning up your Azure practice environment"
+---
+
+import { Quiz } from 'starlight-quiz/components';
+
+<Quiz id="az-mock-1">
+The current Microsoft Learning AZ-140 labs join the session hosts to which directory?
+
+- [x] Microsoft Entra ID
+- [ ] Active Directory Domain Services only
+- [ ] Microsoft Entra Domain Services only
+- [ ] A local SAM account database, with no directory
+
+The maintained lab track is Labs_EntraID. Session hosts are Microsoft Entra joined. AD DS and Entra Domain Services remain identity options on the exam, and their old labs are no longer maintained.
+
+[Source: Entra joined session hosts](https://learn.microsoft.com/en-us/azure/virtual-desktop/azure-ad-joined-session-hosts)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+When you create the host pool, "Select which directory you would like to join" is set to Microsoft Entra ID in lab 1. Hybrid and domain-join options still exist. Know which one a scenario requires instead of assuming every host is domain-joined.
+
+</details>
+
+<Quiz id="az-mock-1">
+Pooled users must keep their Windows profile when they land on a different session host. What do you configure?
+
+- [x] An FSLogix profile container on an SMB share the session hosts can reach
+- [ ] A local profile on drive C of each session host
+- [ ] An MSIX app attach package for the profile
+- [ ] A scaling plan with a ramp-up schedule
+
+FSLogix mounts a profile VHD(X) from a file share at sign-in. A local profile stays on whichever host the user used last. App attach delivers applications, not the profile.
+
+[Source: FSLogix profile containers](https://learn.microsoft.com/en-us/azure/virtual-desktop/fslogix-profile-containers)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+`VHDLocations` (or Cloud Cache locations) points at the share. The share permissions must let the user create and mount their own container. OneDrive Known Folder Move can slim the profile, but it is not a substitute for the container when the whole profile must roam.
+
+</details>
+
+<Quiz id="az-mock-1">
+You built a Windows 11 multi-session virtual machine and will deploy many session hosts from it. What do you do before you capture the image?
+
+- [x] Generalize it with Sysprep, then capture a version into Azure Compute Gallery
+- [ ] Join it to Entra ID and capture it while it is running
+- [ ] Enable public RDP and snapshot the OS disk as the only copy
+- [ ] Store the VHD on the FSLogix profile share
+
+A golden image that will be cloned is generalized so each new virtual machine gets its own identity. Azure Compute Gallery holds the image definition and versions. A snapshot of a running domain-joined machine is not the reusable image the exam wants.
+
+[Source: Create a custom image](https://learn.microsoft.com/en-us/azure/virtual-desktop/set-up-customize-master-image)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+The manual path is: build the virtual machine, install apps, generalize, deallocate, capture. The gallery image definition describes the operating system, and each build is a version. Session hosts are then created from a chosen version.
+
+</details>
+
+<Quiz id="az-mock-1">
+Users must print to a local printer and map a local drive into the session. Where do you set that for the whole host pool?
+
+- [x] RDP properties on the host pool
+- [ ] The session host image definition in Azure Compute Gallery
+- [ ] A Conditional Access grant control
+- [ ] The FSLogix VHDLocations value
+
+Host pool RDP properties control redirection (drives, clipboard, printers, cameras) for connections to that pool. The image does not store the user's client devices. FSLogix stores the profile.
+
+[Source: RDP properties](https://learn.microsoft.com/en-us/azure/virtual-desktop/customize-rdp-properties)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Lab 2 configures RDP properties after it adds session hosts and reviews load balancing. Intune or Group Policy still configures settings inside Windows, such as Universal Print or a timeout that you also want enforced if someone signs in another way. Know which layer the question is pointing at.
+
+</details>
+
+<Quiz id="az-mock-1">
+You need connection, host, and session reports for a host pool. What do you deploy?
+
+- [x] A Log Analytics workspace and the Azure Virtual Desktop Insights workbook
+- [ ] Only Azure Advisor
+- [ ] An FSLogix Cloud Cache share
+- [ ] A second workspace resource in Azure Virtual Desktop
+
+Lab 3 registers Microsoft.Insights, creates the workspace, and opens the Insights configuration workbook so diagnostic data lands in Log Analytics. The Azure Virtual Desktop workspace (the feed users subscribe to) is a different object. Advisor is recommendations, not the telemetry store.
+
+[Source: Azure Virtual Desktop Insights](https://learn.microsoft.com/en-us/azure/virtual-desktop/insights)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Turn on diagnostic settings for the host pool, workspace, and application groups you care about, and install or configure the agent path the workbook expects on session hosts. You can pin or edit the workbook. That is the "customize Azure Monitor workbooks" skill.
+
+</details>
+
+<Quiz id="az-mock-1">
+Pooled profiles are FSLogix containers on Azure Files. A session host is rebuilt from the gallery image. What must you restore for the user to see yesterday's files?
+
+- [x] The file share that holds the profile containers
+- [ ] The session host OS disk
+- [ ] The host pool RDP properties
+- [ ] The Log Analytics workspace
+
+The profile is not on the OS disk. Rebuilding the host from the image is normal. The container on the share is the profile. Personal desktops are the case where the virtual machine itself may hold user data, and those disks are a separate backup target. Image versions are a third target.
+
+[Source: Backup recommendations](https://learn.microsoft.com/en-us/azure/virtual-desktop/disaster-recovery)
+</Quiz>
+
+<details class="study-collapse">
+<summary>Study this topic</summary>
+
+Design three backups: FSLogix share (profiles and often Office containers), personal desktop disks, and image versions or the gallery. Azure Backup on the storage account covers the share. Azure Site Recovery is for replicating virtual machines to another region, not for mounting a profile VHD by itself.
+
+</details>
