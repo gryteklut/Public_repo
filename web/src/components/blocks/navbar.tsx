@@ -46,7 +46,7 @@ export const Navbar = () => {
           <img
             src={withBase("/logo.svg")}
             alt="Public repo"
-            width={94}
+            width={112}
             height={18}
             className="dark:invert"
           />
