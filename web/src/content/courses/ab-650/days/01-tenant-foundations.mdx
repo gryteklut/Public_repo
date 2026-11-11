@@ -40,11 +40,9 @@ videos:
   - label: (OPTIONAL) Setting Up a Practice Lab
     action: skip
     note: Skip unless you still need a lab tenant. You already have an E5 dev tenant.
-lab:
-  - "In your E5 dev tenant, open Microsoft 365 admin center → Settings → Org settings and review company profile, security & privacy."
-  - Review Domains and note primary vs custom domain verification status.
-  - Open Billing → Licenses and identify group-based licensing options for a security group.
-  - Open Health → Service health and configure a sample notification preference.
+officialLabs:
+  - labId: lab-1
+lab: []
 outOfScopeNote: AB-650 does not emphasize hybrid directory sync (Entra Connect) the way older MS-102 did. Do not spend time on sync troubleshooting for this exam.
 tldr:
   - "AB-650 expects you to configure tenant branding including logo, company URL, themes, and backgrounds."
@@ -75,7 +73,9 @@ Sign-in and company branding for the Microsoft 365 experience is configured in M
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-AB-650 expects you to configure tenant branding including logo, company URL, themes, and backgrounds. For Microsoft Entra sign-in experiences, use Entra admin center → Company branding. Organizational profile details (name, address, technical contact) live under Microsoft 365 admin center → Settings → Org settings. Know which portal owns which setting — exam questions often test portal selection.
+
+
+_Hands-on depth: [Lab 1 — Operate the Microsoft 365 tenant](../labs/lab-1/). Exam note:_ AB-650 expects you to configure tenant branding including logo, company URL, themes, and backgrounds. For Microsoft Entra sign-in experiences, use Entra admin center → Company branding. Organizational profile details (name, address, technical contact) live under Microsoft 365 admin center → Settings → Org settings. Know which portal owns which setting — exam questions often test portal selection.
 
 </details>
 
@@ -95,7 +95,9 @@ Custom domains require DNS verification and service setup (including MX for mail
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-Implementing domains on AB-650 includes adding a domain in the Microsoft 365 admin center, verifying ownership with DNS records, and configuring required records (for example MX, CNAME, TXT) so workloads like Exchange and Teams can use the domain. A domain can be verified but still incomplete for a workload until the right records exist.
+
+
+_Hands-on depth: [Lab 1 — Operate the Microsoft 365 tenant](../labs/lab-1/). Exam note:_ Implementing domains on AB-650 includes adding a domain in the Microsoft 365 admin center, verifying ownership with DNS records, and configuring required records (for example MX, CNAME, TXT) so workloads like Exchange and Teams can use the domain. A domain can be verified but still incomplete for a workload until the right records exist.
 
 </details>
 
@@ -115,7 +117,9 @@ Group-based licensing scales assignment and removal with group membership. Share
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-AB-650 explicitly measures managing Microsoft 365 licenses including group-based licensing and pay-as-you-go, plus AI service licenses (Copilot, Agent 365, Copilot Studio). For large populations, assign licenses via groups in Entra ID. Also know that AI services may involve usage-based billing you monitor separately from named seats.
+
+
+_Hands-on depth: [Lab 1 — Operate the Microsoft 365 tenant](../labs/lab-1/). Exam note:_ AB-650 explicitly measures managing Microsoft 365 licenses including group-based licensing and pay-as-you-go, plus AI service licenses (Copilot, Agent 365, Copilot Studio). For large populations, assign licenses via groups in Entra ID. Also know that AI services may involve usage-based billing you monitor separately from named seats.
 
 </details>
 
@@ -135,7 +139,9 @@ Service health (and its notification preferences) is how you monitor Microsoft 3
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-Monitor Microsoft 365 service health in the admin center, including configuring notifications. Pair this with network connectivity insights when diagnosing client connectivity issues. These are classic tenant-admin skills that remain on AB-650 under “configure and manage a Microsoft 365 tenant.”
+
+
+_Hands-on depth: [Lab 1 — Operate the Microsoft 365 tenant](../labs/lab-1/). Exam note:_ Monitor Microsoft 365 service health in the admin center, including configuring notifications. Pair this with network connectivity insights when diagnosing client connectivity issues. These are classic tenant-admin skills that remain on AB-650 under “configure and manage a Microsoft 365 tenant.”
 
 </details>
 

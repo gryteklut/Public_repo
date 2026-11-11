@@ -52,12 +52,14 @@ export function LessonPlan({
   focus,
   videoLabels,
   resources,
+  officialLabHref,
 }: {
   code: string;
   day: number;
   focus: string;
   videoLabels: string[];
   resources: Resource[];
+  officialLabHref?: string;
 }) {
   const [sources, setSources] = useState<DaySources>(DEFAULT_DAY_SOURCES);
 
@@ -94,6 +96,21 @@ export function LessonPlan({
               {focus}
             </p>
           </li>
+          {officialLabHref && (
+            <li className="relative">
+              <span className="course-pill absolute top-1 -left-[21px] size-2.5 rounded-full" />
+              <p className="text-sm font-semibold">Official hands-on lab</p>
+              <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
+                Primary practice — more detail than day notes.{" "}
+                <a
+                  className="font-semibold text-[var(--ms-accent)] underline-offset-2 hover:underline"
+                  href={officialLabHref}
+                >
+                  Open lab
+                </a>
+              </p>
+            </li>
+          )}
           {sources.udemy && videoLabels.length > 0 && (
             <li className="relative">
               <span className="bg-muted-foreground/40 absolute top-1 -left-[21px] size-2.5 rounded-full" />

@@ -2,10 +2,15 @@ import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
+  getAllOfficialExercises,
+  TOTAL_OFFICIAL_LAB_MINUTES,
+} from "@/data/officialLabs";
+import {
   exportAllProgress,
   importAllProgress,
   isReviewDue,
   loadCourseProgress,
+  officialLabMinutesCompleted,
 } from "@/lib/courseProgress";
 import { withBase } from "@/lib/base";
 
@@ -29,6 +34,26 @@ export function ProgressCard({
     isReviewDue(progress.review[String(d)]),
   );
 
+  const showOfficialLabs = code === "AB-650";
+  const labMinutesDone = showOfficialLabs
+    ? officialLabMinutesCompleted(
+        progress,
+        getAllOfficialExercises().map(({ lab, exercise }) => ({
+          labId: lab.id,
+          exerciseId: exercise.id,
+          minutes: exercise.minutes,
+        })),
+      )
+    : 0;
+  const labMinutesLeft = Math.max(
+    0,
+    TOTAL_OFFICIAL_LAB_MINUTES - labMinutesDone,
+  );
+  const labPercent =
+    TOTAL_OFFICIAL_LAB_MINUTES === 0
+      ? 0
+      : Math.round((labMinutesDone / TOTAL_OFFICIAL_LAB_MINUTES) * 100);
+
   return (
     <div className="course-card space-y-4 p-5 shadow-xs">
       <div>
@@ -45,6 +70,21 @@ export function ProgressCard({
           {doneCount === 0 ? "Start day 1" : `Continue day ${continueDay}`}
         </a>
       </Button>
+      {showOfficialLabs && (
+        <div className="space-y-2 rounded-xl border border-[var(--course-line)] bg-[var(--ms-soft)]/60 p-3">
+          <p className="text-xs font-semibold tracking-wider uppercase text-[var(--ms-accent)]">
+            Official labs
+          </p>
+          <p className="text-sm">
+            {labMinutesLeft} min remaining · {labMinutesDone}/
+            {TOTAL_OFFICIAL_LAB_MINUTES}
+          </p>
+          <Progress value={labPercent} className="h-1.5" />
+          <Button variant="secondary" className="w-full" asChild>
+            <a href={withBase(`/courses/${courseSlug}/labs/`)}>Open labs</a>
+          </Button>
+        </div>
+      )}
       <div className="flex gap-2">
         <Button
           variant="outline"

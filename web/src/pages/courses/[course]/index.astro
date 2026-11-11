@@ -50,9 +50,19 @@ const { data } = course;
           >
             {data.subtitle}
           </p>
-          <p class="mt-4">
+          <p class="mt-4 flex flex-wrap gap-2">
+            {
+              slug === "ab-650" && (
+                <a
+                  class="course-pill inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-semibold"
+                  href={withBase("/courses/ab-650/labs/")}
+                >
+                  Hands-on labs (450 min)
+                </a>
+              )
+            }
             <a
-              class="course-pill inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-semibold"
+              class="inline-flex items-center rounded-lg border border-[var(--course-line)] bg-[var(--card)] px-3 py-1.5 text-sm font-semibold"
               href="https://learn.microsoft.com/en-us/training/browse/?roles=administrator&terms=Microsoft%20365%20and%20AI%20Services"
               target="_blank"
               rel="noreferrer"

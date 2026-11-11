@@ -38,11 +38,9 @@ videos:
   - label: "MS-102: Implement and manage identity synchronization with Microsoft Entra tenant"
     action: skip
     note: Hybrid Entra Connect / Cloud Sync is MS-102-oriented and largely out of AB-650 scope.
-lab:
-  - "Create a user, a Microsoft 365 group, and a security group."
-  - Invite a guest and review External collaboration settings.
-  - Create an administrative unit and assign a scoped role if licensing allows.
-  - Open PIM and review an eligible role assignment workflow.
+officialLabs:
+  - labId: lab-3
+lab: []
 outOfScopeNote: Hybrid identity / Entra Connect sync troubleshooting is largely out of AB-650 scope compared with classic MS-102.
 tldr:
   - Administrative units (AUs) partition a tenant for delegated administration.
@@ -73,7 +71,9 @@ Administrative units let you scope role permissions to a subset of users/groups/
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-Administrative units (AUs) partition a tenant for delegated administration. Combine AUs with scoped directory roles so operators can manage only their population. This is preferred over over-privileged global roles.
+
+
+_Hands-on depth: [Lab 3 — identities & delegated access](../labs/lab-3/). Exam note:_ Administrative units (AUs) partition a tenant for delegated administration. Combine AUs with scoped directory roles so operators can manage only their population. This is preferred over over-privileged global roles.
 
 </details>
 
@@ -93,7 +93,9 @@ PIM provides eligible, time-bound activation of privileged roles — core to gov
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-AB-650 includes managing roles for Microsoft 365, including PIM. Know eligible vs permanent assignments, activation, approval, MFA on activation, and access reviews as governance patterns for privileged roles.
+
+
+_Hands-on depth: [Lab 3 — identities & delegated access](../labs/lab-3/). Exam note:_ AB-650 includes managing roles for Microsoft 365, including PIM. Know eligible vs permanent assignments, activation, approval, MFA on activation, and access reviews as governance patterns for privileged roles.
 
 </details>
 
@@ -113,7 +115,9 @@ Bulk management including Microsoft Graph PowerShell is an explicit skills-measu
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-AB-650 expects familiarity with Microsoft Graph PowerShell for bulk identity operations (create users, update attributes, group membership). Practice Connect-MgGraph, least-privilege Graph permissions, and batching patterns at a conceptual level.
+
+
+_Hands-on depth: [Lab 3 — identities & delegated access](../labs/lab-3/). Exam note:_ AB-650 expects familiarity with Microsoft Graph PowerShell for bulk identity operations (create users, update attributes, group membership). Practice Connect-MgGraph, least-privilege Graph permissions, and batching patterns at a conceptual level.
 
 </details>
 
@@ -133,7 +137,9 @@ Guest/B2B users plus external collaboration settings are the standard model; AB-
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-Manage guest users and external access settings: invitation redemption, cross-tenant access, guest permissions (what guests can do), and how guests appear in groups/Teams. Pair with Conditional Access for guests when securing access.
+
+
+_Hands-on depth: [Lab 3 — identities & delegated access](../labs/lab-3/). Exam note:_ Manage guest users and external access settings: invitation redemption, cross-tenant access, guest permissions (what guests can do), and how guests appear in groups/Teams. Pair with Conditional Access for guests when securing access.
 
 </details>
 

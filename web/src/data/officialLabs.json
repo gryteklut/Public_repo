@@ -1,0 +1,1639 @@
+{
+  "attribution": {
+    "license": "MIT",
+    "copyright": "Copyright (c) 2024 Microsoft",
+    "sourceRepo": "https://github.com/MicrosoftLearning/AB-650T00_administer_microsoft_365_and_ai_services",
+    "officialSite": "https://microsoftlearning.github.io/AB-650T00_administer_microsoft_365_and_ai_services/",
+    "notice": "Lab exercise steps are adapted from the Microsoft Learning AB-650T00 repository under the MIT License. Keep the copyright notice and original links."
+  },
+  "totalLabs": 7,
+  "totalMinutes": 450,
+  "learningPaths": [
+    {
+      "number": 1,
+      "title": "Configure and manage Microsoft 365 tenants and workloads",
+      "learnUrl": "https://learn.microsoft.com/training/paths/configure-manage-microsoft-365-tenants-workloads/",
+      "duration": 110,
+      "labs": [
+        {
+          "id": "lab-1",
+          "number": 1,
+          "title": "Lab 1: Operate the Microsoft 365 tenant",
+          "description": "Set the organization baseline, assign and troubleshoot service entitlements with group-based licensing, and investigate tenant health, connectivity, and recovery readiness up to the Microsoft 365 Backup billing boundary.",
+          "duration": 40,
+          "level": 300,
+          "objectives": [
+            "Configure an organization profile, company theme, and a scoped privacy setting, and confirm each change by reading it back.",
+            "Interpret a DNS record set to tell domain-verification records apart from service records and spot a broken SPF record.",
+            "Create unlicensed users and assign Microsoft 365 E7 to them through group-based licensing.",
+            "Show that nested-group members don't inherit a group license, correct the assignment, and verify the Copilot and Agent 365 service plans.",
+            "Configure a Service Health email notification, compare network connectivity test results from two clients with service state, and identify where Microsoft 365 Backup setup stops at the Azure billing prerequisite."
+          ],
+          "slug": "01-operate-microsoft-365-tenant",
+          "sourcePath": "Instructions/Labs/LP1/01-operate-microsoft-365-tenant.md",
+          "officialUrl": "https://microsoftlearning.github.io/AB-650T00_administer_microsoft_365_and_ai_services/Instructions/Labs/LP1/01-operate-microsoft-365-tenant.html",
+          "sourceUrl": "https://github.com/MicrosoftLearning/AB-650T00_administer_microsoft_365_and_ai_services/blob/main/Instructions/Labs/LP1/01-operate-microsoft-365-tenant.md",
+          "labFiles": [],
+          "learningPath": 1,
+          "exercises": [
+            {
+              "id": "lab1-ex1",
+              "number": 1,
+              "title": "Establish the organization baseline",
+              "minutes": 10,
+              "scenario": "Before your organization rolls out Microsoft 365 more widely, you set the tenant baseline. You update the organization profile and sold-to address, apply the company theme, and confirm that usage reports conceal user names. You then review a DNS record set for a planned custom domain and find the record that would break outbound mail. **Roles used:** **Global Administrator**.",
+              "tasks": [
+                {
+                  "id": "lab1-ex1-task1",
+                  "number": 1,
+                  "title": "Set the organization profile",
+                  "steps": [
+                    "Go to the Microsoft 365 admin center at `https://admin.cloud.microsoft`.",
+                    "If prompted to set up multifactor authentication (MFA), select **Set up now** and follow the on-screen instructions to register an authentication method before continuing. After completing the setup, continue with the sign-in process and authenticate when prompted.",
+                    "Select **Show all** > **Settings** > **Org settings**.",
+                    "Select the **Organization profile** tab, then select **Organization information**.",
+                    "In the **Organization information** pane, set **Technical contact** to your administrator account (for example, `admin@<yourtenant>.onmicrosoft.com`), then select **Save**.",
+                    "In the same pane, select **Edit address**. The **Billing accounts** page opens.",
+                    "Select **Contoso**. Under **Sold to address**, select **Edit**.",
+                    "In the **Edit sold-to address** pane, enter the following: - **First name:** `Allan` - **Last name:** `Deyoung` - **Address line 1:** `One Microsoft Way` - **City:** `Redmond` - **State:** Washington - **Zip:** `98052` - **Email:** Your administrator account",
+                    "Select **Save**."
+                  ]
+                },
+                {
+                  "id": "lab1-ex1-task2",
+                  "number": 2,
+                  "title": "Apply the company theme and conceal report names",
+                  "steps": [
+                    "Go back to **Settings** > **Org settings** > **Organization profile**, then select **Custom themes**.",
+                    "Select **+ Add theme**, then select the **Colors** tab.",
+                    "In **Navigation bar color**, enter `#0F6CBD`. Confirm that the contrast message doesn't report a contrast problem.",
+                    "Select **Save**, then close the pane.",
+                    "Select the **Services** tab, then select **Reports**.",
+                    "Confirm that **Conceal user, group, and site names in all reports** is selected. If it isn't, select it, then select **Save**.",
+                    "Close the **Reports** pane."
+                  ]
+                },
+                {
+                  "id": "lab1-ex1-task3",
+                  "number": 3,
+                  "title": "Diagnose a DNS record set (practice case)",
+                  "steps": [
+                    "Identify the **verification** record: the `TXT` record `MS=ms12345678`. Microsoft 365 reads it to confirm domain ownership.",
+                    "Identify the **service** records: - **MX:** Routes inbound mail to Exchange Online. - **autodiscover:** Lets Outlook find mailbox settings. - **sip** and **lyncdiscover:** Support Teams sign-in and discovery. - **enterpriseregistration:** Supports device registration.",
+                    "Identify the fault: the SPF record `v=spf1 -all` authorizes no senders, so mail sent from Exchange Online fails SPF checks.",
+                    "State the correction: `v=spf1 include:spf.protection.outlook.com -all`. Don't apply it to your tenant."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lab1-ex2",
+              "number": 2,
+              "title": "Assign and troubleshoot service entitlements",
+              "minutes": 15,
+              "scenario": "Your organization wants to license new hires through group membership instead of one user at a time. You create two unlicensed users, place one in a licensing group directly and the other in a nested group, and then assign Microsoft 365 E7 to the parent group. Group-based licensing applies only to direct members, so you troubleshoot the nested user and fix the assignment path. **Roles used:** **License Administrator** or **User Administrator** to create users and assign licenses; **Groups Administrator** to manage group membership.",
+              "tasks": [
+                {
+                  "id": "lab1-ex2-task1",
+                  "number": 1,
+                  "title": "Create two unlicensed users",
+                  "steps": [
+                    "In the Microsoft 365 admin center at `https://admin.cloud.microsoft`, select **Users** > **Active users**.",
+                    "Select **Add a user**.",
+                    "On the **Set up the basics** page, enter the following: - **First name:** `Adele` - **Last name:** `Vance` - **Display name:** `Adele Vance` - **Username:** `AdeleV` - **Domains:** Select your `*.onmicrosoft.com` domain - **Password settings:** Leave **Automatically create a password** selected",
+                    "Select **Next**.",
+                    "On the **Assign product licenses** page, select **Create user without product license**, then select **Next**.",
+                    "On the **Optional settings** page, select **Next**.",
+                    "On the **Review and finish** page, select **Finish adding**, then select **Close**.",
+                    "Repeat steps 2–7 to create a second user: - **First name:** `Grady` - **Last name:** `Archie` - **Display name:** `Grady Archie` - **Username:** `GradyA` - **License:** **Create user without product license**",
+                    "On the **Active users** page, confirm that the **Licenses** column shows **Unlicensed** for both users."
+                  ]
+                },
+                {
+                  "id": "lab1-ex2-task2",
+                  "number": 2,
+                  "title": "Create a direct and a nested licensing group",
+                  "steps": [
+                    "Go to the **Microsoft Entra admin center** at `https://entra.microsoft.com` and select **Groups** > **All groups**.",
+                    "Select **New group** and enter the following: - **Group type:** Security - **Group name:** `LAB1-Licensing-Direct` - **Membership type:** Assigned",
+                    "Under **Members**, select **No members selected**, search for and select **Adele Vance**, and then select **Select**.",
+                    "Select **Create**.",
+                    "Repeat steps 2–4 to create a second group: - **Group name:** `LAB1-Licensing-Nested` - **Member:** Grady Archie",
+                    "In **All groups**, open **LAB1-Licensing-Direct** and select **Members**.",
+                    "Select **Add members**, search for `LAB1-Licensing-Nested`, select the group, and then select **Select**.",
+                    "Select **Refresh**. Confirm that the members list shows **Adele Vance** and **LAB1-Licensing-Nested**."
+                  ]
+                },
+                {
+                  "id": "lab1-ex2-task3",
+                  "number": 3,
+                  "title": "Assign E7 to the direct group",
+                  "steps": [
+                    "In the Microsoft 365 admin center, select **Billing** > **Licenses**.",
+                    "Select **Microsoft 365 E7 (No Teams)**. Note the number of assigned licenses.",
+                    "On the **Licenses** tab, select **Assign licenses**.",
+                    "Search for and select `LAB1-Licensing-Direct`, and then select **Assign licenses**.",
+                    "Close the confirmation pane. Confirm that **LAB1-Licensing-Direct** appears in the list with an assignment type of **Group**."
+                  ]
+                },
+                {
+                  "id": "lab1-ex2-task4",
+                  "number": 4,
+                  "title": "Troubleshoot the nested member",
+                  "steps": [
+                    "Note the assigned license count. It increased by **1**, not 2.",
+                    "Select **Users** > **Active users**, and refresh the page.",
+                    "Review the **Licenses** column: - **Adele Vance** shows **Microsoft 365 E7 (No Teams)**. - **Grady Archie** still shows **Unlicensed**."
+                  ]
+                },
+                {
+                  "id": "lab1-ex2-task5",
+                  "number": 5,
+                  "title": "Fix the assignment and verify the AI entitlement",
+                  "steps": [
+                    "Select **Billing** > **Licenses** > **Microsoft 365 E7 (No Teams)**.",
+                    "Select **Assign licenses**. In **Search for a name or email address**, search for and select `LAB1-Licensing-Nested`, and then select **Assign licenses**.",
+                    "Close the confirmation pane. Confirm that both **LAB1-Licensing-Direct** and **LAB1-Licensing-Nested** are listed, and that the assigned count increased by **1**.",
+                    "Select **Users** > **Active users**, refresh the page, and confirm that **Grady Archie** now shows **Microsoft 365 E7 (No Teams)**.",
+                    "Select **Grady Archie**, and then select the **Licenses and apps** tab.",
+                    "Confirm that **Microsoft 365 E7 (No Teams)** is selected.",
+                    "Expand **Apps**, and confirm that services such as **Agent 365** and **Copilot Studio in Copilot for M365** are listed under **Microsoft 365 E7 (No Teams)**.",
+                    "Close the pane without saving changes."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lab1-ex3",
+              "number": 3,
+              "title": "Investigate health, connectivity, and recovery readiness",
+              "minutes": 15,
+              "scenario": "Users report that Copilot and Teams \"are down.\" Before you escalate, you determine whether the cause is a Microsoft service incident or the users' network path. You also check how ready the tenant is to recover overwritten content. **Roles used:** **Global Administrator**. Microsoft 365 Backup setup also requires the **Owner** or **Contributor** role on an Azure subscription, which you don't have in this lab.",
+              "tasks": [
+                {
+                  "id": "lab1-ex3-task1",
+                  "number": 1,
+                  "title": "Review service health and configure an email notification",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Health** > **Service health**.",
+                    "On the **Overview** tab, review the service list and any active issues.",
+                    "Select the **Issue history** tab, and record the ID of one recent incident or advisory.",
+                    "Select **Customize**, and then select the **Email** tab.",
+                    "Select **Send me email notifications about service health**.",
+                    "Leave **Primary email address** selected, and leave **Incidents**, **Advisories**, and **Issues in your environment that require action** selected.",
+                    "Leave all services selected, and then select **Save**."
+                  ]
+                },
+                {
+                  "id": "lab1-ex3-task2",
+                  "number": 2,
+                  "title": "Run the network connectivity test from two clients",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Health** > **Network connectivity**. > [!NOTE] > An empty **Overview** means the tenant doesn't have enough location telemetry yet. It doesn't mean the network is healthy.",
+                    "Select **Network connectivity test**. The **Microsoft 365 network connectivity test** opens in a new tab.",
+                    "If prompted, select **Sign in** and sign in with your administrator account so that the results are saved.",
+                    "Select **Run test**. When Microsoft Edge asks to use your location, select **Allow**.",
+                    "In the **Let Windows and apps access your location?** dialog, select **Yes**.",
+                    "When the report opens and `Connectivity.<id>.exe` finishes downloading, press **Ctrl+J**, and then select **Open file** under the downloaded file.",
+                    "Wait for the tool to finish its tests (1–3 minutes). When **Testing is complete** appears, select **Close**.",
+                    "On the report page, select the **Details** tab, and record the following values: - **Location:** Your network egress location. - **Exchange:** The service front door location. - **Copilot:** The HTTPS and WebSocket (WSS) connectivity results. - **Teams:** The UDP packet loss percentage. - **Connectivity:** Any URLs the test asks you to unblock.",
+                    "Switch to **SEA-DEV2**, and repeat steps 1–7. If Windows asks whether to allow apps to use your location, select **No**.",
+                    "Compare the two results. When both clients report similar Teams packet loss and Service Health shows no matching incident, the cause is the network path from the lab environment, not a Microsoft service."
+                  ]
+                },
+                {
+                  "id": "lab1-ex3-task3",
+                  "number": 3,
+                  "title": "Inspect the Microsoft 365 Backup setup prerequisites",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Show all** > **Settings** > **Microsoft 365 Backup**.",
+                    "Review the three setup steps: **Things to know before you start**, **Connect a billing policy**, and **Start backing up your data**.",
+                    "Under step 2, select **Go to Pay-as-you-go**.",
+                    "On the **Pay-as-you-go** page, confirm that **Add a billing policy** is unavailable and that the page states that you need the **Owner** or **Contributor** role for an Azure subscription.",
+                    "Select the **Services** tab. Confirm that **Microsoft 365 Backup** is listed with **Connect a policy**. Don't select it."
+                  ]
+                },
+                {
+                  "id": "lab1-ex3-task4",
+                  "number": 4,
+                  "title": "Plan a SharePoint restore (practice case)",
+                  "steps": [
+                    "State the acceptance criteria: the workbook is restored to its state before the overwrite, and the site owner confirms that its content is correct.",
+                    "Choose the restore scope: **Selected content only**. A full site restore to the same URL would roll back the other team members' edits.",
+                    "Choose the destination: **Create a new folder and restore to it**. The site owner can compare the restored workbook with the current one before replacing it.",
+                    "Identify who approves the restore point: the site owner and the business owner of the finance data.",
+                    "State whether file version history could fix this first. If the workbook still has a good earlier version, a version history restore is faster, but it isn't a Microsoft 365 Backup restore."
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "lab-2",
+          "number": 2,
+          "title": "Lab 2: Enable collaboration and govern its content",
+          "description": "Deliver a working collaboration space with a delegated shared mailbox, a team with a private channel, and a meeting Copilot policy, then create finance sites, remove an excessive access grant, and separate permission enforcement from Copilot discovery.",
+          "duration": 70,
+          "level": 300,
+          "objectives": [
+            "Create a shared mailbox, grant Full Access and Send As as separate permissions, and verify each one while the mailbox's sign-in stays blocked.",
+            "Build a Microsoft Teams team with two business owners and a private channel, and show that an excluded team member can't see the channel.",
+            "Configure a Teams meeting Copilot policy, predict the organizer's experience, and name what would disprove your prediction.",
+            "Create SharePoint finance sites, introduce an excessive group grant, and remove it while preserving intended access.",
+            "Verify allowed and denied access as test users, and apply Restricted Content Discovery to separate permission enforcement from Copilot discovery."
+          ],
+          "slug": "02-enable-collaboration-govern-content",
+          "sourcePath": "Instructions/Labs/LP1/02-enable-collaboration-govern-content.md",
+          "officialUrl": "https://microsoftlearning.github.io/AB-650T00_administer_microsoft_365_and_ai_services/Instructions/Labs/LP1/02-enable-collaboration-govern-content.html",
+          "sourceUrl": "https://github.com/MicrosoftLearning/AB-650T00_administer_microsoft_365_and_ai_services/blob/main/Instructions/Labs/LP1/02-enable-collaboration-govern-content.md",
+          "labFiles": [],
+          "learningPath": 1,
+          "exercises": [
+            {
+              "id": "lab2-ex1",
+              "number": 1,
+              "title": "Deliver a working collaboration space",
+              "minutes": 35,
+              "scenario": "A support team needs a shared mailbox they can work from, a team with a restricted workstream for a subset of members, and a meeting policy that makes Copilot behavior predictable. You build all three and verify the participant's experience, not just the configuration. **Roles used:** Exchange Administrator, User Administrator, Teams Administrator, and SharePoint Administrator.",
+              "tasks": [
+                {
+                  "id": "lab2-ex1-task1",
+                  "number": 1,
+                  "title": "Create a shared mailbox and delegate Full Access and Send As",
+                  "steps": [
+                    "On **SEA-DEV1**, open the **Exchange admin center** at `https://admin.cloud.microsoft/exchange#/`.",
+                    "Select **Recipients** > **Mailboxes**, then select **+ Add a shared mailbox**.",
+                    "Enter the following, then select **Create**: - **Display name:** `Training Support` - **Email address:** `training-support`, with your assigned `*.onmicrosoft.com` domain",
+                    "When the mailbox is created, close the pane. In the **Mailboxes** list, select **Training Support**, then select the **Delegation** tab.",
+                    "Next to **Read and manage (Full Access)**, select **Edit**. Select **+ Add members**, select **Diego Siciliani**, select **Save**, then select **Confirm**. Go back to the **Delegation** tab.",
+                    "Next to **Send as**, select **Edit**. Select **+ Add members**, select **Diego Siciliani**, select **Save**, then select **Confirm**. Don't add **Send on behalf**, which shows the delegate's name in **From**. For more information, see Manage permissions for recipients (https://learn.microsoft.com/exchange/recipients-in-exchange-online/manage-permissions-for-recipients).",
+                    "Close the pane. In the Microsoft 365 admin center at `https://admin.cloud.microsoft`, select **Users** > **Active users**, then select **Training Support**. Confirm that the account shows **Sign-in blocked**. Delegates reach the mailbox through their own accounts.",
+                    "Switch to **SEA-DEV2**. In Microsoft Edge, open an InPrivate window (**Ctrl+Shift+N**), go to `https://outlook.office.com`, and sign in as `DiegoS@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "Select **New mail**. If a **Your privacy matters** dialog appears, select **Continue**.",
+                    "Select the message body. Select the **Options** tab, select **Show fields**, then select **Show From**.",
+                    "Select **From: DiegoS@<yourtenant>.onmicrosoft.com**, select **Other email address...**, type `training-support@<yourtenant>.onmicrosoft.com`, then select **Use this address: training-support@<yourtenant>.onmicrosoft.com**. > [!NOTE] > A newly created shared mailbox might not resolve by name yet, so type the full address.",
+                    "In **To**, enter **Joni Sherman**. In **Subject**, enter `Send As test`, then select **Send**.",
+                    "Select your profile picture, then select **Open another mailbox**. Enter and select `training-support@<yourtenant>.onmicrosoft.com`, then select **Open**. Confirm that the shared mailbox opens in a new tab. This confirms **Full Access**. > [!NOTE] > Outlook can take time to add a shared mailbox to the folder list automatically. If it doesn't appear there yet, that doesn't mean Full Access failed. Opening it with **Open another mailbox** confirms the permission.",
+                    "Close the InPrivate window. Open a new InPrivate window, go to `https://outlook.office.com`, and sign in as `JoniS@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "Open the **Send As test** message. Confirm that **From** shows **Training Support**, not Diego. This confirms **Send As**.",
+                    "Close the InPrivate window."
+                  ]
+                },
+                {
+                  "id": "lab2-ex1-task2",
+                  "number": 2,
+                  "title": "Create a team and a private channel for a subset",
+                  "steps": [
+                    "Switch to **SEA-DEV1**. Open **Microsoft Teams** at `https://teams.cloud.microsoft`. If a **Get to know Teams** dialog appears, select **Get Started**.",
+                    "Select **Chat**. Next to the **New message** icon, select the **New items** dropdown arrow, then select **New team**.",
+                    "Enter the following, then select **Create**: - **Team name:** `DealRoom` - **Team type:** Private - **First channel name:** `General`",
+                    "In **Add members to DealRoom**, add **Megan Bowen**, **Alex Wilber**, **Isaiah Langer**, **Lynne Robbins**, and **Joni Sherman**.",
+                    "Next to **Megan Bowen** and **Alex Wilber**, change **Member** to **Owner**, then select **Add**. Two business owners keep the team accountable if one is unavailable.",
+                    "Next to **DealRoom**, select **More team options (...)** > **Add channel**.",
+                    "Enter `Negotiation` for the **Channel name**. In **Choose a channel type**, select **Private**, then select **Create**.",
+                    "In **Add members to the Negotiation channel**, add **Isaiah Langer** and **Lynne Robbins**, then select **Add**. Don't add **Joni Sherman**.",
+                    "Next to **Negotiation**, select **More channel options (...)** > **Manage channel**. On the **Members** tab, expand **Members and guests**. Next to **Isaiah Langer**, change **Channel role** to **Owner**.",
+                    "In the Microsoft 365 admin center, select **Show all** > **SharePoint**. In the **SharePoint admin center**, select **Sites** > **Active sites**.",
+                    "Search for `DealRoom`. In the **Channel sites** column for **DealRoom**, select **1 site**. Record the channel site name, **DealRoom-Negotiation**, and its type, **Private channel**. > [!NOTE] > A private channel uses a dedicated SharePoint site, separate from the parent team site. Files in the channel are stored there, not in the team site.",
+                    "Switch to **SEA-DEV2**. In Microsoft Edge, open an InPrivate window, go to `https://teams.cloud.microsoft`, and sign in as `IsaiahL@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster. If a **Get to know Teams** dialog appears, select **Get Started**.",
+                    "Under **DealRoom**, confirm that the **Negotiation** channel appears with a lock icon. Open it and select the **Shared** tab to confirm that Isaiah can reach its files.",
+                    "Close the InPrivate window, and repeat the previous two steps as `JoniS@<yourtenant>.onmicrosoft.com`. Confirm that Joni sees the **DealRoom** standard channels, but not **Negotiation**.",
+                    "Close the InPrivate window."
+                  ]
+                },
+                {
+                  "id": "lab2-ex1-task3",
+                  "number": 3,
+                  "title": "Configure a meeting Copilot policy and predict behavior",
+                  "steps": [
+                    "Switch to **SEA-DEV1**. Open the **Teams admin center** at `https://admin.teams.microsoft.com`.",
+                    "Sign in with your administrator account.",
+                    "Select **Meetings** > **Meeting policies**, then select **+ Add**.",
+                    "Name the policy `DealRoom-Copilot`.",
+                    "In the **Copilot and other AI** section, set **Copilot** to **On with saved transcript required**, then select **Save**.",
+                    "In the policy list, select the **DealRoom-Copilot** row. Select **Manage users** > **Assign users**.",
+                    "Search for **Megan Bowen**, select **Add**, select **Apply**, then select **Confirm**. > [!NOTE] > A policy assignment can take several hours to reach the user.",
+                    "Use the following table to predict Megan's experience when she organizes a meeting: | Copilot value | Organizer default | Can the organizer change it? | | --- | --- | --- | | Off | Off | Yes | | On | Available only during the meeting | Yes | | On with saved transcript required | During and after the meeting, with a saved transcript | No, enforced | | On with transcript saved by default | During and after the meeting | Yes |",
+                    "Record your prediction for Megan: Copilot is available during and after her meetings only with a saved transcript, and she can't change that option. Then record what would disprove it, such as Megan turning Copilot off in her meeting options, or a recap being available after a meeting where no transcript was saved."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lab2-ex2",
+              "number": 2,
+              "title": "Correct exposure and verify discovery",
+              "minutes": 35,
+              "scenario": "Copilot grounds its answers only on content that a user's permissions already allow them to open, so an excessive permission grant is also a Copilot exposure. You create a governed finance site, then create a separate finance review site where an internal group has more access than it should. You prove the exposure, remove only the excessive grant, and choose a discovery control that limits broad discovery without changing who can open the content. **Roles used:** SharePoint Administrator, as the owner of the sites you create.",
+              "tasks": [
+                {
+                  "id": "lab2-ex2-task1",
+                  "number": 1,
+                  "title": "Create a finance site and add the sample file",
+                  "steps": [
+                    "On **SEA-DEV1**, in Microsoft Edge, open a new tab and go to `https://<yourtenant>.sharepoint.com`.",
+                    "Select **Documents** > **A365Lab** > **documents** > **finance**. Select **Contoso_Finance_Policy.docx**, then select **Download**. The file is saved to your **Downloads** folder.",
+                    "In the **SharePoint admin center**, select **Sites** > **Active sites**, then select **+ Create**.",
+                    "Select **Team site** > **Standard team** > **Use template**.",
+                    "In **Site name**, enter `LAB2-Finance`. The group email address and site address fill in automatically.",
+                    "In **Group owner**, enter and select your administrator account, then select **Next**.",
+                    "Leave **Privacy settings** set to **Private - only members can access this site**, leave the default language and the default time zone, then select **Create site**. You can't change the site language later.",
+                    "In **Add site owners and members**, select **Finish**. If a survey appears, close it.",
+                    "Go to `https://<yourtenant>.sharepoint.com/sites/LAB2-Finance`. Select **Documents**, select **+ Create or upload** > **Files upload**, select **Contoso_Finance_Policy.docx** from your **Downloads** folder, then select **Open**."
+                  ]
+                },
+                {
+                  "id": "lab2-ex2-task2",
+                  "number": 2,
+                  "title": "Create a review site, prove the exposure, and correct it",
+                  "steps": [
+                    "In the SharePoint admin center, select **Sites** > **Active sites** > **+ Create**.",
+                    "Select **Communication site** > **Standard communication** > **Use template**.",
+                    "In **Site name**, enter `AB650-Finance-Review`. In **Site owner**, enter and select your administrator account, then select **Next**. Select **Create site**. The site appears in **Active sites** after a short delay.",
+                    "Go to `https://<yourtenant>.sharepoint.com/sites/AB650-Finance-Review`. If a dialog appears, select **Maybe later**.",
+                    "Select **Documents**, select **+ Create or upload** > **Files upload**, select **Contoso_Finance_Policy.docx** from your **Downloads** folder, then select **Open**.",
+                    "Select **Settings** (gear icon) > **Site permissions** > **Advanced permissions settings**.",
+                    "Select **Create Group**. In **Name**, enter `AB650-Review-Finance`. Under **Choose the permission level group members get on this site: https://<yourtenant>.sharepoint.com/sites/AB650-Finance-Review**, select **Read - Can view pages and list items and download documents**, then select **Create**.",
+                    "On the group page, select **New**. Enter and select **Patti Fernandez**, then select **Share**.",
+                    "Go back to **Advanced permissions settings**, and repeat the previous two steps to create `AB650-Review-Internal` with **Read** permission. Add **Diego Siciliani** and **Nestor Wilke**.",
+                    "Switch to **SEA-DEV2**. In Microsoft Edge, open an InPrivate window, go to `https://<yourtenant>`, and sign in as `PattiF@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "If prompted, respond to the sign-in dialogs as follows: - On **Stay signed in?**, select **No**. - On **Please sign in**, select **Not now**. ",
+                    "Open **Contoso_Finance_Policy.docx**, and confirm that it opens.",
+                    "Close the InPrivate window, and repeat the previous three steps as `DiegoS@<yourtenant>.onmicrosoft.com`. Confirm that Diego can also open the document. This is the exposure.",
+                    "Close the InPrivate window and then switch to **SEA-DEV1**.",
+                    "On the **Advanced permissions settings** page, select **Check Permissions**. Enter and select **Diego Siciliani**, then select **Check Now**. Confirm that Diego has **Read** through the **AB650-Review-Internal** group.",
+                    "Close the **AB650-Finance-Review: Check Permissions** dialog.",
+                    "Select the checkbox next to **AB650-Review-Internal**, select **Remove User Permissions**, then select **OK**.",
+                    "Select **Check Permissions** again for **Diego Siciliani**. Confirm that Diego now has **None**.",
+                    "Switch to **SEA-DEV2**, and repeat the document test as Patti. Confirm that the document still opens.",
+                    "Repeat the document test as Diego. Confirm that Diego sees **You need access** with a **Request access** option. Don't request access.",
+                    "Close the InPrivate window."
+                  ]
+                },
+                {
+                  "id": "lab2-ex2-task3",
+                  "number": 3,
+                  "title": "Restrict content discovery for the review site",
+                  "steps": [
+                    "Switch to **SEA-DEV1**. In the SharePoint admin center, select **Sites** > **Active sites**, then select **AB650-Finance-Review**.",
+                    "In the details pane, select the **Settings** tab.",
+                    "Under **Restrict content discovery**, select **On**, then select **Save**. Confirm that a **Changes saved** message appears. > [!NOTE] > RCD requires SharePoint Advanced Management and Microsoft 365 Copilot. It doesn't revoke permissions or remove content from the index, and the change takes time to propagate. To block a group from opening content, correct the permission or use RAC instead.",
+                    "Switch to **SEA-DEV2**. Open an InPrivate window, go to `https://m365.cloud.microsoft`, and sign in as `PattiF@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "If a welcome dialog appears, close it.",
+                    "Select **New chat**, enter `Summarize Contoso_Finance_Policy from the AB650-Finance-Review site, and tell me which site each source is stored on.`, and press **Enter**. Record whether Copilot returns the document from **AB650-Finance-Review**. After RCD propagates, it doesn't. If it still does, record the time, because propagation can take a while on new sites.",
+                    "In the same window, go to `https://<yourtenant>.sharepoint.com/sites/AB650-Finance-Review/Shared%20Documents`. If a **Please sign in** dialog appears, select **Not now**. Select **Contoso_Finance_Policy.docx** to open it in Word for the web.",
+                    "Select **Copilot** at the lower right of the document. In **Copilot** pane, enter `Summarize this document in three bullets.`, and press **Enter**. Confirm that Copilot summarizes the policy and cites **Contoso_Finance_Policy**. > [!NOTE] > If the **Summary** card at the top of the document shows an error, ignore it and use the Copilot pane.",
+                    "Close the InPrivate window. Record two separate observations for the review site: - **Direct access:** Patti can still open the document and use Copilot on it. - **Discovery:** Organization-wide Copilot Chat doesn't surface the review site's copy."
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Govern and secure Microsoft 365 tenants and workloads",
+      "learnUrl": "https://learn.microsoft.com/training/paths/govern-secure-microsoft-365-tenants-workloads/",
+      "duration": 195,
+      "labs": [
+        {
+          "id": "lab-3",
+          "number": 3,
+          "title": "Lab 3: Administer identities and delegated access",
+          "description": "Bulk-create and verify accounts with least-privileged Microsoft Graph PowerShell, compare a mail contact with a guest, scope a helpdesk role with an administrative unit, and run a PIM activation through approval, deactivation, and audit correlation.",
+          "duration": 40,
+          "level": 300,
+          "objectives": [
+            "Bulk-create user accounts from a file with least-privileged Microsoft Graph PowerShell, then verify the results by object ID and group membership.",
+            "Create a mail contact and a guest user, and explain when to use each.",
+            "Scope an administrator's reach to a specific set of users with an administrative unit, and verify one allowed and one denied action.",
+            "Run a time-bound Privileged Identity Management (PIM) role activation through eligibility, approval, and deactivation, and correlate its audit trail."
+          ],
+          "slug": "03-administer-identities-delegated-access",
+          "sourcePath": "Instructions/Labs/LP2/03-administer-identities-delegated-access.md",
+          "officialUrl": "https://microsoftlearning.github.io/AB-650T00_administer_microsoft_365_and_ai_services/Instructions/Labs/LP2/03-administer-identities-delegated-access.html",
+          "sourceUrl": "https://github.com/MicrosoftLearning/AB-650T00_administer_microsoft_365_and_ai_services/blob/main/Instructions/Labs/LP2/03-administer-identities-delegated-access.md",
+          "labFiles": [
+            "F:\\Lab03\\new-hires.csv"
+          ],
+          "learningPath": 2,
+          "exercises": [
+            {
+              "id": "lab3-ex1",
+              "number": 1,
+              "title": "Change the directory population",
+              "minutes": 20,
+              "scenario": "A partner team hands you a file of five new hires to onboard. You validate the file, bulk-create the accounts with the least-privileged Microsoft Graph scope, add them to a security group, and verify each account by object ID. You then create a mail contact and a guest user so you can explain when to use each. **Roles used:** **Global Administrator**.",
+              "tasks": [
+                {
+                  "id": "lab3-ex1-task1",
+                  "number": 1,
+                  "title": "Validate the new-hire file",
+                  "steps": [
+                    "On **SEA-DEV1**, open **Windows PowerShell** from the taskbar.",
+                    "Display the new-hire file on the **AllFiles (F:)** drive, and confirm that it lists five new hires: ```powershell Get-Content -Path \"F:\\Lab03\\new-hires.csv\" ``` > [!NOTE] > If you aren't using the hosted lab environment, download `new-hires.csv` (../../../Allfiles/Lab03/new-hires.csv) and use its path wherever these steps use `F:\\Lab03\\new-hires.csv`.",
+                    "Set your assigned tenant domain and import the file: ```powershell $tenantDomain = \"<yourtenant>.onmicrosoft.com\" if ($tenantDomain -like \"*<*>*\") { throw \"Set `$tenantDomain to your assigned tenant domain first.\" } $requiredColumns = @(\"DisplayName\", \"MailNickname\") $newHires = @(Import-Csv -Path \"F:\\Lab03\\new-hires.csv\") if ($newHires.Count -eq 0) { throw \"The CSV contains no rows.\" } ```",
+                    "Confirm that the required columns are present, no value is empty, and the mail nicknames are unique: ```powershell $missing = @($requiredColumns | Where-Object { $_ -notin $newHires[0].PSObject.Properties.Name }) if ($missing.Count -gt 0) { throw \"Missing required columns: $($missing -join ', ')\" } foreach ($row in $newHires) { foreach ($col in $requiredColumns) { if ([string]::IsNullOrWhiteSpace($row.$col)) { throw \"A row has an empty '$col' value.\" } } } $dupes = @($newHires | Group-Object MailNickname | Where-Object Count -gt 1) if ($dupes.Count -gt 0) { throw \"Duplicate MailNickname values: $($dupes.Name -join ', ')\" } \"Validation passed for $($newHires.Count) rows against domain $tenantDomain.\" ```",
+                    "Confirm that the output reads **Validation passed for 5 rows** with your domain."
+                  ]
+                },
+                {
+                  "id": "lab3-ex1-task2",
+                  "number": 2,
+                  "title": "Bulk-create the accounts",
+                  "steps": [
+                    "Connect with only the creation scope: ```powershell Connect-MgGraph -Scopes \"User.Create\" ```",
+                    "In the **Pick an account** or **Sign in** dialog, sign in with your administrator account. If a **Permissions requested** prompt appears, select **Accept**.",
+                    "Define a helper that generates a strong temporary password. The value is never printed, saved, or logged: ```powershell $allCreatedIds = [System.Collections.Generic.List[string]]::new() function New-TempPassword { $bytes = [byte[]]::new(24) $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create() try { $rng.GetBytes($bytes) } finally { $rng.Dispose() } return (([Convert]::ToBase64String($bytes) -replace '[^A-Za-z0-9]', '') + 'Aa1!') } ```",
+                    "Create the accounts as **disabled** accounts, because the new hires haven't started yet: ```powershell $results = [System.Collections.Generic.List[object]]::new() foreach ($row in $newHires) { $upn = \"$($row.MailNickname)@$tenantDomain\" try { $tempPassword = New-TempPassword $created = New-MgUser -AccountEnabled:$false ` -DisplayName $row.DisplayName -MailNickname $row.MailNickname -UserPrincipalName $upn ` -PasswordProfile @{ Password = $tempPassword; ForceChangePasswordNextSignIn = $true } -ErrorAction Stop $allCreatedIds.Add($created.Id) $results.Add([pscustomobject]@{ RequestedUpn = $upn; ReturnedId = $created.Id; Status = \"Created\"; Error = $null }) } catch { $results.Add([pscustomobject]@{ RequestedUpn = $upn; ReturnedId = $null; Status = \"Failed\"; Error = $_.Exception.Message }) } finally { if (Get-Variable -Name tempPassword -ErrorAction SilentlyContinue) { Remove-Variable tempPassword } } } $results | Format-Table ```",
+                    "Confirm that all five rows show **Created** with a returned object ID. **Created** means Graph accepted the request; you read each account back in the next task."
+                  ]
+                },
+                {
+                  "id": "lab3-ex1-task3",
+                  "number": 3,
+                  "title": "Add the accounts to a security group and verify",
+                  "steps": [
+                    "Reconnect with the group and read scopes, then create the security group: ```powershell Disconnect-MgGraph Connect-MgGraph -Scopes \"Group.ReadWrite.All\",\"User.ReadBasic.All\",\"GroupMember.ReadWrite.All\" $groups = @(Get-MgGroup -Filter \"displayName eq 'Regional Operations - New Hires'\") if ($groups.Count -eq 0) { $group = New-MgGroup -DisplayName \"Regional Operations - New Hires\" -MailEnabled:$false ` -MailNickname \"regional-ops-new-hires\" -SecurityEnabled:$true } else { $group = $groups[0] } ```",
+                    "In the **Pick an account** dialog, select and sign in with your administrator account. If a **Permissions requested** prompt appears, select **Accept**.",
+                    "Add each created account, then verify the identities and the membership change: ```powershell $createdIds = @($results | Where-Object Status -eq \"Created\" | Select-Object -ExpandProperty ReturnedId) $beforeCount = (Get-MgGroupMember -GroupId $group.Id -All).Count foreach ($id in $createdIds) { New-MgGroupMember -GroupId $group.Id -DirectoryObjectId $id } $verified = foreach ($r in $results | Where-Object Status -eq \"Created\") { $u = Get-MgUser -UserId $r.ReturnedId -Property Id, UserPrincipalName [pscustomobject]@{ RequestedUpn = $r.RequestedUpn; IdMatches = ($u.Id -eq $r.ReturnedId); UpnMatches = ($u.UserPrincipalName -eq $r.RequestedUpn) } } $verified | Format-Table $afterCount = (Get-MgGroupMember -GroupId $group.Id -All).Count \"Members before: $beforeCount  after: $afterCount  delta: $($afterCount - $beforeCount)  expected: $($createdIds.Count)\" ```",
+                    "Confirm that every row shows **IdMatches** and **UpnMatches** as **True**, and that the delta is **5**."
+                  ]
+                },
+                {
+                  "id": "lab3-ex1-task4",
+                  "number": 4,
+                  "title": "Run a safe negative test",
+                  "steps": [
+                    "Reconnect with the creation scope and run a two-row batch: one new nickname, and one that reuses an existing nickname: ```powershell Disconnect-MgGraph Connect-MgGraph -Scopes \"User.Create\" $negativeBatch = @( [pscustomobject]@{ DisplayName = \"Negative Test New\";  MailNickname = \"negtest-$([guid]::NewGuid().ToString('N').Substring(0,6))\" }, [pscustomobject]@{ DisplayName = \"Negative Test Dupe\"; MailNickname = $newHires[0].MailNickname } ) $negativeResults = [System.Collections.Generic.List[object]]::new() foreach ($row in $negativeBatch) { $upn = \"$($row.MailNickname)@$tenantDomain\" try { $tempPassword = New-TempPassword $created = New-MgUser -AccountEnabled:$false -DisplayName $row.DisplayName -MailNickname $row.MailNickname ` -UserPrincipalName $upn -PasswordProfile @{ Password = $tempPassword; ForceChangePasswordNextSignIn = $true } -ErrorAction Stop $allCreatedIds.Add($created.Id) $negativeResults.Add([pscustomobject]@{ RequestedUpn = $upn; ReturnedId = $created.Id; Status = \"Created\"; Error = $null }) } catch { $negativeResults.Add([pscustomobject]@{ RequestedUpn = $upn; ReturnedId = $null; Status = \"Failed\"; Error = $_.Exception.Message }) } finally { if (Get-Variable -Name tempPassword -ErrorAction SilentlyContinue) { Remove-Variable tempPassword } } } $negativeResults | Format-Table -Wrap ```",
+                    "If the **Pick an account** dialog appears, select your administrator account.",
+                    "Confirm that the new row shows **Created**, and the duplicate row shows **Failed** with the error **Another object with the same value for property userPrincipalName already exists**."
+                  ]
+                },
+                {
+                  "id": "lab3-ex1-task5",
+                  "number": 5,
+                  "title": "Create a mail contact and a guest user",
+                  "steps": [
+                    "On **SEA-DEV1**, in Microsoft Edge, go to the Microsoft 365 admin center at `https://admin.cloud.microsoft`. Select **Users** > **Contacts**, then select **Add a contact**.",
+                    "Enter the following, then select **Add**: - **Display name:** `Woodgrove Bank - AP Desk` - **Email:** `ap-desk@woodgrovebank.com`",
+                    "Confirm that **Contact added** appears, then close the pane. > [!NOTE] > The contact can take up to 30 minutes to appear in the **Contacts** list.",
+                    "Go to the **Microsoft Entra admin center** at `https://entra.microsoft.com`. Select **Entra ID** > **Users** > **All users**.",
+                    "Select the **New user** arrow, then select **Invite external user**.",
+                    "On the **Basics** tab, enter the following: - **Email:** `lab3-guest@fabrikam.com` - **Display name:** `Lab 3 Guest`",
+                    "Clear **Send invite message**, because no one can redeem an invitation sent to a sample address. Select **Review + invite**, then select **Invite**.",
+                    "In **All users**, search for `Lab 3 Guest`, then select it. On the **Overview** tab, confirm that **User type** is **Guest** and that the B2B invitation shows **Pending acceptance**.",
+                    "(Optional) To see a guest redeem an invitation, repeat steps 5–7 with an external Microsoft account that you control and **Send invite message** selected. On **SEA-DEV2**, open an InPrivate window, go to `https://outlook.office.com`, and sign in with external Microsoft account. In the invitation email, select **Accept invitation**, sign in with that account, and select **Accept**. On **SEA-DEV1**, refresh the guest's **Overview** and confirm that the invitation shows **Accepted**. When you finish, delete that guest so no personal account stays in the lab tenant."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lab3-ex2",
+              "number": 2,
+              "title": "Delegate an administrative task",
+              "minutes": 20,
+              "scenario": "An administrator's reach has two dimensions: *where* they can act and *when* they can act. You scope a helpdesk role to the new hires with an administrative unit, then prove the scope with one allowed and one denied password reset. You then configure an eligible role in PIM, run one activation through approval and deactivation, and correlate its audit trail. **Roles used:** **Privileged Role Administrator** (your administrator account), **Helpdesk Administrator** scoped to an administrative unit (Allan Deyoung), and **Message Center Reader** through PIM (Joni Sherman, approved by Lynne Robbins).",
+              "tasks": [
+                {
+                  "id": "lab3-ex2-task1",
+                  "number": 1,
+                  "title": "Create an administrative unit and scope a role to it",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft Entra admin center, select **Entra ID** > **Roles & admins** > **Admin units**, then select **+ Add**.",
+                    "On the **Properties** tab, enter the name `Regional Operations`. Leave **Restricted management administrative unit** set to **No**.",
+                    "Select the **Assign roles** tab, then select **Helpdesk Administrator**. Select **Allan Deyoung**, then select **Add**.",
+                    "Select **Review + create**, then select **Create**.",
+                    "In the **Admin units** list, select **Regional Operations**. On the **Users** page, select **+ Add member**.",
+                    "Search for and select each new hire: **Priya Shah**, **Jamie Chen**, **Alex Morgan**, **Dana Reyes**, and **Sam Okafor**. Select **Select**.",
+                    "Dana Reyes starts today. Select **Entra ID** > **Users** > **Dana Reyes** > **Edit properties** > **Settings**, select **Account enabled**, and then select **Save**. > [!NOTE] > A password can't be reset on a disabled account, even by an in-scope administrator."
+                  ]
+                },
+                {
+                  "id": "lab3-ex2-task2",
+                  "number": 2,
+                  "title": "Verify the allowed and denied outcomes",
+                  "steps": [
+                    "Switch to **SEA-DEV2**. In Microsoft Edge, open an InPrivate window, go to `https://entra.microsoft.com`, and sign in as `AllanD@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster. If the **Let's keep your account secure** prompt appears, select **Next**, and then follow the on-screen instructions to set up the required authentication method.",
+                    "Select **Entra ID** > **Users**, then select **Dana Reyes**. Select **Reset password**, and then select **Reset password** again. Confirm that a temporary password appears. This is the allowed outcome.",
+                    "Go back to **Users**, and select **Megan Bowen**, who isn't in the administrative unit. Select **Reset password**, and attempt the same reset. Confirm that the reset is denied because you don't have the required level of administrative privilege. This is the denied outcome. > [!NOTE] > Allan can still find and open Megan. An administrative unit scopes management permissions, not read access to the directory.",
+                    "Close the InPrivate window."
+                  ]
+                },
+                {
+                  "id": "lab3-ex2-task3",
+                  "number": 3,
+                  "title": "Configure an eligible role in PIM",
+                  "steps": [
+                    "Switch to **SEA-DEV1**. In the Microsoft Entra admin center, select **ID Governance** > **Privileged Identity Management** > **Microsoft Entra roles**.",
+                    "Under **Manage**, select **Settings**. Search for `Message Center`, select **Message Center Reader**, and then select **Edit**. Don't select **Message Center Privacy Reader**.",
+                    "On the **Activation** tab, configure the following: - **Activation maximum duration (hours):** `4` - **On activation, require:** Azure MFA - **Require justification on activation:** Selected (the default) - **Require approval to activate:** Selected",
+                    "Select **Select approver(s)**, select **Lynne Robbins** and **Patti Fernandez**, and then select **Select**.",
+                    "Select **Update**. Confirm that **Role setting update succeeded** appears.",
+                    "Under **Manage**, select **Roles**, then select **Message Center Reader**. Select **+ Add assignments**.",
+                    "On the **Membership** tab, select **No member selected**. Search for and select **Joni Sherman**, select **Select**, and then select **Next**.",
+                    "On the **Setting** tab, select **Eligible**, leave **Permanently eligible** selected, and then select **Assign**. Confirm that Joni Sherman was successfully assigned to the role."
+                  ]
+                },
+                {
+                  "id": "lab3-ex2-task4",
+                  "number": 4,
+                  "title": "Activate, approve, and correlate the audit trail",
+                  "steps": [
+                    "Switch to **SEA-DEV2**. Open an InPrivate window, go to `https://entra.microsoft.com`, and sign in as `JoniS@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "If the **Let's keep your account secure** prompt appears, select **Next**, and then follow the on-screen instructions to set up the required authentication method.",
+                    "Select **ID Governance** > **Privileged Identity Management** > **My roles**. On the **Eligible assignments** tab, find **Message Center Reader**, then select **Activate**.",
+                    "In **Reason**, enter `Review Microsoft 365 message center posts for upcoming service changes.` Leave **Duration (hours)** at `4`, then select **Activate**. Confirm that **Your activation request is scheduled** appears. The request now waits for approval.",
+                    "Close the InPrivate window. Open a new InPrivate window, go to `https://entra.microsoft.com`, and sign in as `LynneR@<yourtenant>.onmicrosoft.com`.",
+                    "If the **Let's keep your account secure** prompt appears, select **Next**, and then follow the on-screen instructions to set up the required authentication method.",
+                    "Select **ID Governance** > **Privileged Identity Management** > **Approve requests**. Under **Requests for role activations**, select Joni's **Message Center Reader** request, then select **Approve**.",
+                    "In the **Approve Request** pane, review the requester, role, reason, and start and end times. In **Justification**, enter `Approved for message center review.` and then select **Confirm**.",
+                    "Close the InPrivate window. Open a new InPrivate window, and sign in as Joni again.",
+                    "If prompted to keep your account secure, select **Not now**.",
+                    "Select **ID Governance** > **Privileged Identity Management** > **My roles** > **Active assignments**. Confirm that **Message Center Reader** shows the state **Activated** with an end time four hours after the approval.",
+                    "After the role has been active for at least five minutes, select **Deactivate**, and then select **Deactivate** again. Wait for all three stages to complete. Confirm that **Message Center Reader** no longer appears in **Active assignments**, but still appears in **Eligible assignments**.",
+                    "Select **Microsoft Entra roles**, and then under **Activity**, select **My audit history**. Confirm that you can see the request, Lynne's approval, the activation, and the deactivation.",
+                    "Close the InPrivate window.",
+                    "Switch to **SEA-DEV1**. In the Microsoft Entra admin center, select **Entra ID** > **Monitoring & health** > **Audit logs**.",
+                    "Select the date next to **Remove member from role completed (PIM deactivate)** event. On the **Activity** tab, scroll to the additional details and note the **RoleAssignmentRequestId**.",
+                    "Close the event, and select the **Add member to role completed (PIM activation)** event for the activation. Confirm that it shows the same **RoleAssignmentRequestId**, even though its **Correlation ID** is different. > [!NOTE] > PIM processes approval and activation asynchronously, so one activation cycle can produce several correlation IDs. Use **RoleAssignmentRequestId** to connect the events. For details, see View audit history for Microsoft Entra roles in PIM (https://learn.microsoft.com/entra/id-governance/privileged-identity-management/pim-how-to-use-audit-log)."
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "lab-4",
+          "number": 4,
+          "title": "Lab 4: Control sign-in and protect communications",
+          "description": "Configure scoped authentication and recovery controls, evaluate Conditional Access decisions, set Defender for Office 365 protection scope, and interpret sample investigation evidence before creating a draft training campaign.",
+          "duration": 100,
+          "level": 300,
+          "objectives": [
+            "Scope a passkey authentication method and self-service password reset (SSPR) to a test group, then compare enabled, registered, and capable states.",
+            "Configure tenant password protection settings and complete one supported SSPR test without using a personal phone.",
+            "Create a human-user Conditional Access policy in report-only mode, then interpret sign-in log and What If results.",
+            "Scope Defender for Office 365 anti-spam and anti-phishing policies to a mail-enabled Finance group, and confirm Safe Attachments and Safe Links coverage.",
+            "Interpret sample threat and risk evidence without treating it as a live tenant event, then save a training campaign as a draft."
+          ],
+          "slug": "04-control-sign-in-protect-communications",
+          "sourcePath": "Instructions/Labs/LP2/04-control-sign-in-protect-communications.md",
+          "officialUrl": "https://microsoftlearning.github.io/AB-650T00_administer_microsoft_365_and_ai_services/Instructions/Labs/LP2/04-control-sign-in-protect-communications.html",
+          "sourceUrl": "https://github.com/MicrosoftLearning/AB-650T00_administer_microsoft_365_and_ai_services/blob/main/Instructions/Labs/LP2/04-control-sign-in-protect-communications.md",
+          "labFiles": [],
+          "learningPath": 2,
+          "exercises": [
+            {
+              "id": "lab4-ex1",
+              "number": 1,
+              "title": "Configure method and recovery policy",
+              "minutes": 25,
+              "scenario": "The security team wants passkeys and self-service password reset available only to a small engineering test group. You create the group, scope passkeys and SSPR to it, register Lynne Robbins for SSPR, compare Lynne with Alex Wilber in the registration report, and run a real reset as Lynne. **Roles used:** **Authentication Policy Administrator** and **Privileged Authentication Administrator** or equivalent administrator access to manage user authentication methods.",
+              "tasks": [
+                {
+                  "id": "lab4-ex1-task1",
+                  "number": 1,
+                  "title": "Create the Engineering group and scope passkeys",
+                  "steps": [
+                    "On **SEA-DEV1**, in Microsoft Edge, go to the Microsoft Entra admin center at `https://entra.microsoft.com` and sign in with your administrator account.",
+                    "Select **Entra ID** > **Groups** > **All groups**, then select **New group**.",
+                    "Enter the following values: - **Group type:** Security - **Group name:** `Engineering` - **Membership type:** Assigned",
+                    "Under **Members**, select **No members selected**. Search for and select **Lynne Robbins** and **Alex Wilber**, then select **Select**.",
+                    "Select **Create**.",
+                    "Select **Entra ID** > **Authentication methods** > **Policies**.",
+                    "Select **Passkey (FIDO2)**. On the **Enable and target** tab, confirm that **Enable** is **On**.",
+                    "On the **Include** tab, select **Add target** > **Select targets**. Select **Engineering**, and then select **Select**.",
+                    "In the **Engineering** row, select the **Passkey profiles** dropdown and select **Default passkey profile**.",
+                    "In the **All users** row, select the **Delete** icon. Only **Engineering** remains on the **Include** tab.",
+                    "Select **Save**.",
+                    "Confirm that the **Passkey (FIDO2)** row shows **1 group** as the target and **Yes** under **Enabled**."
+                  ]
+                },
+                {
+                  "id": "lab4-ex1-task2",
+                  "number": 2,
+                  "title": "Configure password protection and SSPR",
+                  "steps": [
+                    "In the Microsoft Entra admin center, select **Entra ID** > **Authentication methods** > **Password protection**.",
+                    "Set **Enforce custom list** to **Yes**.",
+                    "In **Custom banned password list**, add the following lab-only banned terms on separate lines: - `contoso` - `engineering` - `password` - `welcome`",
+                    "Review the **Lockout threshold** and **Lockout duration in seconds** values, and leave them at the tenant defaults.",
+                    "Select **Save** on the toolbar. Confirm that **Save** is unavailable after the change is saved.",
+                    "Select **Entra ID** > **Password reset** > **Properties**.",
+                    "Set **Self service password reset enabled** to **Selected**.",
+                    "Under **Select group**, select the **No groups selected** link, select **Engineering**, and then choose **Select**.",
+                    "Select **Save**. Confirm the **Password reset policy saved** notification.",
+                    "Under **Manage**, select **Authentication methods**.",
+                    "Set **Number of methods required to reset** to **1**.",
+                    "Under **Methods available to users**, make sure **Security questions** is cleared. If you make a change, select **Save**. > [!NOTE] > Security questions are retiring for SSPR in March 2027, so this lab doesn't use them. Email, Microsoft Authenticator, and other methods are controlled by the authentication methods policy. In this tenant, **Email OTP** is already enabled for all users. Administrator accounts always use a stricter two-method reset policy that you can't change."
+                  ]
+                },
+                {
+                  "id": "lab4-ex1-task3",
+                  "number": 3,
+                  "title": "Register Lynne Robbins for SSPR",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft Entra admin center, select **Entra ID** > **Users**, and then select **Lynne Robbins**.",
+                    "Under **Manage**, select **Authentication methods**. Note that Lynne already has **Microsoft Authenticator** registered.",
+                    "Select **+ Add authentication method** on the toolbar. In **Choose method**, select **Email**.",
+                    "In **Email address**, enter `MeganB@<yourtenant>.onmicrosoft.com`, and then select **Add**. You read the verification code in Megan's mailbox in Task 4.",
+                    "Confirm that **Email** appears under **Usable authentication methods** with Megan's address."
+                  ]
+                },
+                {
+                  "id": "lab4-ex1-task4",
+                  "number": 4,
+                  "title": "Compare registration states and run SSPR",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft Entra admin center, select **Entra ID** > **Authentication methods** > **User registration details**.",
+                    "Find the **Lynne Robbins** row. Confirm that **SSPR Registered** shows **Registered**, **SSPR Enabled** shows **Enabled**, **SSPR Capable** shows **Capable**, and **Methods Registered** lists **Email** and **Microsoft Authenticator**. > [!NOTE] > Some filters might not appear by default. If a required filter isn't displayed, select **Add filter**, search for and select the appropriate filter, and then select the required value.",
+                    "Find the **Alex Wilber** row. Confirm that **SSPR Enabled** shows **Enabled** while **SSPR Registered** shows **Not Registered** and **SSPR Capable** shows **Not Capable**. Alex is in scope but has no methods.",
+                    "If the report doesn't yet show Lynne's new state, check **Last Updated Time**, select **Refresh**, and wait a few minutes before checking again. Record the comparison only after the live report shows both rows.",
+                    "Switch to **SEA-DEV2**. Open an InPrivate window, go to `https://aka.ms/sspr`, and enter `LynneR@<yourtenant>.onmicrosoft.com`.",
+                    "If a character verification appears, complete it. Select **Next**.",
+                    "Select **Email my alternate email**, and then select **Email**.",
+                    "On **SEA-DEV1**, open an InPrivate window, go to `https://outlook.office.com`, and sign in as `MeganB@<yourtenant>.onmicrosoft.com`. If **Your privacy matters** appears, select **Continue**. Open the **Contoso account email verification code** message, copy the code, and close the InPrivate window.",
+                    "Switch to **SEA-DEV2**, enter the code, and select **Next**.",
+                    "On **choose a new password** page, enter and confirm a new password for Lynne Robbins, and then select **Finish**. Confirm that **Your password has been reset** appears.",
+                    "Go to `https://outlook.office.com`, and sign in as Lynne Robbins with the new password to confirm the reset worked.",
+                    "Close the InPrivate window."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lab4-ex2",
+              "number": 2,
+              "title": "Resolve an access decision",
+              "minutes": 30,
+              "scenario": "The Finance team needs a Conditional Access policy that requires multifactor authentication and a compliant device for SharePoint. You create the policy in report-only mode, read how it would apply to Patti Fernandez, use What If for a legacy-client input, and interpret a sample risk case without generating live risk detections. **Roles used:** **Conditional Access Administrator**, **Security Reader**, and **Reports Reader** or equivalent access to sign-in logs.",
+              "tasks": [
+                {
+                  "id": "lab4-ex2-task1",
+                  "number": 1,
+                  "title": "Create the Finance report-only policy",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft Entra admin center, select **Entra ID** > **Conditional Access** > **Policies**.",
+                    "On the toolbar, select **+ New policy**.",
+                    "In **Name**, enter `Finance - Require MFA and compliant device`.",
+                    "Under **Users or agents**, select **0 users or agents selected**. On the **Include** tab, select **Select users and groups**, then select the **Users and groups** checkbox.",
+                    "In **Select users and groups**, search for and select **Finance Users**, then select **Select**.",
+                    "Select the **Exclude** tab, then select the **Users and groups** checkbox. Search for and select **MOD Administrator**, then select **Select**.",
+                    "Under **Target resources**, select **No target resources selected**. On the **Include** tab, select **Select resources**.",
+                    "Under **Select specific resources**, select **None**. Search for `Office 365`, select **Office 365 SharePoint Online**, then select **Select**. > [!NOTE] > The wizard recommends targeting the **Office 365** app instead and warns that SharePoint Online also affects apps such as Microsoft Teams. Keep **Office 365 SharePoint Online** for this lab.",
+                    "Under **Conditions**, select **0 conditions selected**, then under **Client apps**, select **Not configured**.",
+                    "Set **Configure** to **Yes**. Clear **Exchange ActiveSync clients** and **Other clients** so that only **Browser** and **Mobile apps and desktop clients** remain selected, then select **Done**.",
+                    "Under **Grant**, select **0 controls selected**. Confirm that **Grant access** is selected, then select **Require multifactor authentication** and **Require device to be marked as compliant**.",
+                    "Under **For multiple controls**, confirm that **Require all the selected controls** is selected, then select **Select**.",
+                    "Confirm that **Enable policy** is set to **Report-only**.",
+                    "Under the device-certificate warning, keep **Exclude device platforms macOS, iOS, Android, and Linux from this policy** selected, then select **Create**.",
+                    "On the toolbar, select **Refresh**. Confirm that `Finance - Require MFA and compliant device` appears with **State** set to **Report-only**."
+                  ]
+                },
+                {
+                  "id": "lab4-ex2-task2",
+                  "number": 2,
+                  "title": "Read the report-only result for Patti",
+                  "steps": [
+                    "Switch to **SEA-DEV2**. Open an InPrivate window, go to `https://<yourtenant>.sharepoint.com`, and sign in as `PattiF@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "Confirm that SharePoint opens or shows the expected access result for Patti.",
+                    "Close the InPrivate window.",
+                    "Switch to **SEA-DEV1**. In the Microsoft Entra admin center, select **Entra ID** > **Monitoring & health** > **Sign-in logs**.",
+                    "Filter the logs for **Patti Fernandez** and the application **Office 365 SharePoint Online**.",
+                    "Select the date link to open the matching sign-in event.",
+                    "Select the **Conditional Access** or **Report-only** tab.",
+                    "Locate `Finance - Require MFA and compliant device`, then record the report-only result, such as **Report-only: Success**, **Report-only: Failure**, **Report-only: User action required**, or **Not applied**.",
+                    "Select **Authentication Details** and **Device Info**. Record whether MFA was already satisfied and whether the device was reported as compliant.",
+                    "Confirm that the policy stayed in **Report-only** and did not block Patti's sign-in."
+                  ]
+                },
+                {
+                  "id": "lab4-ex2-task3",
+                  "number": 3,
+                  "title": "Evaluate a legacy-client input with What If",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft Entra admin center, select **Entra ID** > **Conditional Access** > **Policies**, then select **What if** on the toolbar.",
+                    "Under **Identity**, confirm that **Users** is selected, then select **Edit user**. Search for and select **Patti Fernandez**, then select **Select**.",
+                    "Under **Target resource**, confirm that **Cloud apps** is selected, then select **+ Select cloud app**. Search for `Office 365`, select **Office 365 SharePoint Online**, then select **Select**.",
+                    "Under **Sign-in conditions**, set **Device platform** to **Windows**.",
+                    "Set **Client app** to **Mobile apps and desktop clients - Other clients**. This option represents legacy authentication clients.",
+                    "At the bottom of the form, select **What if**.",
+                    "Under **Evaluation result**, select **Policies that will not apply**. Confirm that `Finance - Require MFA and compliant device` is listed with **Client app** as the reason.",
+                    "Change **Client app** to **Browser**, then select **What if** again.",
+                    "Select **Policies that will apply**. Confirm that `Finance - Require MFA and compliant device` is listed with **Require multifactor authentication AND Require compliant device** and **State** set to **Report-only**."
+                  ]
+                },
+                {
+                  "id": "lab4-ex2-task4",
+                  "number": 4,
+                  "title": "Interpret the sample risk case",
+                  "steps": [
+                    "Open `04-signin-evidence.md` (./assets/04-signin-evidence.md).",
+                    "Read **Report-only policies in scope** and **Sign-in event B - compliant device, high sign-in risk**.",
+                    "Write the applicable policy list for a Finance user signing in to SharePoint from a compliant device during a high-risk sign-in.",
+                    "Write the predicted combined result.",
+                    "Write the smallest correction needed to produce the intended result. Use the sample evidence to decide whether the correction is a user registration fix, a device compliance fix, or a policy-scope fix.",
+                    "Write the rollback and safeguard: return the policy to report-only or its prior state, and confirm that emergency-access accounts stay excluded.",
+                    "Confirm that your answer clearly labels the case as sample evidence, not a live risk detection."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lab4-ex3",
+              "number": 3,
+              "title": "Set effective protection scope",
+              "minutes": 25,
+              "scenario": "Finance receives messages from a supplier domain and needs the right inbound protection. You confirm which protection applies today, create a mail-enabled Finance group that Defender policies can target, create a Finance-scoped anti-spam policy, add impersonation protection for `woodgrovebank.com`, and confirm collaboration protection for shared files and Teams links. **Roles used:** **Exchange Administrator** to create the mail-enabled group, and **Security Administrator** for Microsoft Defender for Office 365 policy settings.",
+              "tasks": [
+                {
+                  "id": "lab4-ex3-task1",
+                  "number": 1,
+                  "title": "Inspect existing protection for Finance",
+                  "steps": [
+                    "On **SEA-DEV1**, in Microsoft Edge, go to the Microsoft Defender portal at `https://security.microsoft.com` and sign in with your administrator account.",
+                    "Select **Email & collaboration** > **Policies & rules** > **Threat policies**.",
+                    "Under **Templated policies**, select **Preset Security Policies**.",
+                    "Confirm that **Standard protection is off** and **Strict protection is off**. **Built-in protection** applies to all users.",
+                    "Select **Threat policies** in the breadcrumb, then under **Policies**, select **Anti-spam**.",
+                    "Confirm that only the **(Default)** policies are listed, so no custom anti-spam policy targets Finance yet."
+                  ]
+                },
+                {
+                  "id": "lab4-ex3-task2",
+                  "number": 2,
+                  "title": "Create a mail-enabled Finance group",
+                  "steps": [
+                    "In a new tab, go to the Microsoft 365 admin center at `https://admin.cloud.microsoft`.",
+                    "Select **Teams & groups** > **Active teams & groups**, then select the **Security groups** tab.",
+                    "Select **+ Add a mail-enabled security group**.",
+                    "In **Name**, enter `Finance Mail`, then select **Next**.",
+                    "Select **+ Assign owners**, search for `MOD` and press **Enter**, select **MOD Administrator**, select **Add (1)**, and then select **Next**.",
+                    "Select **Add members**. Search for and select **Patti Fernandez**, then search for and select **Nestor Wilke**. Select **Add (2)**, then select **Next**.",
+                    "In the group email address, enter `financemail`. Leave the option to allow external senders cleared, then select **Next**.",
+                    "Select **Create group**, then select **Close**."
+                  ]
+                },
+                {
+                  "id": "lab4-ex3-task3",
+                  "number": 3,
+                  "title": "Create the Finance inbound anti-spam policy",
+                  "steps": [
+                    "In the Microsoft Defender portal, on **Anti-spam policies**, select **+ Create policy** > **Inbound**.",
+                    "In **Name**, enter `Finance inbound anti-spam`. In **Description**, enter `Finance inbound spam policy for AB-650 Lab 4`, then select **Next**.",
+                    "On **Users, groups, and domains**, in **Groups**, enter `Finance Mail`, select it from the suggestions, then select **Next**.",
+                    "On **Bulk email threshold & spam properties**, keep the defaults, then select **Next**.",
+                    "On **Actions**, set **High confidence spam** to **Quarantine message**. In **Select quarantine policy**, select **DefaultFullAccessPolicy**.",
+                    "Keep the other actions at their defaults, then select **Next** until you reach **Review**.",
+                    "Select **Create**, then select **Done**.",
+                    "Confirm that `Finance inbound anti-spam` shows **Status** **On** and **Priority** **0**. A lower number has higher priority."
+                  ]
+                },
+                {
+                  "id": "lab4-ex3-task4",
+                  "number": 4,
+                  "title": "Add supplier impersonation protection",
+                  "steps": [
+                    "Select **Threat policies** in the breadcrumb, then select **Anti-phishing**.",
+                    "Select **+ Create**.",
+                    "In **Name**, enter `Finance supplier impersonation`, then select **Next**.",
+                    "On **Users, groups, and domains**, in **Groups**, enter `Finance Mail`, select it from the suggestions, then select **Next**.",
+                    "On **Phishing threshold & protection**, select **Enable users to protect**, then select **Manage 0 sender(s)**.",
+                    "Select **Add user**. In **Email**, enter `ap-desk@woodgrovebank.com`, then select the suggestion below the box.",
+                    "In **Name**, enter `Woodgrove Bank AP Desk`, then select **Add**.",
+                    "Select **Add**, then select **Done**.",
+                    "Select **Enable domains to protect**, then select **Include custom domains**.",
+                    "Select **Manage 0 custom domain(s)** > **+ Add domains**. In **Domain**, enter `woodgrovebank.com`, select the suggestion, then select **Add domains** > **Done**.",
+                    "Confirm that **Enable mailbox intelligence (Recommended)** is selected, then select **Enable Intelligence for impersonation protection (Recommended)**. Select **Next**.",
+                    "On **Actions**, set **If a message is detected as user impersonation** to **Quarantine the message**, and in **Apply quarantine policy**, select **DefaultFullAccessPolicy**.",
+                    "Set **If a message is detected as domain impersonation** to **Quarantine the message**. Under **Apply quarantine policy**, select **DefaultFullAccessPolicy**, and then select **Next**.",
+                    "On **Review**, confirm that user impersonation is **On for 1 user(s)** and domain impersonation includes **1 custom domain(s)**.",
+                    "Select **Submit**, then select **Done**.",
+                    "Confirm that `Finance supplier impersonation` shows **Status** **On**."
+                  ]
+                },
+                {
+                  "id": "lab4-ex3-task5",
+                  "number": 5,
+                  "title": "Confirm collaboration protection and run a negative check",
+                  "steps": [
+                    "Select **Threat policies** in the breadcrumb, then select **Safe Attachments**.",
+                    "Select **Global settings**.",
+                    "Confirm that **Turn on Defender for Office 365 for SharePoint, OneDrive, and Microsoft Teams** is **On**, then select **Cancel**.",
+                    "Select **Threat policies** in the breadcrumb, then select **Safe Links**.",
+                    "Confirm that **Built-in protection (Microsoft)** is the only policy, with **Status** **On**. Because no custom Safe Links policy takes precedence, Finance gets Teams link protection from Built-in protection.",
+                    "Select **Threat policies** in the breadcrumb, select **Anti-spam**, then select `Finance inbound anti-spam`.",
+                    "In the details pane, select **Turn off**, then select **Turn off** to confirm.",
+                    "Confirm that the pane shows **Policy off | Priority 0**. A policy that's off doesn't apply to Finance, even at the highest priority.",
+                    "Select **Turn on**, then select **Turn on** to confirm.",
+                    "Confirm that the pane shows **Policy on | Priority 0**, then select **Close**."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lab4-ex4",
+              "number": 4,
+              "title": "Investigate and plan training",
+              "minutes": 20,
+              "scenario": "The message, alert, incident, and automated investigation records in this exercise are sample evidence, not tenant records. You use the sample threat evidence to practice correlation and decision-making, then create a draft training campaign for lab-only recipients. **Roles used:** **Security Reader** to inspect Defender areas and **Attack Simulation Administrator** or **Security Administrator** to create a draft training campaign.",
+              "tasks": [
+                {
+                  "id": "lab4-ex4-task1",
+                  "number": 1,
+                  "title": "Interpret the sample message and incident evidence",
+                  "steps": [
+                    "Open `04-threat-evidence.md` (./assets/04-threat-evidence.md).",
+                    "Read **Simulation training report - \"Finance reporting practice\"**. Record that the simulation report has no Network Message ID, alert, or incident.",
+                    "Read **Real message - email entity timeline**. Record the recipient, subject, sender, Threat Explorer verdict, Network Message ID, and timeline sequence.",
+                    "Read **Alert correlated to incident**. Confirm that the alert's Network Message ID matches the message and that the sample incident is a single-alert incident.",
+                    "Write the defensible classification: **True positive - Phishing**.",
+                    "Optional: In the Microsoft Defender portal, select **Email & collaboration** > **Explorer**. Open the **Sender address** filter list to see the message fields you can filter on. Don't search for the sample subject or IDs.",
+                    "Optional: Select **Investigation & response** > **Incidents & alerts** > **Incidents** to see where incident fields live. Don't search for `INC-2026-0918`.",
+                    "Confirm that your notes label the message, alert, and incident as sample evidence, not tenant evidence."
+                  ]
+                },
+                {
+                  "id": "lab4-ex4-task2",
+                  "number": 2,
+                  "title": "Decide what the pending recommendation needs",
+                  "steps": [
+                    "In `04-threat-evidence.md` (./assets/04-threat-evidence.md), read **Pending AIR recommendation**.",
+                    "Identify **Message A** and **Message B**.",
+                    "Record that **Message A** has a confirmed phish verdict and matching timeline.",
+                    "Record that **Message B** has no verdict or timeline of its own in these records.",
+                    "Write the decision: don't approve the two-message soft-delete as one action until Message B has its own supporting evidence.",
+                    "Write the evidence that would unblock the action: Message B's Network Message ID, verdict, timeline, and relationship to the incident.",
+                    "Confirm that your answer separates the completed ZAP remediation for Message A from the pending decision about the grouped AIR recommendation."
+                  ]
+                },
+                {
+                  "id": "lab4-ex4-task3",
+                  "number": 3,
+                  "title": "Create a draft follow-up training campaign",
+                  "steps": [
+                    "In the Microsoft Defender portal, select **Email & collaboration** > **Attack simulation training**. If a welcome dialog appears, select **Close**.",
+                    "Select the **Settings** tab and note the **Training threshold** value. Leave it unchanged.",
+                    "Select the **Training** tab, then select **+ Create new**.",
+                    "In **Training name**, enter `Finance - phishing awareness follow-up`, then select **Next**.",
+                    "On **Target users**, leave **Include only specific users and groups** selected, then select **+ Add users**.",
+                    "In **Search for Users or Groups**, enter `Finance` and press **Enter**. Select **Finance Mail**, then select **Add 1 User(s)**.",
+                    "Select **Next**. On the exclusion page, leave the exclusion check box cleared and select **Next**.",
+                    "On **Select training modules**, leave **Training catalog** selected and select **+ Add trainings**.",
+                    "Search for `phish`, select **Phishing — Six clues that should raise your suspicions**, select **Add**, then select **Next**.",
+                    "On **Select end user notification preferences for this campaign**, leave **Microsoft default notification (recommended)** selected.",
+                    "In the reminder row, set **Delivery preferences** to **Weekly**.",
+                    "Optional: Select the **View** (eye) icon for a notification to review the message, then select **Close**. Select **Next**.",
+                    "On **Schedule**, leave **Launch this training campaign as soon as I'm done** selected and clear **Send training with an end date**.",
+                    "Select **Save and close**.",
+                    "On **Training Campaigns**, confirm that `Finance - phishing awareness follow-up` is listed and the **Draft** count is **1**."
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "lab-5",
+          "number": 5,
+          "title": "Lab 5: Protect and govern information",
+          "description": "Create and test Microsoft Purview classification, sensitivity-label, DLP, retention, and DSPM controls with sample finance content.",
+          "duration": 55,
+          "level": 300,
+          "objectives": [
+            "Create a custom sensitive information type with a regular expression, then test matching and near-miss samples.",
+            "Create an item-scoped sensitivity label that encrypts files and grants access only to a test group.",
+            "Publish a sensitivity label and verify label availability, priority, and access behavior in Office on the web.",
+            "Create a DLP policy in simulation mode across Microsoft 365 workloads and review simulation evidence.",
+            "Publish a retention label for a separate item, then inspect DSPM objectives and oversharing assessment evidence."
+          ],
+          "slug": "05-protect-govern-information",
+          "sourcePath": "Instructions/Labs/LP2/05-protect-govern-information.md",
+          "officialUrl": "https://microsoftlearning.github.io/AB-650T00_administer_microsoft_365_and_ai_services/Instructions/Labs/LP2/05-protect-govern-information.html",
+          "sourceUrl": "https://github.com/MicrosoftLearning/AB-650T00_administer_microsoft_365_and_ai_services/blob/main/Instructions/Labs/LP2/05-protect-govern-information.md",
+          "labFiles": [
+            "F:\\Lab05\\Lab5-SIT-Match.txt",
+            "F:\\Lab05\\Lab5-SIT-NearMiss.txt",
+            "F:\\Lab05\\Lab5-DLP-Worksheet.txt"
+          ],
+          "learningPath": 2,
+          "exercises": [
+            {
+              "id": "lab5-ex1",
+              "number": 1,
+              "title": "Classify and publish",
+              "minutes": 20,
+              "scenario": "Finance transaction references need consistent classification before the organization can protect them. You create a custom SIT for a fictional transaction-reference format, test it against matching and near-miss samples, create an encrypted sensitivity label for item content, and publish the label to a test group. **Roles used:** **Compliance Administrator** or **Information Protection Administrator**, and **Groups Administrator**.",
+              "tasks": [
+                {
+                  "id": "lab5-ex1-task1",
+                  "number": 1,
+                  "title": "Create a test group for label publishing",
+                  "steps": [
+                    "On **SEA-DEV1**, open the Microsoft 365 admin center at `https://admin.cloud.microsoft`.",
+                    "Select **Teams & groups** > **Active teams & groups**, then select the **Security groups** tab.",
+                    "Select **Add a mail-enabled security group**.",
+                    "Enter the following, then select **Next**: - **Name:** `LAB5-Information-Protection-Test` - **Description:** `Lab 5 test group for Purview label publishing and encryption`",
+                    "Select **+ Assign owners**, search for `MOD` and press **Enter**, select **MOD Administrator**, select **Add (1)**, and then select **Next**.",
+                    "Select **Add members**. Search for and select **Patti Fernandez**, then search for and select **Nestor Wilke**. Select **Add (2)**, then select **Next**.",
+                    "In **Group email address**, enter `lab5iptest`. Leave the option to allow external senders cleared, then select **Next**.",
+                    "Confirm that **Group type** is **Mail-enabled security**, select **Create group**, and then select **Close**."
+                  ]
+                },
+                {
+                  "id": "lab5-ex1-task2",
+                  "number": 2,
+                  "title": "Create and test a custom sensitive information type",
+                  "steps": [
+                    "On **SEA-DEV1**, open File Explorer and go to **AllFiles (F:)** > **Lab05**. You test the sensitive information type with two sample files there. `Lab5-SIT-Match.txt` contains values that should match: ```text WG-48213077-K WG-12345678-A wg-48213077-k ``` `Lab5-SIT-NearMiss.txt` contains near misses that shouldn't match: ```text WG-48213077 WG-4821307-K WG-482130777-K WG-48213077-K9 ``` > [!NOTE] > If you aren't using the hosted lab environment, download `Lab5-SIT-Match.txt` (../../../Allfiles/Lab05/Lab5-SIT-Match.txt) and `Lab5-SIT-NearMiss.txt` (../../../Allfiles/Lab05/Lab5-SIT-NearMiss.txt) to **Documents**.",
+                    "In Microsoft Edge, open the **Microsoft Purview portal** at `https://purview.microsoft.com`.",
+                    "If a welcome dialog appears, select **Get started**, and close any tour that follows.",
+                    "Select **Solutions** > **Information Protection**.",
+                    "Under **Classifiers**, select **Sensitive info types (classic)**, then select **+ Create sensitive info type**.",
+                    "On the **Name your sensitive info type** page, enter the following, then select **Next**: - **Name:** `Woodgrove transaction reference` - **Description:** `Matches fictional Woodgrove transaction references in the WG-########-L format.`",
+                    "On **Define patterns for this sensitive info type**, select **+ Create pattern**.",
+                    "In **New pattern** pane, leave **Confidence level** set to **High confidence**, then select **+ Add primary element** > **Regular expression**.",
+                    "In **Add a regular expression** pane, leave **String match** selected, enter the following values, and then select **Done**: - **ID:** `WoodgroveTransactionReference` - **Regular expression:** `\\b([Ww][Gg]-[0-9]{8}-[A-Za-z])\\b`",
+                    "In **New pattern** pane, select **Create**, then select **Next**.",
+                    "On **Choose the recommended confidence level to show in compliance policies**, leave **High confidence level** selected, then select **Next**.",
+                    "On **Review settings and finish** page, select **Create**. When **Your sensitive info type is created** appears, select **Done**.",
+                    "In **Sensitive info types**, search for `Woodgrove`, select **Woodgrove transaction reference**, and then select **Test** in the details pane.",
+                    "Select **Upload file**, go to **AllFiles (F:)** > **Lab05**, select `Lab5-SIT-Match.txt`, and then select **Test**.",
+                    "On **Match results**, confirm that **Woodgrove transaction reference** reports **3 unique matches**, then select **Finish**. The results list the same three matches at **Low**, **Medium**, and **High** confidence because a match at the pattern's confidence level also satisfies the lower levels.",
+                    "Select **Test** again, upload `Lab5-SIT-NearMiss.txt` from the same folder, and then select **Test**.",
+                    "Confirm that **Match results** reports that no sensitive information was detected, then select **Finish**."
+                  ]
+                },
+                {
+                  "id": "lab5-ex1-task3",
+                  "number": 3,
+                  "title": "Create an item-scoped sensitivity label with encryption",
+                  "steps": [
+                    "In the **Microsoft Purview portal**, select **Solutions** > **Information Protection** > **Sensitivity labels**.",
+                    "Select **+ Create** > **Label**.",
+                    "On **Provide basic details for this label**,leave **Label priority** set to **Highest**, enter the following values, and then select **Next**: - **Name:** `Woodgrove Confidential - Transaction Records` - **Display name:** `Woodgrove Confidential - Transaction Records` - **Description for users:** `Use for sample transaction-reference files that require finance-only access.` - **Description for admins:** `Lab 5 item-scoped label with encryption for the LAB5-Information-Protection-Test group.`",
+                    "On **Define the scope for this label**, close the **Extend labels beyond Microsoft 365** callout if it appears. Keep **Files & other data assets** and **Emails** selected, clear **Meetings**, and then select **Next**.",
+                    "On **Choose protection settings for the types of items you selected**, select **Control access** and **Apply content marking**, then select **Next**.",
+                    "On **Access control**, keep **Configure access control settings** and **Assign permissions now** selected. Keep **User access to content expires** set to **Never** and **Allow offline access** set to **Always**.",
+                    "Select **Assign permissions**, then select **+ Add users or groups**.",
+                    "Search for `LAB5`, select **LAB5-Information-Protection-Test**, and then select **Add**.",
+                    "Keep the **Editor** permissions, then select **Save**.",
+                    "Confirm that the group's email address appears with **Co-Author** permissions, then select **Next**.",
+                    "On **Content marking**, turn on **Content marking**. Confirm that **Add a footer** is selected, then select **Customize text**.",
+                    "In **Footer text**, enter `Confidential - Woodgrove transaction data`, select **Save**, and then select **Next**.",
+                    "On **Auto-labeling for files and emails**, leave the setting off and select **Next**.",
+                    "On **Define protection settings for groups and sites**, leave all settings cleared and select **Next**.",
+                    "On **Review your settings and finish**, select **Create label**.",
+                    "On **Your sensitivity label was created**, select **Don't create a policy yet**, then select **Done**.",
+                    "Confirm that **Woodgrove Confidential - Transaction Records** appears in **Sensitivity labels** with the highest priority number in the list."
+                  ]
+                },
+                {
+                  "id": "lab5-ex1-task4",
+                  "number": 4,
+                  "title": "Publish the label and verify availability in Office on the web",
+                  "steps": [
+                    "In the **Microsoft Purview portal**, select **Solutions** > **Information Protection** > **Policies** > **Label publishing policies**.",
+                    "Select **Publish label**.",
+                    "On **Choose sensitivity labels to publish**, select **Choose sensitivity labels to publish**, select **Woodgrove Confidential - Transaction Records**, select **Add**, and then select **Next**.",
+                    "On **Assign admin units**, keep **Full directory**, then select **Next**.",
+                    "On **Publish to users and groups**, select **Edit** for **Exchange email**.",
+                    "Select **Include only specific**, then select **+ Add**.",
+                    "Search for `LAB5`, press **Enter**, select **LAB5-Information-Protection-Test**, and then select **Add (1)**.",
+                    "Select **Save and close**. Confirm that the scope shows **1 group**, then select **Next**.",
+                    "On **Policy settings**, select **Users must provide a justification to remove a label or lower its classification**, then select **Next**.",
+                    "On **Default settings for documents**, keep **Default label** set to **None**, then select **Next**. An encrypted default label would encrypt every new or unlabeled document that the test group opens, including files used in later labs.",
+                    "On **Default settings for emails**, keep **Default label** set to **None**, then select **Next**.",
+                    "On **Default settings for meetings and calendar events** and **Default settings for Fabric and Power BI content**, keep the defaults and select **Next**.",
+                    "In **Name**, enter `Finance - Woodgrove transaction labeling`, then select **Next**.",
+                    "On **Review and finish**, confirm the label, the **Exchange email - 1 account** scope, and the justification setting, then select **Submit**.",
+                    "On **New policy created**, select **Done**.",
+                    "In **Label policies**, confirm that **Finance - Woodgrove transaction labeling** appears with the highest **Priority** number in the list and that **Policy sync status** shows **Sync in progress** or **Sync completed**. When more than one label policy applies to a user, the policy with the highest priority number provides that user's default label and policy settings.",
+                    "Go to `https://<yourtenant>.sharepoint.com/sites/LAB2-Finance`. Select **Settings** > **Site permissions** > **Add members** > **Add members to group**. Add **Patti Fernandez** as a **Member**, then save.",
+                    "On **SEA-DEV2**, open an InPrivate window, go to `https://<yourtenant>.sharepoint.com/sites/LAB2-Finance/Shared%20Documents`, and sign in as `",
+                    "Select **Contoso_Finance_Policy.docx** to open it in Word for the web.",
+                    "Select **File** > **Create a Copy** > **Create a copy online**. In **File Name**, enter `Lab5-Woodgrove-Transaction-Records`, keep the current location, and then select **Create a Copy**. The copy opens in a new tab. You label the copy only. The original stays unlabeled.",
+                    "In the copy, select **Sensitivity** > **Woodgrove Confidential - Transaction Records**. Confirm that a lock icon appears next to the document name and that the footer **Confidential - Woodgrove transaction data** appears at the bottom of the page. If the label isn't listed yet, record **Label availability pending** with the current date and time, close the InPrivate window, and continue with Exercise 2.",
+                    "Select **Copilot** at the lower right of the document. In the **Copilot** pane, enter `Summarize this document in three bullets.`, and press **Enter**. Confirm that Copilot summarizes the document, because Patti is in the label's permissions group.",
+                    "Select **File** > **Save As** > **Download a Copy**, and save the labeled document to **Downloads**.",
+                    "Close the document. In the **LAB2-Finance Documents library**, select **Create or upload** > **Files upload**, and upload the downloaded document.",
+                    "Select the uploaded document and confirm that Sensitivity shows **Woodgrove Confidential - Transaction Records**.",
+                    "Select **Share** > **Share**. Enter `Alex Wilber`, select Alex, and then select **Send**. Confirm that **You've invited Alex Wilber to edit** appears, then close the InPrivate window.",
+                    "Open a new InPrivate window, go to `https://<yourtenant>.sharepoint.com/sites/LAB2-Finance/Shared%20Documents`, and sign in as `AlexW@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster. Alex sees only the shared copy.",
+                    "If the **Please sign in** dialog appears, select **Not now**",
+                    "Select **Lab5-Woodgrove-Transaction-Records.docx**. Confirm that the new tab shows **Sorry, you don't have permission to open this document** because the document is protected by a rights management service. The sharing grant doesn't override the label's encryption permissions.",
+                    "Go to `https://m365.cloud.microsoft/chat`. Enter `Summarize Lab5-Woodgrove-Transaction-Records from the LAB2-Finance site.`, and press **Enter**. Confirm that Copilot can't find or summarize the document for Alex.",
+                    "Close the InPrivate window."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lab5-ex2",
+              "number": 2,
+              "title": "Prevent loss and govern lifecycle",
+              "minutes": 35,
+              "scenario": "A classification result becomes useful when other governance controls respond to it. You create a DLP policy in simulation mode for Microsoft 365 workloads, test it with a harmless file, publish a retention label for a separate item, inspect DSPM, and interpret a sample case that doesn't represent a live tenant incident. **Roles used:** **Compliance Administrator** or **Data Loss Prevention Administrator**.",
+              "tasks": [
+                {
+                  "id": "lab5-ex2-task1",
+                  "number": 1,
+                  "title": "Create a DLP policy in simulation mode",
+                  "steps": [
+                    "On **SEA-DEV1**, open the **Microsoft Purview portal** at `https://purview.microsoft.com`.",
+                    "Select **Solutions** > **Data Loss Prevention** > **Policies**, then select **+ Create policy**.",
+                    "On **What info do you want to protect?**, select **Enterprise applications & devices**.",
+                    "Under **Categories**, select **Custom**. Under **Regulations**, select **Custom policy**, then select **Next**.",
+                    "Replace the default name with `Finance - transaction protection (simulation)`, replace the default description with `Lab 5 simulation policy for fictional transaction references`, and then select **Next**.",
+                    "On **Assign admin units**, keep **Full directory**, then select **Next**.",
+                    "On **Choose where to apply the policy**, keep **Exchange email**, **SharePoint sites**, **OneDrive accounts**, and **Teams chat and channel messages** selected with their default scopes.",
+                    "Clear **Devices**, **Instances**, and **On-premises repositories**, and leave every other location cleared. Select **Next**.",
+                    "On **Define policy settings**, keep **Create or customize advanced DLP rules** selected, then select **Next**.",
+                    "Select **+ Create rule**. If a **Create compound conditions** tip appears, close it.",
+                    "In **Name**, enter `Detect Woodgrove transaction references`.",
+                    "Under **Conditions**, select **+ Add condition** > **Content is shared from Microsoft 365**, then change the dropdown to **with people outside my organization**.",
+                    "Select **+ Add condition** > **Content contains**. Keep the operator between the two conditions set to **AND**.",
+                    "In the **Content contains** group, select **Add** > **Sensitive info types**. Search for `Woodgrove`, press **Enter**, select **Woodgrove transaction reference**, and then select **Add**. Keep **High confidence** and an instance count of **1** to **Any**.",
+                    "Under **Actions**, select **+ Add an action** > **Restrict access or encrypt the content in Microsoft 365 locations**. Keep **Block users from receiving email, or accessing shared SharePoint, OneDrive, Teams files...** and select **Block only people outside your organization**.",
+                    "Under **User notifications**, turn on notifications, then select **Notify users in Office 365 service with a policy tip or email notifications**. If a policy tips message appears, select **Got it**.",
+                    "Under **Policy tips**, select **Customize the policy tip text**, then enter `This item contains a sample transaction reference. Sharing outside the organization is restricted by policy.`",
+                    "Under **Incident reports**, set the severity level to **Medium**, keep the admin alert on, and then select **Save**.",
+                    "On **Customize advanced DLP rules**, confirm that the rule is listed, then select **Next**.",
+                    "On **Policy mode**, keep **Run the policy in simulation mode** and **Show policy tips while in simulation mode** selected. Leave **Turn the policy on if it's not edited within fifteen days of simulation** cleared, then select **Next**.",
+                    "Review the policy, select **Submit**, and then select **Done**.",
+                    "In **Policies**, confirm that `Finance - transaction protection (simulation)` shows the mode **In simulation with notifications**.",
+                    "In File Explorer, copy `Lab5-DLP-Worksheet.txt` from **AllFiles (F:)** > **Lab05** to **Documents**, and then open the copy. The **AllFiles (F:)** drive is read-only, so edit only the copy. Record the policy name, locations, conditions, action, and simulation mode. Record **Device DLP not tested** for the Devices location. > [!NOTE] > If you aren't using the hosted lab environment, download `Lab5-DLP-Worksheet.txt` (../../../Allfiles/Lab05/Lab5-DLP-Worksheet.txt)."
+                  ]
+                },
+                {
+                  "id": "lab5-ex2-task2",
+                  "number": 2,
+                  "title": "Test with a harmless file and review simulation evidence",
+                  "steps": [
+                    "On **SEA-DEV2**, open an InPrivate window, go to `https://<yourtenant>.sharepoint.com/sites/LAB2-Finance/Shared%20Documents`, and sign in as `PattiF@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "Select **+ Create or upload** > **Word document**. The new document opens in a new tab.",
+                    "In the document body, enter the following text: ```text This is a fictional training file. Sample transaction reference: WG-48213077-K. ```",
+                    "Select the document name at the top of the window, enter `Lab5-DLP-Simulation-Test`, and press **Enter**.",
+                    "Select **Share** > **Share**, enter `external.recipient@fabrikam.com`, and press **Enter**. On **Share outside of your organization?** dialog, select **Continue**. > [!NOTE] > Fabrikam is a fictitious sample domain. Don't use a real customer's address.",
+                    "Select **Send**, and confirm that the invitation is sent. The policy runs in simulation mode, so the share isn't blocked.",
+                    "Close the confirmation, then select **Share** > **Share** again. Share the file with **Nestor Wilke**, then select **Send**.",
+                    "Close the InPrivate window.",
+                    "On **SEA-DEV1**, in the **Microsoft Purview portal**, select **Solutions** > **Data Loss Prevention** > **Policies**.",
+                    "Select `Finance - transaction protection (simulation)`. In the details pane, review **Simulation progress**, then select **View simulation**.",
+                    "If **Welcome to simulation** appears, close it. Select **Items for review**, and confirm that `Lab5-DLP-Simulation-Test.docx` is listed with the rule **Detect Woodgrove transaction references** and the location **SharePoint**. Other sample files that contain a transaction reference might also be listed. > [!NOTE] > If the file isn't listed, the simulation might still be processing. If it still doesn't appear, record **DLP simulation results pending** with the current date and time.",
+                    "In the **Data Loss Prevention** navigation, select **Explorers** > **Activity explorer**. Select **Activity: Any**, select **DLP rule matched**, and then select **Apply**.",
+                    "Confirm that a **DLP rule matched** row lists `Lab5-DLP-Simulation-Test.docx` for Patti with the policy `Finance - transaction protection (simulation)`. The internal share with Nestor doesn't match, because the rule covers only content shared outside the organization.",
+                    "In `Lab5-DLP-Worksheet.txt`, record the match. If the file doesn't appear yet, record **DLP simulation results pending** with the current date and time."
+                  ]
+                },
+                {
+                  "id": "lab5-ex2-task3",
+                  "number": 3,
+                  "title": "Publish a retention label for separate content",
+                  "steps": [
+                    "On **SEA-DEV1**, in the **Microsoft Purview portal**, select **Solutions** > **Data Lifecycle Management** > **Retention labels**.",
+                    "Select **+ Create a label**.",
+                    "In **Name**, enter `Finance transaction retention - test`. In **Description for users**, enter `Lab 5 retention label for a separate sample item`, and then select **Next**.",
+                    "On **Define label settings**, keep **Retain items forever or for a specific period**, then select **Next**.",
+                    "On **Define the retention period**, set **Retain items for** to **Custom**, enter **0** years, **1** month, and **0** days, keep **When items were created**, and then select **Next**.",
+                    "On **Choose what happens after the retention period**, select **Deactivate retention settings**, then select **Next**. > [!NOTE] > The default, **Delete items automatically**, would remove test content when the period ends. Don't keep it for this lab.",
+                    "Review the label, then select **Create label**.",
+                    "On **Your retention label is created**, keep **Publish this label to Microsoft 365 locations**, then select **Done**.",
+                    "On **Choose labels to publish**, confirm that `Finance transaction retention - test` is listed, then select **Next**.",
+                    "On **Policy Scope**, keep **Full directory**, then select **Next**.",
+                    "On **Choose the type of retention policy to create**, select **Static**, then select **Next**.",
+                    "On **Choose where to publish labels**, select **Let me choose specific locations**. Turn off **Exchange mailboxes**, **SharePoint classic and communication sites**, and **OneDrive accounts**.",
+                    "For **Microsoft 365 Group mailboxes & sites**, select **Edit** under **Included**, select **LAB2-Finance**, and then select **Done**. Select **Next**.",
+                    "In **Name**, enter `Finance transaction retention - test policy`, then select **Next**.",
+                    "Confirm that the policy applies to **Microsoft 365 Group mailboxes & sites (1 Group)**, select **Submit**, and then select **Done**.",
+                    "On **SEA-DEV2**, open an InPrivate window, go to `https://<yourtenant>.sharepoint.com/sites/LAB2-Finance/Shared%20Documents`, and sign in as `PattiF@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "If the **Please sign in** dialog appears, select **Sign in**.",
+                    "Select **+ Create or upload** > **Word document**. The new document opens in a new tab.",
+                    "In **Describe what you'd like to draft with Copilot**, enter the following prompt, then select the send arrow: ```text Draft a short, fictional note to the finance team about an upcoming quarterly records review. Don't include account numbers, transaction references, or personal data. ```",
+                    "Review the draft in the document, then select **Done**.",
+                    "Select the document name at the top of the window, enter `Lab5-Retention-Test`, press **Enter**, and then close the tab.",
+                    "In the **Documents** library, select `Lab5-Retention-Test.docx`, then select **Details**. Under **Apply label**, select **Choose a label**. If **Finance transaction retention - test** is listed, select it and confirm that the field shows the label.",
+                    "If the label isn't listed yet, record **Retention label availability pending** with the current date and time in `Lab5-DLP-Worksheet.txt`. Published retention labels can take up to seven days to appear. Close the InPrivate window."
+                  ]
+                },
+                {
+                  "id": "lab5-ex2-task4",
+                  "number": 4,
+                  "title": "Inspect DSPM and interpret the sample case",
+                  "steps": [
+                    "In the **Microsoft Purview portal**, select **Solutions** > **DSPM**. Don't select **DSPM for AI (classic)**. It retires on November 30, 2026.",
+                    "If **DSPM and DSPM for AI unified in one solution** appears, select **Get started**.",
+                    "On **Complete setup to unlock the unified DSPM experience**, confirm that **Auditing and analytics** shows **Audit is on**. Leave **Collection policies for AI** unchanged, select **Start setup**, and then select **Close**. > [!NOTE] > The collection policies use Purview pay-as-you-go billing, which requires an Azure subscription linked to Purview. You don't need them in this lab. Interactions from Microsoft 365 Copilot, agents, and Copilot Studio are captured without these policies.",
+                    "Select **Objectives**. In **Prevent data exposure in Microsoft 365 Copilot and Microsoft Copilot interactions**, record the number of interactions, user prompts, and Copilot responses with sensitive data.",
+                    "In **Prevent oversharing of sensitive data**, select **View remediation plan**. Record the actions it lists, and mark the ones you already completed in this lab, such as the custom DLP policy. Select **Cancel**.",
+                    "Select **Discover** > **Data risk assessments**, then keep the **Microsoft 365** tab selected.",
+                    "If default assessment results are available, record one overshared site or item, its access pattern, and the smallest reasonable remediation. Otherwise, record **DSPM assessment pending** with the current date and time. The default assessment runs weekly, so a new tenant might not have results yet.",
+                    "Open `05-dlp-dspm-evidence.md` (./assets/05-dlp-dspm-evidence.md). Treat it as **sample case evidence, not from this tenant**.",
+                    "In the sample DLP case, identify the matched policy, matched rule, affected user, affected content, workload, SIT, and severity.",
+                    "In the sample DSPM case, compare **Finance Transaction Archive** with **Finance Team Announcements**. Confirm that only **Finance Transaction Archive** needs remediation because its access is broader than its purpose.",
+                    "Choose the smallest supported remediation for the sample case: remove organization-wide links or tighten sharing on **Finance Transaction Archive**, then escalate to the site owner for confirmation. Don't delete content or disable a user based on the sample case."
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Manage and secure Microsoft 365 AI services",
+      "learnUrl": "https://learn.microsoft.com/training/paths/manage-secure-microsoft-365-ai-services/",
+      "duration": 145,
+      "labs": [
+        {
+          "id": "lab-6",
+          "number": 6,
+          "title": "Lab 6: Roll out and administer Copilot and Cowork",
+          "description": "Gate a Microsoft 365 Copilot rollout, route Copilot settings to the right admin controls, and scope Microsoft 365 Copilot Cowork with the tenant credit method.",
+          "duration": 60,
+          "level": 300,
+          "objectives": [
+            "Use Microsoft 365 Copilot readiness and license information to decide whether a small rollout wave can start.",
+            "Gate Copilot access with a security group and verify one grounded response against a seeded work file.",
+            "Route Copilot web search, connectors, and AI provider requirements to their owning settings without changing the wrong control.",
+            "Inspect a connector as a discovery control and verify the intended and denied user outcomes.",
+            "Create Cowork access groups, scope a spending policy to the funded group, run Cowork tasks as Megan and Patti, check their cost with /cost, and interpret usage or a pending usage result."
+          ],
+          "slug": "06-roll-out-copilot-cowork",
+          "sourcePath": "Instructions/Labs/LP3/06-roll-out-copilot-cowork.md",
+          "officialUrl": "https://microsoftlearning.github.io/AB-650T00_administer_microsoft_365_and_ai_services/Instructions/Labs/LP3/06-roll-out-copilot-cowork.html",
+          "sourceUrl": "https://github.com/MicrosoftLearning/AB-650T00_administer_microsoft_365_and_ai_services/blob/main/Instructions/Labs/LP3/06-roll-out-copilot-cowork.md",
+          "labFiles": [
+            "F:\\Lab06\\17-cowork-consumption-practice.csv"
+          ],
+          "learningPath": 3,
+          "exercises": [
+            {
+              "id": "lab6-ex1",
+              "number": 1,
+              "title": "Gate a Copilot rollout",
+              "minutes": 10,
+              "scenario": "A small rollout wave is ready only when the license, readiness, and data-access evidence all line up. You review Copilot readiness, make the rollout group match your decision, verify one grounded response as Megan, and record an honest pending result if indexing isn't ready. **Roles used:** **AI Administrator** or **License Administrator** for readiness and license review, **Groups Administrator** for group membership, and **SharePoint Administrator** to read site permissions.",
+              "tasks": [
+                {
+                  "id": "lab6-ex1-task1",
+                  "number": 1,
+                  "title": "Review readiness and finance-site access",
+                  "steps": [
+                    "On **SEA-DEV1**, in Microsoft Edge, go to the Microsoft 365 admin center at `https://admin.cloud.microsoft` and sign in with your administrator account.",
+                    "Select **Reports** > **Usage**. If **Reports** doesn't appear, select **Show all** first.",
+                    "Expand **Microsoft 365 Copilot**, select **Copilot**, and then select the **Readiness** tab.",
+                    "Record the license summary and the number of rows where **Has Copilot license assigned** is **Yes** in **Copilot readiness details**. > [!NOTE] > If the user names in the table are concealed, the tenant hides user details in reports. Don't change that setting. Confirm Megan's license in the next step instead.",
+                    "Select **Users** > **Active users** > **Megan Bowen** > **Licenses and apps**. Confirm that **Microsoft 365 E7** is selected, then close the pane without saving changes.",
+                    "Select **Copilot** > **Overview** and review **Top actions**. Record any action that affects Megan or the first rollout wave, such as the Cowork billing action.",
+                    "Go to `https://<yourtenant>.sharepoint.com/sites/AB650-Finance-Review`. Select **Settings** > **Site permissions** > **Advanced permissions settings**.",
+                    "On the ribbon, select **Check Permissions**. Enter and select **Patti Fernandez**, select **Check Now**, and confirm **Read** through `AB650-Review-Finance`.",
+                    "Repeat the check for **Diego Siciliani** and confirm **None**. If either result doesn't match, record it as a readiness blocker. Don't change the site in this lab."
+                  ]
+                },
+                {
+                  "id": "lab6-ex1-task2",
+                  "number": 2,
+                  "title": "Gate the rollout group",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Teams & groups** > **Active teams & groups**.",
+                    "Select the **Security groups** tab, then select **+ Add a security group**.",
+                    "In **Name**, enter `Copilot-Rollout-Wave1`, then select **Next**. Leave role assignment cleared, select **Next**, and then select **Create group**. Select **Close**. The group can take up to 5 minutes to appear in the list.",
+                    "Select `Copilot-Rollout-Wave1`, select the **Members** tab, and then select **View all and manage members**.",
+                    "Select **+ Add members**, search for and select **Megan Bowen**, and then select **Add (1)**. Confirm that **Saved** appears.",
+                    "Close the pane. Confirm that the **Members** tab lists Megan Bowen as the only member."
+                  ]
+                },
+                {
+                  "id": "lab6-ex1-task3",
+                  "number": 3,
+                  "title": "Verify one grounded response and pause overnight",
+                  "steps": [
+                    "On **SEA-DEV2**, open an InPrivate window, go to `https://m365.cloud.microsoft/chat`, and sign in as `MeganB@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "Skip any welcome messages if they appear.",
+                    "Confirm that the account shows **M365 Copilot (Premium)** in the lower-left corner and that **Work IQ** is on at the top of the chat.",
+                    "Enter this prompt: ```text What is the Beacon migration risk described in my Beacon Rollout Plan.docx? Cite the source. ```",
+                    "Review the answer. Confirm that it cites **Beacon Rollout Plan** and identifies the failing data-migration dry run on record mapping, owned by Isaiah Langer.",
+                    "If Copilot doesn't cite the file or says it can't find the file, record the result as **pending indexing or access validation** with the date and time. Don't use a screenshot, sample answer, or practice data as a replacement.",
+                    "Close the InPrivate window.",
+                    "Record one unresolved risk before you widen the rollout, such as a pending citation, a permissions mismatch, or a user who isn't in the rollout group."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lab6-ex2",
+              "number": 2,
+              "title": "Match Copilot controls to experiences",
+              "minutes": 20,
+              "scenario": "Copilot settings live in several admin surfaces. You route each requirement to the owning setting, inspect the web search policy state, review the seeded connector, make a no-change provider decision, and prove that connector discovery doesn't grant access to a denied user. **Roles used:** **AI Administrator**, **Global Reader**, **Search Administrator** for search features, and **Security Administrator** or **Office Apps Administrator** for the web search policy.",
+              "tasks": [
+                {
+                  "id": "lab6-ex2-task1",
+                  "number": 1,
+                  "title": "Route requirements to owning settings",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Copilot** > **Settings**.",
+                    "Select **View all** to display the available Copilot settings.",
+                    "Record the owning setting, admin surface, and role for each requirement: | Requirement | Owning setting | Admin surface | Role | | --- | --- | --- | --- | | Let Copilot use public web grounding | **Web search for Microsoft Copilot** (cloud policy **Allow web search in Copilot**) | Microsoft 365 admin center shortcut to Microsoft 365 Apps admin center cloud policy | **Office Apps Administrator**, **Security Administrator**, or **Global Administrator** | | Improve internal search answers and acronyms | **Microsoft Copilot Search** and search answers | Microsoft 365 admin center and Microsoft Search settings | **Search Administrator** | | Make external content discoverable to Copilot | **Copilot connectors** | Microsoft 365 admin center > **Copilot** > **Connectors** | **AI Administrator** | | Allow another AI provider for eligible experiences | **AI providers operating as Microsoft subprocessors** or **AI providers operating as independent processors** | Microsoft 365 admin center > **Copilot** > **Settings** > **View all** | **AI Administrator** or **Global Administrator** |",
+                    "For each row, write one sentence that states what the setting doesn't do. For example, a connector changes discovery, not the source authorization model.",
+                    "Confirm that you have a four-row routing table and a boundary statement for each row."
+                  ]
+                },
+                {
+                  "id": "lab6-ex2-task2",
+                  "number": 2,
+                  "title": "Inspect the web search state",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Copilot** > **Settings** > **View all**.",
+                    "Select **Web search for Microsoft Copilot**, then select the link to the `Microsoft 365 Apps admin center` and review the **Policy Management** page.",
+                    "Review whether any policy configuration sets **Allow web search in Copilot**. If the page shows **You haven't created any policy configurations**, the policy isn't configured and web search is enabled by default.",
+                    "Record which of these states applies to `Copilot-Rollout-Wave1` or to Megan Bowen: - **Enabled in Microsoft Copilot and Microsoft Copilot Chat** - **Disabled in Microsoft Copilot and Microsoft Copilot Chat** - **Disabled in Microsoft Copilot Work mode; Enabled in Microsoft Copilot Web mode and Microsoft Copilot Chat**",
+                    "Record whether the current state also affects **Researcher** and **Cowork**. The most restrictive Work-mode state disables web search in those experiences.",
+                    "On **SEA-DEV2**, open an InPrivate window, go to `https://m365.cloud.microsoft`, and sign in as `MeganB@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "Select **Settings and more** (**...**) at the top right, select **Chat settings** > **Personalization**, and then expand **Advanced**.",
+                    "Record the state of the **Web search** toggle. If the admin policy allows web search, the toggle is on and Megan can turn it off. If the policy disables web search, the toggle isn't available. > [!NOTE] > Don't change the toggle. The user preference persists across sessions and would affect later tasks.",
+                    "Close **Chat settings**, and then close the InPrivate window."
+                  ]
+                },
+                {
+                  "id": "lab6-ex2-task3",
+                  "number": 3,
+                  "title": "Inspect the connector and verify discovery",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Copilot** > **Connectors** > **Your Connections**.",
+                    "Select `AB650-Policy-Connector`. Confirm that the subtitle shows `ab650policy` and that **Items indexed** on the **Detail** tab shows **1**.",
+                    "Select **Index browser**. In **Item Identifier**, enter `policy1`, then select **Submit**. Confirm that the item shows **Indexed**.",
+                    "Select **Permissions**. Confirm that the **Access** column shows **Allowed** for Patti Fernandez and **Denied** for Diego Siciliani .",
+                    "Select **Check user access**, search for `Diego`, then select **Diego Siciliani**. Confirm that the result is **Denied access**. Repeat for Patti Fernandez and confirm **Allowed access**.",
+                    "Select **Detail**. If the pane shows **Data from this connection will not appear in Copilot Chat or Search Results**, scroll to **Copilot Visibility**, expand it, and turn the toggle **On**. Confirm that the warning no longer appears.",
+                    "On **SEA-DEV2**, open an InPrivate window, go to `https://m365.cloud.microsoft`, and sign in as `PattiF@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "Select **Search**, skip any welcome messages if they appear, enter `Finance review policy`, and press **Enter**. Confirm that **Finance review policy** appears in the results and that **Sources** lists **AB650-Policy-Connector**. > [!NOTE] > The **Contoso_Finance_Policy** results are SharePoint documents, not connector items.",
+                    "Select **New chat**, enter `Find the Finance review policy.`, and press **Enter**. Confirm that Copilot quotes **Finance review access is limited to the assigned reviewer** and cites the **AB** connector source.",
+                    "Close the InPrivate window. Open a new InPrivate window, go to `https://m365.cloud.microsoft`, and sign in as `DiegoS@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "Skip any welcome messages if they appear.",
+                    "Repeat the search. Confirm that **Finance review policy** doesn't appear and that **Sources** doesn't list **AB650-Policy-Connector**.",
+                    "Repeat the Copilot prompt. Confirm that Copilot reports it couldn't find a matching policy and doesn't cite the connector. > [!NOTE] > Diego still sees **AB650-Policy-Connector** in **Chat settings** > **Sources**. The connection is visible, but item permissions trim what he can retrieve.",
+                    "Close the InPrivate window."
+                  ]
+                },
+                {
+                  "id": "lab6-ex2-task4",
+                  "number": 4,
+                  "title": "Review the AI provider decision without enabling a provider",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Copilot** > **Settings** > **View all**, then search for `AI providers`.",
+                    "Select **AI providers operating as Microsoft subprocessors**. Record the status of each listed provider, such as **Anthropic** and **OpenAI**, then close the pane.",
+                    "Select **AI providers operating as independent processors**, then expand **Mistral AI**.",
+                    "Review the legal terms and the access options **All users**, **No users**, and **Specific users and groups**. Record the selected option.",
+                    "Don't select the terms check box, don't change the access option, and don't select **Save**. Close the pane.",
+                    "Record the decision `Do not enable an independent processor in this lab`, then add the reason: the provider's terms, not your Microsoft customer agreements, apply to data the provider processes."
+                  ]
+                },
+                {
+                  "id": "lab6-ex2-task5",
+                  "number": 5,
+                  "title": "Record the intended and denied outcomes",
+                  "steps": [
+                    "On **SEA-DEV1**, create a three-row evidence note with these rows: **Web search**, **Connector discovery**, and **Provider decision**.",
+                    "For **Web search**, record the admin policy state and the user control result from Task 2.",
+                    "For **Connector discovery**, record Patti's result and Diego's denial from Task 3.",
+                    "For **Provider decision**, record **No change** and the reason from Task 4.",
+                    "Confirm that your evidence note doesn't claim that a discovery setting changed source authorization or that a provider was enabled."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lab6-ex3",
+              "number": 3,
+              "title": "Grant, use, and observe Cowork",
+              "minutes": 30,
+              "scenario": "Cowork access depends on spending-policy scope. You create two security groups, activate a capped spending policy scoped only to the finance group with alerts to Patti, verify that the excluded group isn't covered, run a decision-brief task as Megan and an exec-review readout as Patti, check each cost with `/cost`, and keep live usage separate from a sample historical-cost case. **Roles used:** **Global Administrator** or **Billing Administrator** for Cost management, **Groups Administrator** for group creation, and **AI Administrator** for Copilot and Cowork settings.",
+              "tasks": [
+                {
+                  "id": "lab6-ex3-task1",
+                  "number": 1,
+                  "title": "Create the Cowork access groups",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Teams & groups** > **Active teams & groups**.",
+                    "Select the **Security groups** tab, then select **+ Add a security group**.",
+                    "In **Name**, enter `cowork-pilot-finance`, then select **Next**, **Next**, and **Create group**.",
+                    "Select **Add another Security group** and repeat the steps to create `cowork-pilot-legal`. Select **Close**.",
+                    "Select `cowork-pilot-finance`, then select **Members** > **View all and manage members** > **+ Add members**. Search and select **Megan Bowen** and **Patti Fernandez**, then select **Add (2)**.",
+                    "Confirm that `cowork-pilot-finance` lists Megan and Patti and that `cowork-pilot-legal` has no members."
+                  ]
+                },
+                {
+                  "id": "lab6-ex3-task2",
+                  "number": 2,
+                  "title": "Configure funded Cowork access",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Copilot** > **Cost management**, then select **Get started**.",
+                    "In **Activate the default spending policy for your organization**, keep **Use Capacity Packs** selected and don't select pay-as-you-go billing. Select **Customize setup configuration**.",
+                    "Select **Policy name**, enter `Cowork Finance Access` for **Spending policy name**, then select **Save changes**.",
+                    "Select **Budget scope**, select **Specific groups**, search for and select `cowork-pilot-finance`, then select **Save changes**.",
+                    "Select **Agents and services**. Expand **Microsoft Copilot**, confirm that **Cowork** and **Work IQ API for custom apps and agents** are selected, turn off **Allow new Agents and services as they become available**, then select **Save changes**.",
+                    "Select **Spending limit** and configure these settings: | Setting | Value | | --- | --- | | **Set the monthly spending limit for this policy** | **Limit monthly spending**: `15000` | | **Select monthly budget limits for users** | **Limit monthly spending per user**: `3000` | | **Define alerts** | On | | **Send email to the following users** | **Patti Fernandez** | | **Alert when monthly spending reaches** | `90` **% of limit** | ",
+                    "Select **Save changes**, then select **Activate**.",
+                    "Select **Manage configuration**. On the **Configuration** tab, under **Spending policies**, confirm that **Cowork Finance Access** is **Enabled** for `cowork-pilot-finance` and is the only policy. `cowork-pilot-legal` isn't covered. > [!NOTE] > You can add more policies for other groups or all users. If a user is in more than one policy, the policy with the highest spending limit applies."
+                  ]
+                },
+                {
+                  "id": "lab6-ex3-task3",
+                  "number": 3,
+                  "title": "Run a Cowork task as Megan and check its cost",
+                  "steps": [
+                    "On **SEA-DEV2**, open an InPrivate window, go to `https://m365.cloud.microsoft`, and sign in as `MeganB@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "Select **Cowork** at the top of the left pane. Confirm that **Great news! You have access to Cowork** appears.",
+                    "In **Start a task**, enter this task, then press **Enter**: ```text Prepare me for my Beacon GA decision meeting. Use the Beacon GA at risk email thread, Beacon GA Decision Options.docx, the Beacon War Room chat, Beacon Pilot Metrics.xlsx, and the Q3 budget reallocation approval email. Create a one-page Word decision brief that compares holding GA for two weeks with shipping on time, recommends one option, lists the open risks with owners, and ends with a three-sentence draft note to the Northwind Traders sponsor. Cite each source. ```",
+                    "In the **Workspace** pane, watch **Steps** and **Tools**. Cowork works across **Outlook**, **Teams**, **SharePoint**, and **Work IQ**. The task takes about 5 minutes.",
+                    "When the response is complete, confirm that Cowork reports it couldn't find **Beacon GA Decision Options.docx**. That file is in Isaiah Langer's OneDrive and isn't shared with Megan, so Cowork can't use it.",
+                    "Under **Output**, select the Word brief and review the recommendation, risks and owners, sponsor note, and source citations. Close the document.",
+                    "In **Message Cowork**, enter `/cost`, select the **/cost** skill, and press **Enter**. Record the credits used for this task, the percentage of the monthly limit remaining, and the credits used this month. > [!NOTE] > `/cost` doesn't consume credits. It reports usage only after a task runs, and its totals are estimates, not billing records.",
+                    "Select **View usage**. Review the **Cowork usage limit** bar for **Me** and **Group**, then close **Usage**.",
+                    "Close the InPrivate window."
+                  ]
+                },
+                {
+                  "id": "lab6-ex3-task4",
+                  "number": 4,
+                  "title": "Run a Cowork task as Patti and compare usage",
+                  "steps": [
+                    "On **SEA-DEV2**, open an InPrivate window, go to `https://m365.cloud.microsoft`, and sign in as `PattiF@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "Select **Cowork** at the top of the left pane. Confirm that **Great news! You have access to Cowork** appears. > [!NOTE] > If the **Great news! You have access to Cowork** message doesn´t appear, select **Request sent**. On **SEA-DEV1**, go to the **Microsoft 365 Admin Center**, then select **Copilot** > **Cowork**. Confirm that the pending request for **Patti Fernandez** appears, and then select **Go to users**. Select the checkbox next to **Patti Fernandez**, select **Resolve request**, select  **Approve request** and **cowork-pilot-finance** group . Then select **Assign to group**.",
+                    "In **Start a task**, enter this task, then press **Enter**: ```text Prepare me for the \"Exec Review - Portfolio & Customer Rollout\" meeting on my calendar. Use my Customer Rollout Narrative and Portfolio Status Summary files and the \"Board optics if Beacon GA slips two weeks\" and \"Exec review - I need the Beacon headline, not a status\" email threads. Create a one-page Word readout with a Beacon headline I can stand behind, the status of each launch, the customer impact of a two-week hold, what I need from the exec review, and three questions I should expect. Cite each source. ```",
+                    "In the **Workspace** pane, confirm that Cowork uses **Calendar**, **Outlook**, **SharePoint**, and **Work IQ**. The task takes about 3 minutes.",
+                    "Under **Output**, select the Word readout. Confirm that it includes the Beacon headline, a status for each launch, the customer impact of the hold, what Patti needs from the exec review, and three expected questions. Close the document.",
+                    "Select **Sources**. Confirm that Cowork cited both email threads, **Customer Rollout Narrative.docx**, and **Portfolio Status Summary.xlsx**.",
+                    "In **Message Cowork**, enter `/cost`, select the **/cost** skill, and press **Enter**. Record the credits used for this task and compare them with Megan's task in Task 3.",
+                    "Select **View usage**, then expand **Why am I seeing group usage?** Credits are shared with the group defined by the spending policy, so Megan's usage counts toward Patti's **Group** total. Close **Usage**.",
+                    "Close the InPrivate window.",
+                    "On **SEA-DEV1**, return to **Copilot** > **Cost management** > **Consumption**. For **Cowork Finance Access**, review **Active users** and **Credits used**, and compare them with Megan's and Patti's `/cost` results. If recent usage hasn't appeared, record **pending usage reporting** with the date and time."
+                  ]
+                },
+                {
+                  "id": "lab6-ex3-task5",
+                  "number": 5,
+                  "title": "Interpret the sample 45-credit Cowork consumption case",
+                  "steps": [
+                    "On **SEA-DEV1**, open File Explorer and go to **AllFiles (F:)** > **Lab06**. Right-click `17-cowork-consumption-practice.csv`, and then select **Open with** > **Notepad**. > [!NOTE] > If you aren't using the hosted lab environment, download `17-cowork-consumption-practice.csv` (../../../Allfiles/Lab06/17-cowork-consumption-practice.csv).",
+                    "Find the row where a `cowork-pilot-legal` user consumed **45** credits.",
+                    "Decide whether the row shows a user with no Cowork access or a user who had access through an overlapping Cowork-selecting policy.",
+                    "Justify the diagnosis with the documented rule: access is granted by membership in any spending policy that selects **Cowork**, credit limits are evaluated asynchronously, and overlapping policies use the highest applicable per-user limit.",
+                    "Name the smallest correct action: find the Cowork-selecting policy that included the legal group or all users, identify the policy owner, and remove the unintended overlap.",
+                    "Confirm that your diagnosis stays separate from Megan's and Patti's live Cowork tasks and the usage or pending usage record from Task 4."
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "lab-7",
+          "number": 7,
+          "title": "Lab 7: Govern agents and operate AI services",
+          "description": "Establish accountable agent identity and access, curate the Agent Registry and tools, monitor the agent estate, govern sharing and availability, and operate Microsoft 365 AI services.",
+          "duration": 85,
+          "level": 300,
+          "objectives": [
+            "Locate a Copilot Studio agent's Microsoft Entra Agent ID and record its identity, blueprint, sponsor, owner, and manager relationships.",
+            "Assign agent access through entitlement management and evaluate agent Conditional Access in report-only mode.",
+            "Review Pending Agent 365 requests, publish one request to a limited audience, and keep Pending, Registry approval, Agent ID, and tool approval distinct.",
+            "Build and share an agent as a maker, and find it in the Agent Registry.",
+            "Monitor agent inventory and activity, and assign an owner to an agent that has none.",
+            "Verify agent availability, installation, and sharing scope.",
+            "Read live Copilot usage, agent usage, and Service Health signals, and route deeper analytics questions."
+          ],
+          "slug": "07-govern-agents-operate-ai",
+          "sourcePath": "Instructions/Labs/LP3/07-govern-agents-operate-ai.md",
+          "officialUrl": "https://microsoftlearning.github.io/AB-650T00_administer_microsoft_365_and_ai_services/Instructions/Labs/LP3/07-govern-agents-operate-ai.html",
+          "sourceUrl": "https://github.com/MicrosoftLearning/AB-650T00_administer_microsoft_365_and_ai_services/blob/main/Instructions/Labs/LP3/07-govern-agents-operate-ai.md",
+          "labFiles": [],
+          "learningPath": 3,
+          "exercises": [
+            {
+              "id": "lab7-ex1",
+              "number": 1,
+              "title": "Establish agent identity and access",
+              "minutes": 30,
+              "scenario": "A finance-facing agent must have a governed identity before you assign access or evaluate access-time controls. You locate the Copilot Studio agent, match it to its Microsoft Entra Agent ID, assign accountable relationships, run a sponsorship transfer, assign an access package, and scope a report-only Conditional Access policy. **Roles used:** **AI Administrator** or **Agent Administrator** for discovery, **Identity Governance Administrator** for access packages, **Privileged Role Administrator** or **Conditional Access Administrator** for Conditional Access, and **Security Administrator** for review.",
+              "tasks": [
+                {
+                  "id": "lab7-ex1-task1",
+                  "number": 1,
+                  "title": "Locate the Agent ID and establish relationships",
+                  "steps": [
+                    "On **SEA-DEV1**, open the Microsoft Entra admin center at `https://entra.microsoft.com`.",
+                    "Select **Entra ID** > **Agents** > **Agent identities**, and open **AB650 Agent Governance Guide (Microsoft Copilot Studio)**.",
+                    "On the **Overview** page, note the **Object ID** and the **Agent blueprint**, **Microsoft Copilot Studio agent identity blueprint**. This identity is the agent's Microsoft Entra Agent ID, not an Agent 365 request.",
+                    "Select **Owners and sponsors**. Select **+ Add** > **Add sponsor**, search for and select **Patti Fernandez**, and then choose **Select**.",
+                    "Select **+ Add** > **Add owner**, search for and select **Nestor Wilke**, and then choose **Select**.",
+                    "Confirm that the list shows **Patti Fernandez** as **Sponsor** and **Nestor Wilke** as **Full owner**.",
+                    "Select **Entra ID** > **Users**, search for and open **Patti Fernandez**, and then select **Properties**.",
+                    "Select the edit icon next to **Job Information**. Under **Manager**, select **Add manager**, select **Joni Sherman**, choose **Select**, and then select **Save**.",
+                    "Confirm that Patti's **Manager** is **Joni Sherman** and her **Department** is **Executive Management**. You use both values in the next task."
+                  ]
+                },
+                {
+                  "id": "lab7-ex1-task2",
+                  "number": 2,
+                  "title": "Transfer sponsorship without orphaning the agent",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft Entra admin center, select **ID Governance** > **Lifecycle workflows** > **+ Create workflow**.",
+                    "Select the **Agents** tab, and then select **Agent sponsor job profile change**.",
+                    "On **Basics**, enter the name `AB650 sponsor transfer`. Leave **Trigger type** as **Attribute changes** and **Trigger attribute** as **department**, and then select **Next: Configure scope >**.",
+                    "In the **Rule** section, change the value from **Marketing** to `Executive Management`, and then select **Next: Review tasks >**.",
+                    "Select **Remove all access package assignments for user**, and then select **Disable**. Leave **Transfer agent sponsorships to manager** enabled.",
+                    "Select **Next: Review + create >**, leave **Enable schedule** cleared, and then select **Create**.",
+                    "In the workflow list, select **AB650 sponsor transfer**, and then select **Run on demand**.",
+                    "Select **+ Select users**, select **Patti Fernandez**, choose **Select**, and then select **Run workflow**.",
+                    "Select **Entra ID** > **Agents** > **Agent identities** > **AB650 Agent Governance Guide (Microsoft Copilot Studio)** > **Owners and sponsors**. Select **Refresh** until **Joni Sherman** replaces **Patti Fernandez** as **Sponsor**. > [!NOTE] > The workflow can take a few minutes to run. You can continue with the next task and check back.",
+                    "Confirm that the agent still has a sponsor and that **Nestor Wilke** is still **Full owner**."
+                  ]
+                },
+                {
+                  "id": "lab7-ex1-task3",
+                  "number": 3,
+                  "title": "Assign the finance access package to the agent identity",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft Entra admin center, select **ID Governance** > **Entitlement management** > **Access packages**.",
+                    "Open **Agent 365 - Finance Data Access**. Note that its catalog is **Agent 365 Governance**.",
+                    "Select **Assignments** > **+ New assignment**.",
+                    "In **Select policy**, select **Agent 365 - Finance Data Access - Auto Policy**.",
+                    "Select **Add identities**. Select **AB650 Agent Governance Guide (Microsoft Copilot Studio)**, which has the type **Agent identity**, and then choose **Select**.",
+                    "In **Business justification**, enter `Lab 7 finance agent access`, and then select **Add**.",
+                    "Select **Refresh** until the agent identity appears with the status **Delivered** and an end date."
+                  ]
+                },
+                {
+                  "id": "lab7-ex1-task4",
+                  "number": 4,
+                  "title": "Scope a report-only Conditional Access policy to the agent",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft Entra admin center, select **Entra ID** > **Conditional Access** > **Policies**.",
+                    "Open **CA: Block High-Risk Agent Identities**, and review its **State** and **Requirements for access**. Close the pane without changing the policy.",
+                    "Select **+ New policy**, and then enter the name `AB650 report-only agent identity review`.",
+                    "Under **Users or agents**, select **0 users or agents selected** and change **What does this policy apply to?** to **Agents**. Select **Select agent identities**, and then, under **Select individual agents**, select **None**. Select **AB650 Agent Governance Guide**, and then choose **Select**.",
+                    "Under **Target resources**, select **No target resources selected**, and then select **All resources (formerly 'All cloud apps')**.",
+                    "Under **Conditions**, select **0 conditions selected**. Under **Agent risk (Preview)** select **Not configured**, set **Configure** to **Yes**, select **High**, and then select **Done**.",
+                    "Under **Grant**, select **0 controls selected** select **Block access**, and then choose **Select**.",
+                    "Leave **Enable policy** set to **Report-only**, and then select **Create**.",
+                    "Confirm that **AB650 report-only agent identity review** appears in the list with the state **Report-only**."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lab7-ex2",
+              "number": 2,
+              "title": "Curate the Agent Registry and tools",
+              "minutes": 20,
+              "scenario": "Agent 365 curation controls which agents and tools become available in Microsoft 365. You publish one of Diego's Pending requests to a limited audience, leave another Pending for comparison, review the tool registry, and have Patti build and share her own agent. **Roles used:** **AI Administrator** for Agent 365 review and Registry actions, and **Patti Fernandez** as an agent maker. > [!NOTE] > Keep four states separate: **Pending** means a request still needs review, **Registry approval** means an agent is available to a scoped audience, **Agent ID** is the Microsoft Entra identity from Exercise 1, and **tool approval** concerns a tool or action an agent can invoke.",
+              "tasks": [
+                {
+                  "id": "lab7-ex2-task1",
+                  "number": 1,
+                  "title": "Publish one Pending request and leave another Pending",
+                  "steps": [
+                    "On **SEA-DEV1**, open the Microsoft 365 admin center at `https://admin.cloud.microsoft`.",
+                    "Select **Agents** > **All agents**, and then select the **Requests** tab.",
+                    "Confirm that the six requests from Diego Siciliani show the state **Pending review** and the request type **Publish**. The requests include **Finance Insights Agent**, **IT Helpdesk Agent**, and **Legacy Ops Agent (Ownerless)**.",
+                    "Select **Finance Insights Agent**. Review the **Details**, **Data & tools**, **Security**, and **Permissions** tabs. Then on the **Requests** tab, select **Publish to store**.",
+                    "On **Select users**, under **Select users or groups who can install the agent**, select **Specific users/groups**. Search for and select **Finance Users**.",
+                    "Under **Select users or groups who will have the agent pre-installed (optional)**, select **None**, and then select **Next**.",
+                    "On **Policy template**, keep **Default policy template for agents**, and then select **Next**.",
+                    "On **Accept permissions**, confirm that the wizard shows **No required permissions**, and then select **Next**.",
+                    "On **Review and finish**, confirm that the agent is published to **Finance Users** and deployed to **None**. Select **Publish**, and then select **Done**.",
+                    "Confirm that five requests remain and that **IT Helpdesk Agent** is still **Pending review**. Don't publish or reject it.",
+                    "Select the **Registry** tab, and search for `Finance Insights`. Confirm that two entries appear: the published copy with **Publisher type** set to **Your org**, and Diego's original copy. If the **Publisher type** column isn't displayed, select **...** > **Customize view** > **Publisher type** > **Save**.",
+                    "Open the published copy by selecting the row, select the **Users** tab, and then select **Available to**. Confirm that **Specific users or groups** is selected and that **Finance Users** is listed under **Added users**."
+                  ]
+                },
+                {
+                  "id": "lab7-ex2-task2",
+                  "number": 2,
+                  "title": "Review the tool registry",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Agents** > **Tools**. On the **Registry** tab, record the counts for **All tools**, **MCP servers**, and **Plugins**.",
+                    "Set the **Publisher** filter to **Microsoft Corporation**, and then select an MCP server such as **Work IQ MCP**.",
+                    "Review the **Overview**, **Tools**, and **Policies** tabs. Note the **Block** action, but don't select it. Close the pane.",
+                    "Select the **Requests (preview)** tab, and confirm that there are no pending tool requests."
+                  ]
+                },
+                {
+                  "id": "lab7-ex2-task3",
+                  "number": 3,
+                  "title": "Build and share an agent as a maker",
+                  "steps": [
+                    "On **SEA-DEV2**, open an InPrivate window, go to `https://m365.cloud.microsoft`, and sign in as `PattiF@<yourtenant>.onmicrosoft.com` with the user password provided by your lab hoster.",
+                    "In the left navigation pane, select **Agents**, and then select **New agent**. Select **Skip** to open the **Configure** tab. If **What's new in Agent Builder** appears, select **Get started**.",
+                    "Select the pencil icon next to **New Agent**, and enter the following values: - **Name:** `Finance Review Helper` - **Describe your agent:** `Answers questions about the finance review process.` - **Instructions:** `Answer questions about finance review steps. If you don't know, say so. Don't request or store personal data.`",
+                    "Don't add knowledge sources. Select **Create**. Confirm that **Your agent was created successfully!** appears and that the agent is **private**.",
+                    "Select **Share**. Confirm that **Org-wide sharing for chat access** is off.",
+                    "In **Add a name, group, or email**, search for and select **Nestor Wilke**. Confirm that Nestor is set to **Can chat**, and then select **Add**.",
+                    "Confirm that **Your agent was successfully shared** appears, select **Close**, and then close the InPrivate window.",
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Agents** > **All agents** > **Registry**, and search for `Finance Review Helper`.",
+                    "Open the agent. On the **Details** tab, confirm that **Created by** shows **Patti Fernandez**.",
+                    "Select the **Users** tab, and then select **Shared with**. Confirm that **Nestor Wilke** is listed under **Users**."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lab7-ex3",
+              "number": 3,
+              "title": "Monitor the agent estate",
+              "minutes": 15,
+              "scenario": "Inventory helps you find agents that need attention, but it doesn't grant access and activity can lag. You inventory the agent you published, then find and fix an agent that has no owner in Agent 365 instead of trusting a display name. **Roles used:** **AI Administrator**.",
+              "tasks": [
+                {
+                  "id": "lab7-ex3-task1",
+                  "number": 1,
+                  "title": "Inventory the Registry entry you published",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Agents** > **All agents** > **Registry**.",
+                    "Search for `Finance Insights`,  locate the copy whose **Publisher type** is **Your org**, and the select the row to open it.",
+                    "On the **Details** tab, record **Publisher**, **Publisher type**, **Owner**, **Created by**, **Last used**, and **Entra agent ID**.",
+                    "Select the **Activity** tab. Record **Active users**, **Sessions**, **Exceptions**, and **Agent run-time** for the date range shown. If the cards show **No data**, record **Activity pending**. Don't record zero."
+                  ]
+                },
+                {
+                  "id": "lab7-ex3-task2",
+                  "number": 2,
+                  "title": "Assign an owner to an agent without one",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Agents** > **Agent map**. Record the **Total agents**, **Agents at risk**, and **Agents without owners** cards. If a card shows **Failed to load** or a dash, record it as unavailable rather than zero.",
+                    "Select **Agents** > **All agents**. Select the **Registry** tab, search for `Legacy Ops`, and open **Legacy Ops Agent (Ownerless)**. Confirm that **Owner** is populated. Despite its name, this agent has an owner. Close the pane.",
+                    "Search for `AB650 Agent Governance`, and open **AB650 Agent Governance Guide**. Confirm that **Owner** and **Created by** show a dash, while **Entra agent ID** is populated. > [!NOTE] > In Exercise 1, you made Nestor the owner of this agent's Microsoft Entra identity. Agent 365 tracks a separate owner for the agent itself, and that owner is still empty.",
+                    "Select **Assign new owner**. In **Assign Owner**, search for and select **Nestor Wilke**, and then select **Assign**.",
+                    "Confirm that **Owner assigned** appears and that **Owner** and **Created by** now show **Nestor Wilke**.",
+                    "Select **Agents** > **Settings** > **Agent Management Rules**. Review the **Reassign ownerless agents created with Agent Builder to manager** rule and its **Affected agents** count. Don't change the rule."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lab7-ex4",
+              "number": 4,
+              "title": "Govern agent sharing and availability",
+              "minutes": 10,
+              "scenario": "Admin-published agents and user-shared agents reach people in different ways. You verify the published agent's availability and installation scope, compare it with Patti's shared agent, and review the tenant sharing setting. **Roles used:** **AI Administrator**.",
+              "tasks": [
+                {
+                  "id": "lab7-ex4-task1",
+                  "number": 1,
+                  "title": "Verify agent availability and sharing scope",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Agents** > **All agents** > **Registry**.",
+                    "Search for `Finance Insights`, and open the copy whose **Publisher type** is **Your org**.",
+                    "Select the **Users** tab, and then select **Installed for**. Confirm that the agent isn't pre-installed for a broader audience.",
+                    "Select **Available to**. If **Specific users or groups** isn't set to **Finance Users**, select it, add **Finance Users**, and then select **Save**. Close the pane.",
+                    "Search for `Finance Review Helper`, open it, and select the **Users** tab. Confirm that the message **Shared agents can't be automatically installed** appears and that only the agent's owner can share the agent. Close the pane.",
+                    "Select **Agents** > **Settings** > **Sharing**. Record the value of **Choose who can share agents with anyone in the organization**. This setting controls whether makers like Patti can turn on **Org-wide sharing for chat access**. Close the pane without changing it."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lab7-ex5",
+              "number": 5,
+              "title": "Operate Microsoft 365 AI services",
+              "minutes": 10,
+              "scenario": "AI operations combines live usage and health evidence. You read live Copilot and agent usage where reports are populated, record pending where they aren't, route deeper analytics questions, and read Service Health without inventing incidents. **Roles used:** **Reports Reader** and **Service Support Administrator**, or equivalent administrator access.",
+              "tasks": [
+                {
+                  "id": "lab7-ex5-task1",
+                  "number": 1,
+                  "title": "Read Copilot and agent usage",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Reports** > **Usage**. If **Reports** isn't visible, select **Show all** first.",
+                    "Under **Reports**, expand **Microsoft 365 Copilot**, and then select **Copilot**.",
+                    "On the **Usage** tab, record the **Last updated** date, the period, **Enabled users**, **Active users**, and **Total prompts submitted**. If **Active users** is zero, record **Usage pending** with the last updated date.",
+                    "Under **Microsoft 365 Copilot**, select **Agents**. Record **Total active users** and **Total active agents**. If **Usage details** shows **No data available**, record **Agent usage pending**.",
+                    "Record where you would route deeper adoption or value questions: **Copilot Dashboard** in Viva Insights for organization-level adoption and impact, and these admin center reports for usage read-back."
+                  ]
+                },
+                {
+                  "id": "lab7-ex5-task2",
+                  "number": 2,
+                  "title": "Read Service Health for AI services",
+                  "steps": [
+                    "On **SEA-DEV1**, in the Microsoft 365 admin center, select **Health** > **Service health**.",
+                    "On the **Overview** tab, review **Active issues Microsoft is working on**. Record any issue whose **Affected service** is **Microsoft Copilot (Microsoft 365)**, and any advisory about usage report delays.",
+                    "If none are listed, record **No live incident observed**."
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
