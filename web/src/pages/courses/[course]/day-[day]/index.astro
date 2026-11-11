@@ -3,6 +3,7 @@ import DefaultLayout from "@/layouts/DefaultLayout.astro";
 import { CompletionBar } from "@/components/courses/CompletionBar";
 import { LabChecklist } from "@/components/courses/LabChecklist";
 import { LessonPlan } from "@/components/courses/LessonPlan";
+import { MicrosoftTraining } from "@/components/courses/MicrosoftTraining";
 import { SourceToggle } from "@/components/courses/SourceToggle";
 import { WatchChecklist } from "@/components/courses/WatchChecklist";
 import { render } from "astro:content";
@@ -47,7 +48,10 @@ const code = course.data.code;
 const watchLabels = d.videos
   .filter((v) => v.action === "watch")
   .map((v) => v.label);
-const msResources = d.resources.filter((r) => r.kind !== "skillsup");
+const courseLinks = d.resources.filter((r) => r.kind === "course");
+const docLinks = d.resources.filter(
+  (r) => r.kind !== "course" && r.kind !== "skillsup",
+);
 const skillsResources = d.resources.filter((r) => r.kind === "skillsup");
 ---
 
@@ -107,7 +111,7 @@ const skillsResources = d.resources.filter((r) => r.kind === "skillsup");
             <ol class="mt-3 grid gap-2 sm:grid-cols-2">
               {
                 [
-                  "Read Microsoft Learn resources / courses",
+                  "Take the Microsoft Learn training for this day",
                   "Do the Udemy watch checklist",
                   "Review TL;DR + exam trap",
                   "Prove with knowledge check",
@@ -126,6 +130,10 @@ const skillsResources = d.resources.filter((r) => r.kind === "skillsup");
             </p>
           </section>
 
+          <div data-source="microsoft">
+            <MicrosoftTraining links={[...courseLinks, ...docLinks]} />
+          </div>
+
           {
             d.videos.length > 0 && (
               <div data-source="udemy">
@@ -140,39 +148,15 @@ const skillsResources = d.resources.filter((r) => r.kind === "skillsup");
             )
           }
 
-          <section class="course-card p-5 shadow-xs md:p-6" data-source="microsoft">
-            <h2 class="text-xl font-semibold">Study resources · Microsoft</h2>
-            {
-              msResources.length > 0 ? (
-                <ul class="mt-3 space-y-2">
-                  {msResources.map((link) => (
-                    <li>
-                      <a
-                        class="text-sm font-medium underline-offset-4 hover:underline"
-                        href={link.url}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {link.kind === "course" ? (
-                          <span class="course-pill mr-2 inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold">
-                            Course
-                          </span>
-                        ) : null}
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p class="text-muted-foreground mt-3 text-sm">
-                  No Microsoft Learn links for this day.
-                </p>
-              )
-            }
+          <section
+            class="course-card p-5 shadow-xs md:p-6"
+            data-source="microsoft"
+          >
+            <h2 class="text-xl font-semibold">Lab & notes</h2>
             {
               skillsResources.length > 0 && (
                 <>
-                  <h3 class="mt-6 font-semibold">SkillsUp</h3>
+                  <h3 class="mt-2 font-semibold">SkillsUp</h3>
                   <ul class="mt-2 space-y-2">
                     {skillsResources.map((link) => (
                       <li>
@@ -191,9 +175,9 @@ const skillsResources = d.resources.filter((r) => r.kind === "skillsup");
               )
             }
             {
-              d.lab.length > 0 && (
+              d.lab.length > 0 ? (
                 <>
-                  <h3 class="mt-6 font-semibold">Optional E5 lab</h3>
+                  <h3 class="mt-4 font-semibold">Optional E5 lab</h3>
                   <div class="mt-2">
                     <LabChecklist
                       client:only="react"
@@ -203,6 +187,11 @@ const skillsResources = d.resources.filter((r) => r.kind === "skillsup");
                     />
                   </div>
                 </>
+              ) : (
+                <p class="text-muted-foreground mt-2 text-sm">
+                  No lab checklist for this day — use the Microsoft Learn
+                  training above.
+                </p>
               )
             }
             {

@@ -36,7 +36,8 @@ jobs:
           cache-dependency-path: web/package-lock.json
 
       - name: Install
-        run: npm ci
+        # starlight-quiz peers Astro >=7 while the site stays on Astro 5
+        run: npm ci --legacy-peer-deps
 
       - name: Build
         run: npm run build
