@@ -39,36 +39,45 @@
 
 :root {
   /*
-    Eye-comfort light theme (long study sessions):
-    - cool soft stone page (not pure white, not warm cream)
-    - charcoal ink (~oklch 0.30) instead of pure black
-    - soft olive accent (legacy lime, less glare)
-    - muted text kept above ~4.5:1 on the page ground
+    Microsoft Learning AB-650 lab site palette
+    (style.css + course.css from AB-650T00…):
+    header/accent #6b4ba1, hover #8a6fc1, page #f5f1e8,
+    soft #efe9f7, border #e2dccf, muted #5f5a52, ink #222.
   */
-  --background: oklch(0.965 0.006 230);
-  --foreground: oklch(0.3 0.018 250);
-  --card: oklch(0.985 0.004 230);
-  --card-foreground: oklch(0.3 0.018 250);
-  --popover: oklch(0.985 0.004 230);
-  --popover-foreground: oklch(0.3 0.018 250);
-  --primary: oklch(0.86 0.08 118);
-  --primary-foreground: oklch(0.28 0.04 125);
-  --secondary: oklch(0.94 0.008 230);
-  --secondary-foreground: oklch(0.34 0.02 250);
-  --muted: oklch(0.935 0.008 230);
-  --muted-foreground: oklch(0.46 0.02 250);
-  --accent: oklch(0.93 0.025 175);
-  --accent-foreground: oklch(0.3 0.03 175);
-  --destructive: oklch(0.52 0.16 25);
-  --border: oklch(0.86 0.012 230);
-  --input: oklch(0.86 0.012 230);
-  --ring: oklch(0.52 0.04 175);
+  --ms-accent: #6b4ba1;
+  --ms-accent-hover: #8a6fc1;
+  --ms-header: #6b4ba1;
+  --ms-soft: #efe9f7;
+  --ms-badge-bg: #f1ede4;
+  --ms-badge-ink: #3c3833;
+  --ms-ok: #1a7f37;
+  --ms-page: #f5f1e8;
+  --ms-border: #e2dccf;
+
+  --background: #f5f1e8;
+  --foreground: #222222;
+  --card: #ffffff;
+  --card-foreground: #222222;
+  --popover: #ffffff;
+  --popover-foreground: #222222;
+  --primary: #6b4ba1;
+  --primary-foreground: #ffffff;
+  --secondary: #efe9f7;
+  --secondary-foreground: #5a3d8a;
+  --muted: #f1ede4;
+  --muted-foreground: #5f5a52;
+  --accent: #efe9f7;
+  --accent-foreground: #6b4ba1;
+  --destructive: #cf222e;
+  --border: #e2dccf;
+  --input: #e2dccf;
+  --ring: #6b4ba1;
 
   /* Course reading tokens */
-  --course-highlight: oklch(0.88 0.09 118);
-  --course-highlight-ink: oklch(0.3 0.05 125);
-  --course-surface: oklch(0.955 0.008 230);
-  --course-line: oklch(0.84 0.014 230);
+  --course-highlight: #efe9f7;
+  --course-highlight-ink: #6b4ba1;
+  --course-surface: #ffffff;
+  --course-line: #e2dccf;
 
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -119,32 +128,42 @@
 
 .dark {
   /*
-    Dark grey mode (not near-black): mid charcoal page, lighter elevated
-    cards, soft off-white text — easier on eyes for long night sessions.
+    Dark charcoal with the same MS Learning purple accent
+    (not near-black).
   */
-  --background: oklch(0.34 0.01 250);
-  --foreground: oklch(0.93 0.01 100);
-  --card: oklch(0.4 0.01 250);
-  --card-foreground: oklch(0.93 0.01 100);
-  --popover: oklch(0.4 0.01 250);
-  --popover-foreground: oklch(0.93 0.01 100);
-  --primary: oklch(0.8 0.08 118);
-  --primary-foreground: oklch(0.28 0.03 125);
-  --secondary: oklch(0.44 0.01 250);
-  --secondary-foreground: oklch(0.93 0.01 100);
-  --muted: oklch(0.44 0.01 250);
-  --muted-foreground: oklch(0.78 0.012 100);
-  --accent: oklch(0.46 0.02 175);
-  --accent-foreground: oklch(0.95 0.01 100);
-  --destructive: oklch(0.64 0.14 25);
-  --border: oklch(1 0 0 / 14%);
-  --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.72 0.05 175);
+  --ms-accent: #8a6fc1;
+  --ms-accent-hover: #b39ddb;
+  --ms-header: #6b4ba1;
+  --ms-soft: #3a3150;
+  --ms-badge-bg: #3c3833;
+  --ms-badge-ink: #f1ede4;
+  --ms-ok: #3fb950;
+  --ms-page: #2f2c33;
+  --ms-border: #4a4550;
 
-  --course-highlight: oklch(0.58 0.09 118);
-  --course-highlight-ink: oklch(0.22 0.03 125);
-  --course-surface: oklch(0.38 0.01 250);
-  --course-line: oklch(1 0 0 / 15%);
+  --background: #2f2c33;
+  --foreground: #f3f0ea;
+  --card: #3a3640;
+  --card-foreground: #f3f0ea;
+  --popover: #3a3640;
+  --popover-foreground: #f3f0ea;
+  --primary: #8a6fc1;
+  --primary-foreground: #1a1228;
+  --secondary: #3a3150;
+  --secondary-foreground: #efe9f7;
+  --muted: #3c3833;
+  --muted-foreground: #c9c2b8;
+  --accent: #3a3150;
+  --accent-foreground: #efe9f7;
+  --destructive: #f85149;
+  --border: #4a4550;
+  --input: #4a4550;
+  --ring: #8a6fc1;
+
+  --course-highlight: #3a3150;
+  --course-highlight-ink: #efe9f7;
+  --course-surface: #3a3640;
+  --course-line: #4a4550;
 
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
@@ -313,32 +332,69 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Course reading surfaces — soft contrast, calm accents */
+/* Course reading surfaces — MS Learning purple wash */
 .course-shell {
   color: var(--foreground);
-  /* Gentle atmospheric wash; avoids flat white glare */
   background:
     radial-gradient(
       120% 80% at 10% -10%,
-      color-mix(in oklch, var(--course-highlight) 18%, transparent),
+      color-mix(in srgb, var(--ms-soft) 70%, transparent),
       transparent 55%
     ),
     radial-gradient(
       90% 60% at 100% 0%,
-      color-mix(in oklch, var(--accent) 22%, transparent),
+      color-mix(in srgb, var(--ms-badge-bg) 80%, transparent),
       transparent 50%
     ),
     var(--background);
 }
 .course-shell .course-card {
-  background: color-mix(in oklch, var(--card) 92%, transparent);
+  background: color-mix(in srgb, var(--card) 94%, transparent);
   border: 1px solid var(--course-line);
   border-radius: 1rem;
   backdrop-filter: blur(6px);
 }
 .course-shell .course-pill {
-  background: var(--course-highlight);
-  color: var(--course-highlight-ink);
+  background: var(--ms-accent);
+  color: #fff;
+}
+.course-shell .course-pill:hover {
+  background: var(--ms-accent-hover);
+}
+.ms-badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: var(--ms-badge-bg);
+  color: var(--ms-badge-ink);
+}
+.ms-badge-accent {
+  background: var(--ms-soft);
+  color: var(--ms-accent);
+}
+.ms-code {
+  color: #222;
+  background: var(--ms-badge-bg);
+  border: 1px solid var(--ms-border);
+  border-radius: 4px;
+  padding: 0.05rem 0.35rem;
+  font-size: 0.85em;
+}
+.dark .ms-code {
+  color: var(--foreground);
+}
+.ms-lab-done {
+  border-color: color-mix(in srgb, var(--ms-ok) 45%, var(--course-line)) !important;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ms-ok) 8%, var(--card)),
+    var(--card)
+  ) !important;
+}
+.ms-lab-theme .ms-lab-hero {
+  border-top: 4px solid var(--ms-header);
 }
 .course-shell .prose-course {
   line-height: 1.7;

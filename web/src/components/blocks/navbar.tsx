@@ -16,6 +16,7 @@ const ITEMS = [
   { label: "Hub", href: "/" },
   { label: "Courses", href: "/courses/" },
   { label: "AB-650", href: "/courses/ab-650/" },
+  { label: "Labs", href: "/courses/ab-650/labs/" },
 ];
 
 export const Navbar = () => {

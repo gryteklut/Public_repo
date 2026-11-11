@@ -13,13 +13,24 @@ export type CourseStepState = {
   sources?: DaySources;
 };
 
+/** Official AB-650 Microsoft Learning hands-on lab progress */
+export type OfficialLabProgress = {
+  /** Exercise id → completed */
+  exercises: Record<string, boolean>;
+  completed?: boolean;
+  completedAt?: string;
+};
+
 export type CourseProgress = {
   version: 1;
   code: string;
   done: Record<string, boolean>; // day key "1"
   steps: Record<string, CourseStepState>;
   review: Record<string, Card>;
+  /** lab id → per-exercise checkboxes (official MS Learning labs) */
+  officialLabs?: Record<string, OfficialLabProgress>;
   last?: string; // day key
+  lastOfficialLabId?: string;
   updatedAt: string;
 };
 
@@ -305,4 +316,94 @@ export function applySourceVisibility(sources: DaySources): void {
       el.hidden = !sources.udemy;
     },
   );
+}
+
+function officialLabEntry(
+  progress: CourseProgress,
+  labId: string,
+): OfficialLabProgress {
+  return progress.officialLabs?.[labId] ?? { exercises: {} };
+}
+
+export function isOfficialLabExerciseComplete(
+  progress: CourseProgress,
+  labId: string,
+  exerciseId: string,
+): boolean {
+  return Boolean(progress.officialLabs?.[labId]?.exercises?.[exerciseId]);
+}
+
+export function setOfficialLabExercise(
+  progress: CourseProgress,
+  labId: string,
+  exerciseId: string,
+  completed: boolean,
+  allExerciseIds: string[],
+): CourseProgress {
+  const existing = officialLabEntry(progress, labId);
+  const exercises = { ...existing.exercises };
+  if (completed) exercises[exerciseId] = true;
+  else delete exercises[exerciseId];
+  const allDone = allExerciseIds.every((id) => Boolean(exercises[id]));
+  return {
+    ...progress,
+    lastOfficialLabId: labId,
+    officialLabs: {
+      ...(progress.officialLabs ?? {}),
+      [labId]: {
+        exercises,
+        completed: allDone,
+        completedAt: allDone ? new Date().toISOString() : undefined,
+      },
+    },
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+export function setOfficialLabComplete(
+  progress: CourseProgress,
+  labId: string,
+  completed: boolean,
+  exerciseIds: string[],
+): CourseProgress {
+  const exercises: Record<string, boolean> = {};
+  if (completed) {
+    for (const id of exerciseIds) exercises[id] = true;
+  }
+  return {
+    ...progress,
+    lastOfficialLabId: labId,
+    officialLabs: {
+      ...(progress.officialLabs ?? {}),
+      [labId]: {
+        exercises,
+        completed,
+        completedAt: completed ? new Date().toISOString() : undefined,
+      },
+    },
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+export function isOfficialLabComplete(
+  progress: CourseProgress,
+  labId: string,
+  exerciseIds: string[],
+): boolean {
+  const entry = progress.officialLabs?.[labId];
+  if (entry?.completed) return true;
+  return exerciseIds.every((id) => Boolean(entry?.exercises?.[id]));
+}
+
+export function officialLabMinutesCompleted(
+  progress: CourseProgress,
+  exercises: { labId: string; exerciseId: string; minutes: number }[],
+): number {
+  let done = 0;
+  for (const ex of exercises) {
+    if (isOfficialLabExerciseComplete(progress, ex.labId, ex.exerciseId)) {
+      done += ex.minutes;
+    }
+  }
+  return done;
 }
