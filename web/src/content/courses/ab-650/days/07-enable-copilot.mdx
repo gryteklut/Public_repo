@@ -51,114 +51,75 @@ videoTip: Highest-priority AB-650-new Udemy section for MS-102 holders. Watch en
 
 import { Quiz } from 'starlight-quiz/components';
 
+<Quiz id="ab650-d7-q1" shuffle={true}>
+Every salesperson already has a Microsoft 365 Copilot license. Copilot still drafts from a confidential site the whole company can open. Leadership wants that stopped. What should you fix?
 
-<Quiz id="d7q1">
-What is a primary tenant readiness concern before enabling Copilot broadly?
+- [ ] Buy a second Microsoft 365 Copilot license for each salesperson and retire the first one
+- [ ] Turn off Microsoft 365 service health notifications for the sales team
+- [ ] Add the company name to the Entra Password Protection banned list
+- [x] The permissions or the discovery scope, so the whole company is not granted that site
 
-- [x] Data oversharing and permissions hygiene so Copilot does not surface content users should not see
-- [ ] Disabling TLS on all endpoints
-- [ ] Removing all sensitivity labels
-- [ ] Turning off Service health notifications permanently
+The license is already there. Copilot is using content too many people can access, which is a data-readiness problem. Another license does not remove that access. Service health and Password Protection do not change who can open the site.
+</Quiz>
 
-Assess readiness and remediate data leaks/oversharing/compliance issues — core Copilot enablement skills.
+<Quiz id="ab650-d7-q2" shuffle={true}>
+Legal wants Microsoft 365 Copilot answers to stay on tenant content and not bring in public web pages. What should you change?
 
-[Source: Prevent oversharing with Microsoft 365 Copilot](https://learn.microsoft.com/en-us/microsoft-365-copilot/guidance/copilot-oversharing)
+- [x] The admin setting that turns off web search grounding for Copilot
+- [ ] A Graph connector pointed at a public search engine instead of tenant data
+- [ ] A mail contact named Web Search, added to the global address list
+- [ ] A Safe Links policy that detonates public web results like mail attachments
+
+Web search grounding is its own Copilot admin setting. A connector indexes a specific external system. A mail contact and Safe Links do not switch public web grounding off.
+</Quiz>
+
+<Quiz id="ab650-d7-q3" shuffle={true}>
+Copilot should answer from a line-of-business database that is not stored in SharePoint, and each person should see only the records they are allowed to see. What should you configure?
+
+- [ ] Restricted SharePoint Search, with the database server name added as a site
+- [x] A Copilot connector that indexes that system and keeps its permissions
+- [ ] Company branding that links to the database from the sign-in page
+- [ ] An attack simulation whose payload includes sample rows from the database
+
+A Copilot connector brings that external content into Microsoft Graph and can honor the source permissions, so grounding stays scoped to the person asking. Restricted SharePoint Search only limits SharePoint sites. Branding and a simulation do not index the database.
+</Quiz>
+
+<Quiz id="ab650-d7-q4" shuffle={true}>
+You want employees to use Microsoft 365 Copilot Cowork, and you need the admin control for that experience. Which statement is correct?
+
+- [ ] Cowork is turned on by creating a Safe Attachments policy in Defender
+- [ ] Cowork is a pay-as-you-go backup vault that stores OneDrive files
+- [x] Cowork is its own Copilot experience, separate from connectors and web search
+- [ ] Cowork replaces Conditional Access for every sign-in that reaches Copilot
+
+Cowork is one Copilot user experience. It is not a connector, not the web-search switch, not Safe Attachments, and not Backup. It also does not replace Conditional Access on the sign-in.
+</Quiz>
+
+<Quiz id="ab650-d7-q5" shuffle={true}>
+Choose two. Copilot is licensed, but answers include public web pages and a confidential site the whole company can open. You want tenant-only grounding, and staff who need that site must still open it. Which two actions match?
+
+- [ ] Remove every SharePoint permission, including the staff who still work in the site
+- [x] Turn off web search grounding for Copilot
+- [ ] Add the confidential site as a named location in Conditional Access
+- [x] Restrict discovery of the confidential site so Copilot stops grounding on it
+
+Web search and restricted discovery solve different parts of this request, and you need both. Removing every permission also blocks the staff who must keep opening the files. A named location is a network condition, not a SharePoint site.
+</Quiz>
+
+<Quiz id="ab650-d7-q6" shuffle={true}>
+The company wants one approved third-party AI provider available in Microsoft 365 Copilot, and the other providers blocked. What should you manage?
+
+- [x] The allow and block list of third-party AI providers in the Copilot settings
+- [ ] The Exchange MX record for each provider's public marketing domain
+- [ ] A retention label whose name matches the approved provider
+- [ ] Network connectivity insights for that provider's published IP address
+
+Third-party AI providers are allowed or blocked in the Copilot extensibility settings. Mail DNS, a retention label, and a network report do not admit or block a provider.
 </Quiz>
 
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-
-
-Enable and manage Copilot starts with readiness: licenses, in-app experiences, and especially data readiness. Copilot uses Microsoft Graph content the user can access. Oversharing (Everyone links, broad group membership) becomes an AI risk. Remediate with permissions cleanup, SAM controls, labels/DLP, and site restrictions.
+A Copilot license does not fix oversharing. Permissions and discovery decide what Copilot can ground on. Web search, Copilot connectors, Cowork, and third-party AI providers are separate settings. Do not treat one of them as a substitute for the others.
 
 </details>
-
-<Quiz id="d7q2">
-Managing web search for Copilot / Copilot Chat primarily controls:
-
-- [x] Whether Copilot can ground on public web content in addition to tenant content (per policy/config)
-- [ ] Whether MX records are published for the tenant
-- [ ] Whether PIM activations require approval
-- [ ] Whether Safe Attachments detonates files
-
-Web search grounding is an admin-governed Copilot capability called out in AB-650 skills.
-
-[Source: Manage web access for Copilot](https://learn.microsoft.com/en-us/microsoft-365-copilot/manage-web-access)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Manage web search for Copilot and Microsoft 365 Copilot Chat, and configure Copilot Search. Understand tenant settings such as self-service purchases, Copilot in admin centers, release preferences, AI disclaimer, and video/image generation. Know where these toggles live conceptually in admin experiences / Control System.
-
-</details>
-
-<Quiz id="d7q3">
-Microsoft 365 Copilot Cowork is best described as:
-
-- [x] A Copilot experience/capability admins must be able to manage as part of Copilot user experiences
-- [ ] A replacement for Entra Conditional Access
-- [ ] A Defender for Office 365 Safe Links policy type
-- [ ] An Exchange hybrid connector
-
-Manage Microsoft 365 Copilot Cowork is an explicit bullet under Enable and manage Microsoft 365 Copilot.
-
-[Source: AB-650 study guide — Copilot Cowork skill](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-AB-650 lists managing Copilot user experiences and specifically Microsoft 365 Copilot Cowork. Learn what Cowork is positioned as in current Microsoft documentation, how it differs from classic chat/in-app Copilot surfaces, and which admin controls govern availability. Hands-on at work helps memorably, even without job admin rights.
-
-</details>
-
-<Quiz id="d7q4">
-Copilot connectors are used to:
-
-- [x] Bring external/line-of-business data into Microsoft Graph so Copilot can ground on it (when configured and permitted)
-- [ ] Replace MFA authentication methods
-- [ ] Create DNS zones for custom domains
-- [ ] Disable Purview audit automatically
-
-Configure Copilot connectors is measured; connectors expand grounding beyond built-in M365 content.
-
-[Source: Graph connectors and Copilot](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/overview-graph-connector)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Configure Copilot connectors and manage third-party AI providers. Connectors index external content into Graph with schema/permissions considerations. Third-party AI provider governance is about what non-Microsoft AI is allowed and how it is controlled in the tenant.
-
-</details>
-
-<Quiz id="d7q5">
-Which admin mindset matches AB-650 Copilot configuration questions?
-
-- [x] Know which control and which portal/experience configures a stated Copilot behavior
-- [ ] Assume all Copilot settings are exclusively end-user toggles with no tenant admin surface
-- [ ] Assume Copilot ignores Microsoft 365 permissions
-- [ ] Assume Copilot requires Entra Connect hybrid sync
-
-Exam items are framed around configure/manage/govern — portal and control selection matters.
-
-[Source: Copilot Control System overview](https://learn.microsoft.com/en-us/copilot/control-system/overview)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Study Copilot settings as a map: licensing, data readiness, web grounding, Search, connectors, user experiences, Cowork, and third-party AI. The Copilot Control System is increasingly the governance/monitoring umbrella — Day 9 expands cost/usage/health monitoring there.
-
-</details>
-

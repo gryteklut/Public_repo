@@ -53,92 +53,75 @@ videoTip: Deep-dive Entra identities/roles/PIM/Graph. Skip the whole hybrid sync
 
 import { Quiz } from 'starlight-quiz/components';
 
+<Quiz id="ab650-d3-q1" shuffle={true}>
+You delegated User Administrator to the regional help desk, scoped to the France administrative unit. That admin cannot reset a password for a user who sits in Germany. What is the expected behavior?
 
-<Quiz id="d3q1">
-You need helpdesk staff to manage only users in the Norway division. Which Entra feature best scopes their admin rights?
+- [ ] Administrative units hide every object outside the unit, so this is a directory bug
+- [ ] The admin must hold standing Global Administrator or the scoped role never works
+- [ ] Password Protection is rejecting the reset because the user object is outside France
+- [x] The scoped role can manage only members of that administrative unit
 
-- [x] Administrative units with scoped role assignments
-- [ ] A single Global Administrator account shared by helpdesk
-- [ ] Disabling PIM for all roles
-- [ ] Assigning Exchange Online-only licenses
+A role scoped to an administrative unit manages members of that unit. The Germany user is outside the scope, so the reset is refused. The unit does not hide the rest of the directory from a normal read, and it does not require Global Administrator. Password Protection checks password text, not which unit a user belongs to.
+</Quiz>
 
-Administrative units let you scope role permissions to a subset of users/groups/devices — a measured AB-650 identity skill.
+<Quiz id="ab650-d3-q2" shuffle={true}>
+Two help-desk leads need User Administrator a few times a month. You do not want that role standing active on their accounts every day. What should you configure?
 
-[Source: Administrative units in Microsoft Entra ID](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/administrative-units)
+- [x] An eligible Privileged Identity Management assignment they activate when needed
+- [ ] A permanent Global Administrator role, because a scoped role cannot be activated
+- [ ] A sensitivity label that encrypts the role so it stays inactive until opened
+- [ ] An attack simulation that trains them before the role is made permanent
+
+An eligible PIM assignment stays inactive until the user activates it. Permanent Global Administrator widens access instead of limiting it. A sensitivity label classifies content. Attack simulation trains people. Neither one time-bounds an Entra role.
+</Quiz>
+
+<Quiz id="ab650-d3-q3" shuffle={true}>
+You must create 400 cloud users from a spreadsheet and add them to a licensing group. The work should be repeatable. What should you use?
+
+- [ ] Set-Mailbox in Exchange Online PowerShell, once for each spreadsheet row
+- [x] Microsoft Graph PowerShell to create the users and set group membership
+- [ ] The service health notification export, saved as a CSV of new users
+- [ ] Defender for Office 365 Threat Explorer, importing the spreadsheet as mail
+
+Microsoft Graph PowerShell is the bulk tool for cloud users and group membership. Set-Mailbox changes an existing mailbox. It does not create the user objects. Service health and Threat Explorer do not provision identities.
+</Quiz>
+
+<Quiz id="ab650-d3-q4" shuffle={true}>
+A partner company should work in one Team. Their people must sign in with their own company accounts, and you want to decide whether your tenant trusts their MFA. What should you use?
+
+- [ ] A new member account and password for each partner inside your tenant
+- [ ] Entra Connect, syncing the partner company's domain controllers into your tenant
+- [x] B2B guest invitations, plus inbound trust in cross-tenant access settings
+- [ ] The custom banned password list, with the partner domain added as a term
+
+B2B guests keep the account from their home tenant. Cross-tenant access settings control inbound collaboration and whether you trust the partner MFA. New member accounts duplicate identities. Entra Connect sync is the wrong tool for a partner, and it is not the AB-650 identity path. The banned password list does not create guest access.
+</Quiz>
+
+<Quiz id="ab650-d3-q5" shuffle={true}>
+Choose two. A regional admin should manage only users inside one administrative unit, and only after activating User Administrator. Which two configurations match?
+
+- [ ] Assign standing Global Administrator and ask the admin not to use it every day
+- [x] Scope the User Administrator assignment to that administrative unit
+- [x] Make the User Administrator assignment eligible in Privileged Identity Management
+- [ ] Publish a sensitivity label to the admin so the role appears in Word
+
+The scoped assignment limits who the admin can manage. The eligible PIM assignment keeps the role inactive until they activate it. Standing Global Administrator removes both limits. A sensitivity label does not grant or time-bound an Entra role.
+</Quiz>
+
+<Quiz id="ab650-d3-q6" shuffle={true}>
+Sales needs a shared mailbox and a Microsoft 365 group for the project. A contractor must appear in the address book and must not be able to sign in. What should you create for the contractor?
+
+- [ ] A member user with a Microsoft 365 Copilot license and a temporary password
+- [ ] A guest user, because every address-book entry has to be able to sign in
+- [ ] A mail-enabled security group with the contractor as its only owner
+- [x] A mail contact in the Microsoft 365 admin center, with no sign-in
+
+A mail contact is an address-book object without credentials. A member account and a guest account are both identities that can authenticate. A group is not a person you look up instead of a contact.
 </Quiz>
 
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-
-
-Administrative units (AUs) partition a tenant for delegated administration. Combine AUs with scoped directory roles so operators can manage only their population. This is preferred over over-privileged global roles.
+Stay on cloud identity. Guests, Privileged Identity Management, and administrative units are in scope. An administrative unit scopes the admin role. It does not hide the directory. Entra Connect sync troubleshooting is not the AB-650 path. Use Microsoft Graph PowerShell for bulk user and group work.
 
 </details>
-
-<Quiz id="d3q2">
-Why is Microsoft Entra Privileged Identity Management (PIM) important for Microsoft 365 admin roles on AB-650?
-
-- [x] It enables just-in-time eligible role activation with controls instead of standing privileged access
-- [ ] It replaces Conditional Access entirely
-- [ ] It is only used for guest B2B redemption
-- [ ] It automatically verifies custom domains
-
-PIM provides eligible, time-bound activation of privileged roles — core to governing Microsoft 365 admin roles.
-
-[Source: What is Microsoft Entra Privileged Identity Management?](https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-configure)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-AB-650 includes managing roles for Microsoft 365, including PIM. Know eligible vs permanent assignments, activation, approval, MFA on activation, and access reviews as governance patterns for privileged roles.
-
-</details>
-
-<Quiz id="d3q3">
-You must create 500 users from a CSV with consistent attributes. Which approach matches the bulk management objective?
-
-- [x] Use Microsoft Graph PowerShell (or Graph APIs) for bulk create/update operations
-- [ ] Create each user only from the Teams mobile app
-- [ ] Use Purview DLP to provision identities
-- [ ] Enable Copilot Cowork to create Entra users automatically without Graph
-
-Bulk management including Microsoft Graph PowerShell is an explicit skills-measured bullet under Entra identity management.
-
-[Source: Microsoft Graph PowerShell overview](https://learn.microsoft.com/en-us/powershell/microsoftgraph/overview)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-AB-650 expects familiarity with Microsoft Graph PowerShell for bulk identity operations (create users, update attributes, group membership). Practice Connect-MgGraph, least-privilege Graph permissions, and batching patterns at a conceptual level.
-
-</details>
-
-<Quiz id="d3q4">
-External contractors need access to a Teams-connected site. Which identity construct is the usual starting point?
-
-- [x] Guest users with external access / B2B collaboration settings governed appropriately
-- [ ] Always create permanent Global Administrator accounts for contractors
-- [ ] Disable all Conditional Access for guests by policy requirement
-- [ ] Store contractor passwords in a SharePoint list for shared login
-
-Guest/B2B users plus external collaboration settings are the standard model; AB-650 calls out managing guest users and external access settings.
-
-[Source: B2B collaboration overview](https://learn.microsoft.com/en-us/entra/external-id/what-is-b2b)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Manage guest users and external access settings: invitation redemption, cross-tenant access, guest permissions (what guests can do), and how guests appear in groups/Teams. Pair with Conditional Access for guests when securing access.
-
-</details>
-

@@ -48,92 +48,75 @@ videoTip: This is an AB-650-labelled section in Udemy — prioritize Teams Copil
 
 import { Quiz } from 'starlight-quiz/components';
 
+<Quiz id="ab650-d2-q1" shuffle={true}>
+Copilot drafts answers from a budget file on a SharePoint site. Finance must still open that file, and Copilot should stop using it. What should you change?
 
-<Quiz id="d2q1">
-Why do SharePoint and OneDrive permissions matter specifically for Microsoft 365 Copilot on AB-650?
+- [ ] Remove Finance permission so nobody, including Copilot, can open the file
+- [ ] Create a Conditional Access policy that blocks SharePoint for Finance
+- [x] Restrict discovery of that site so Copilot does not ground on it
+- [ ] Turn off Microsoft 365 Backup so Copilot cannot restore the file into answers
 
-- [x] Copilot grounds responses on content the user can access; oversharing becomes an AI data readiness problem
-- [ ] Copilot ignores SharePoint permissions and only uses public web search
-- [ ] Copilot can only read content labeled as Public
-- [ ] Copilot requires every site to be a Teams-connected site
+Copilot grounds on content the signed-in user is allowed to open. Restricted content discovery stops Copilot from using the site while people who already have permission can still open the file. Removing permission blocks Finance from the file they still need. Conditional Access would block the app, not one site. Backup is a restore tool, not a grounding switch. [Restricted Content Discovery](https://learn.microsoft.com/en-us/sharepoint/restricted-content-discovery)
+</Quiz>
 
-Copilot respects the user’s existing permissions. Oversharing and broad permissions therefore surface as Copilot data readiness / oversharing issues on the exam.
+<Quiz id="ab650-d2-q2" shuffle={true}>
+During a Copilot rollout, search and Copilot must use only an approved list of SharePoint sites, not every site a user can open. What should you use?
 
-[Source: Prevent oversharing with Copilot](https://learn.microsoft.com/en-us/microsoft-365-copilot/guidance/copilot-oversharing)
+- [ ] A retention policy that keeps only the approved sites for seven years
+- [ ] Safe Links, so every unapproved site URL is rewritten at click time
+- [ ] An administrative unit that contains the approved SharePoint sites
+- [x] Restricted SharePoint Search with those approved sites allowed
+
+Restricted SharePoint Search limits enterprise search and Copilot retrieval to an allow-list of sites. A retention policy keeps or deletes content. Safe Links checks URLs in mail and documents. An administrative unit scopes a directory role. It does not build a SharePoint search allow-list.
+</Quiz>
+
+<Quiz id="ab650-d2-q3" shuffle={true}>
+Organizers say Copilot is unavailable in Teams meetings, and transcripts are not being created. Meeting chat otherwise works. What should you check first?
+
+- [x] The Teams meeting policy that allows transcription and Copilot
+- [ ] A Purview retention label on the organizer's mailbox
+- [ ] The Exchange anti-malware policy for files posted in meeting chat
+- [ ] Whether the tenant has a custom banned password list
+
+Copilot in a Teams meeting depends on transcription being allowed by the meeting policy. A retention label preserves mailbox content. Anti-malware scans files. Password Protection rejects weak passwords. None of those turn meeting transcription on.
+</Quiz>
+
+<Quiz id="ab650-d2-q4" shuffle={true}>
+A project site was deleted yesterday and the owner needs the files back this week. Compliance also requires contracts to be kept for seven years. Which tool restores the deleted site?
+
+- [ ] A Purview retention policy scoped to SharePoint sites
+- [x] Microsoft 365 Backup, then a restore of the site from a backup point
+- [ ] Attack simulation training with a payload that names the site
+- [ ] DSPM for AI, using a recommended control to recreate the files
+
+Microsoft 365 Backup is the operational restore for Exchange, SharePoint, and OneDrive. A retention policy can preserve content for a compliance period, and it is not the same restore product. Attack simulation and DSPM for AI do not bring a deleted site back.
+</Quiz>
+
+<Quiz id="ab650-d2-q5" shuffle={true}>
+Choose two. Finance must keep opening a sensitive site, but Copilot must stop grounding on it. Separately, Teams meetings should be allowed to produce a transcript so Copilot can work in the meeting. Which two actions match?
+
+- [x] Restrict discovery on the sensitive site without removing Finance permission
+- [ ] Delete the Finance users so Copilot has no identity left to ground with
+- [x] Allow transcription in the Teams meeting policy used by those meetings
+- [ ] Disable service health notifications so Copilot ignores the sensitive site
+
+Discovery restriction and the meeting transcription policy solve two different requirements. Deleting users removes people, not a grounding setting. Service health notifications do not change which files Copilot can read.
+</Quiz>
+
+<Quiz id="ab650-d2-q6" shuffle={true}>
+A guest opens project files through a sharing link, and Copilot answers from those files when that guest asks. The guest must stop seeing the files. What should you change?
+
+- [ ] Company branding, so the guest sees a warning on the sign-in page
+- [ ] A service health notification that mentions the project site name
+- [x] The SharePoint permission or sharing link that grants the guest access
+- [ ] Network connectivity insights for the guest's home office
+
+Copilot follows the access the person already has. Remove or narrow the sharing link or the site permission. Branding, a service health notice, and a network report do not revoke the file.
 </Quiz>
 
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-
-
-AB-650 links workload configuration to Copilot quality. Create/manage SharePoint sites and permissions, then use SharePoint Advanced Management, Microsoft Search controls, and site exclusions so Copilot does not surface content that should not be discoverable. Restricted Content Discovery, Restricted SharePoint Search, and Restricted Access Control are high-value distinctions for exam scenarios.
+Copilot grounding follows SharePoint permissions. Restricting discovery, or using Restricted SharePoint Search, is a different task from taking away the permission to open the file. Teams meeting Copilot needs transcription allowed in the meeting policy. Microsoft 365 Backup restores content. It does not replace Purview retention.
 
 </details>
-
-<Quiz id="d2q2">
-You need Copilot available in Teams meetings with transcription support governed by policy. Where do you typically control meeting-related Copilot behavior?
-
-- [x] Teams meeting policies / admin settings for Copilot and transcription
-- [ ] Exchange transport rules only
-- [ ] Entra Password Protection
-- [ ] Purview Insider Risk Management policies only
-
-Teams meeting policies and related admin settings govern Copilot/transcription behavior in meetings — an explicit AB-650 workload objective.
-
-[Source: Manage Microsoft 365 Copilot in Teams meetings](https://learn.microsoft.com/en-us/microsoft-365/frontline/flw-copilot-meetings)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Under “Manage Microsoft 365 workloads,” AB-650 includes configuring settings for Copilot in Teams meetings, including transcription. Know that meeting policies can allow/limit Copilot experiences and that transcription/recap features interact with compliance and privacy settings in the tenant.
-
-</details>
-
-<Quiz id="d2q3">
-Which statement about Microsoft 365 Backup aligns with AB-650 skills measured?
-
-- [x] Admins should know how to set up, restore, and monitor Microsoft 365 Backup
-- [ ] Microsoft 365 Backup replaces the need for retention labels
-- [ ] Microsoft 365 Backup is only available for on-premises Exchange
-- [ ] Microsoft 365 Backup is configured exclusively in Defender XDR
-
-AB-650 lists configure and use Microsoft 365 Backup including setup, restore, and monitor. It does not replace Purview retention, and it is not a Defender XDR console feature.
-
-[Source: Microsoft 365 Backup overview](https://learn.microsoft.com/en-us/microsoft-365/backup/backup-overview)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Microsoft 365 Backup is called out on AB-650 tenant skills. Understand product purpose (operational restore for supported workloads), high-level setup, restore workflows, and monitoring — distinct from Purview retention (compliance) and from Defender threat protection.
-
-</details>
-
-<Quiz id="d2q4">
-A site contains sensitive drafts that should not be discoverable by Copilot while a permissions review is underway. Which control family is most relevant?
-
-- [x] SharePoint restriction / exclusion controls (for example Restricted Content Discovery or related SAM controls)
-- [ ] Disabling MFA for the site owners
-- [ ] Deleting the Microsoft 365 tenant Service health feed
-- [ ] Converting all users to guest accounts
-
-SharePoint Advanced Management and Copilot-related restriction/exclusion controls are designed for scenarios where content should not be grounded/discovered while access is remediated.
-
-[Source: Restricted Content Discovery](https://learn.microsoft.com/en-us/sharepoint/restricted-content-discovery)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-When preparing a tenant for Copilot, you often need to exclude or restrict sites from search/discovery while fixing oversharing. Learn the difference between cutting off Copilot discovery versus changing permissions versus applying sensitivity/DLP. Exam scenarios frequently describe “permissions review in progress” as the trigger.
-
-</details>
-

@@ -39,92 +39,75 @@ videoTip: "Short AB-650 monitoring section — watch fully, then redo incomplete
 
 import { Quiz } from 'starlight-quiz/components';
 
+<Quiz id="ab650-d9-q1" shuffle={true}>
+Leadership wants the number of people who actively used Copilot in Word and in Teams over the last month. What should you open?
 
-<Quiz id="d9q1">
-Where do you commonly monitor Copilot workload-level adoption details in Microsoft 365?
+- [ ] The Defender for Office 365 alert queue for that same month
+- [x] Copilot usage reports in the Microsoft 365 admin center
+- [ ] The custom banned password list, exported to a spreadsheet
+- [ ] The company branding page, which records sign-in theme views
 
-- [x] Usage reports in the Microsoft 365 admin center (Copilot adoption/usage experiences)
-- [ ] Only DNS secondary zones
-- [ ] Only the Windows Event Viewer on a domain controller
-- [ ] Only Exchange Offline Address Book generation logs
+Copilot adoption by app is in the Microsoft 365 usage reports. Defender alerts, Password Protection, and company branding do not count Copilot active users. A busy usage chart is also not, by itself, a service incident.
+</Quiz>
 
-AB-650 lists monitoring usage reports for Copilot in the Microsoft 365 admin center, including workload-level adoption details.
+<Quiz id="ab650-d9-q2" shuffle={true}>
+Finance asks what the tenant spent on pay-as-you-go AI consumption last month. A count of active Copilot users is not enough. What should you review?
 
-[Source: Microsoft 365 Copilot usage report](https://learn.microsoft.com/en-us/microsoft-365/admin/activity-reports/microsoft-365-copilot-usage)
+- [ ] Only the Copilot active-user chart in the usage report
+- [ ] Attack simulation training, which is the bill for Copilot credits
+- [x] The AI services cost view for pay-as-you-go or consumption charges
+- [ ] Network connectivity insights, which are priced per office
+
+Cost, credits, and pay-as-you-go consumption are a different view from adoption. The usage report shows activity, not the charges. Attack simulation and network insights are not the AI consumption bill.
+</Quiz>
+
+<Quiz id="ab650-d9-q3" shuffle={true}>
+You need one operations place for Copilot adoption, health, and governance signals, not only a single active-user chart. What fits that view?
+
+- [ ] Exchange transport rules that catch messages mentioning Copilot
+- [ ] An administrative unit created with the name Copilot
+- [ ] Safe Links reports of URLs people clicked in mail
+- [x] The Copilot Control System
+
+The Copilot Control System is the operations view for adoption, health, and governance. A usage report is narrower. Transport rules, an administrative unit, and Safe Links do not provide that view. [Copilot Control System](https://learn.microsoft.com/en-us/copilot/control-system/overview)
+</Quiz>
+
+<Quiz id="ab650-d9-q4" shuffle={true}>
+Copilot active users doubled this week. Service health shows no Microsoft 365 incident. A manager asks you to open a service incident for the spike. What is the better reading?
+
+- [x] Read it as an adoption change unless service health lists an incident
+- [ ] Treat every rise in the usage report as a service health incident
+- [ ] Treat the spike as Password Protection locking Copilot users out
+- [ ] Treat the spike as attack simulation removing Copilot licenses
+
+The usage report describes adoption. Service health is the incident list. A spike without an incident is not a health event, a password lockout, or a license removal by a simulation.
+</Quiz>
+
+<Quiz id="ab650-d9-q5" shuffle={true}>
+Choose two. The same review needs both numbers: how many people used Copilot in Excel this month, and what pay-as-you-go AI consumption cost. Which two views match?
+
+- [ ] Defender incidents that mention Excel attachments
+- [x] The Copilot usage report for active users by app
+- [x] The AI cost or consumption view for the pay-as-you-go charges
+- [ ] The organizational profile, which stores both figures on the tenant address
+
+Active users come from the usage report. Charges come from the cost or consumption view. Defender incidents and the organizational profile do not hold either number.
+</Quiz>
+
+<Quiz id="ab650-d9-q6" shuffle={true}>
+You need operational insight into agent activity and the agent lifecycle, not the Word Copilot adoption chart. Where does that agent view belong?
+
+- [ ] Company branding, because each agent is shown on the sign-in page
+- [ ] A sensitivity label policy named Agent Lifecycle
+- [x] Agent 365 monitoring for agent activity and lifecycle
+- [ ] Safe Attachments, which quarantines agents that have gone idle
+
+Agent activity and lifecycle are monitored in Agent 365. The Copilot usage report answers a different question. Branding, a label policy, and Safe Attachments do not inventory agents.
 </Quiz>
 
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-
-
-Monitor usage reports for Copilot in the Microsoft 365 admin center, including workload-level adoption. Know what adoption metrics help you prove value and spot underused workloads after license assignment.
+Copilot adoption by workload is in Microsoft 365 usage reports. The Copilot Control System adds the broader health and governance view. AI cost, credits, and pay-as-you-go consumption are a separate view. Agent activity belongs in Agent 365 monitoring, not in the Defender incident queue.
 
 </details>
-
-<Quiz id="d9q2">
-The Copilot Control System is positioned as a place to:
-
-- [x] Monitor usage/adoption and service health for AI services (and related governance controls)
-- [ ] Replace Entra ID as the identity provider
-- [ ] Host MX and SPF records
-- [ ] Detonate email attachments instead of Safe Attachments
-
-Skills measured include monitoring usage/adoption and service health via the Copilot Control System.
-
-[Source: Copilot Control System overview](https://learn.microsoft.com/en-us/copilot/control-system/overview)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Use Copilot Control System concepts for AI operations: adoption, health, and governance visibility. Pair with cost management for AI services (credits, pay-as-you-go, chargeback thinking).
-
-</details>
-
-<Quiz id="d9q3">
-Managing costs for AI services in Microsoft 365 may involve:
-
-- [x] Monitoring usage-based consumption / Copilot-related cost signals and applying governance to limit waste
-- [ ] Deleting the tenant to reduce invoice complexity
-- [ ] Disabling TLS to reduce compute
-- [ ] Assigning Global Administrator to all users for cheaper licensing
-
-Manage and monitor costs for AI services is an explicit monitoring-domain bullet.
-
-[Source: Copilot Credits / cost related documentation](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/copilot-credits)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-AI introduces usage-based cost dimensions (credits, pay-as-you-go, agents). Know that cost monitoring is an exam topic: attribute consumption, spot spikes, and apply admin controls so AI spend stays intentional.
-
-</details>
-
-<Quiz id="d9q4">
-Before Day 10 practice, the most effective catch-up strategy in this portal is:
-
-- [x] Filter incomplete modules — prioritize AB-650-new tags first if time is short
-- [ ] Only reread hybrid Entra Connect sync error codes
-- [ ] Skip all security domains because MS-102 covered them forever
-- [ ] Mark modules complete without answering questions
-
-For MS-102 holders, AB-650-new content is the highest failure risk; the portal tags exist to drive that prioritization.
-
-[Source: AB-650 study guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Days 1–6 refresh shared skills; Days 7–9 carry most net-new weight. Use the portal progress bar and tag filter. Expand study panels on missed questions, then unlock Done only when every control question is correct.
-
-</details>
-
