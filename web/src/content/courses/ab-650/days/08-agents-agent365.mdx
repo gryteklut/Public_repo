@@ -51,92 +51,75 @@ videoTip: Watch both AB-650 agent sections. This is pure net-new vs classic MS-1
 
 import { Quiz } from 'starlight-quiz/components';
 
+<Quiz id="ab650-d8-q1" shuffle={true}>
+A new agent will read SharePoint and send mail. It must not run under a shared user account whose password several people know. What should the agent have?
 
-<Quiz id="d8q1">
-Microsoft Entra Agent ID is primarily about:
+- [x] Its own agent identity, managed with Microsoft Entra Agent ID
+- [ ] The Global Administrator password, stored in the agent's instructions
+- [ ] A mail contact, because a contact can sign in and act as the agent
+- [ ] A sensitivity label, used as the agent's only identity in the directory
 
-- [x] Giving agents identities with lifecycle workflows you can manage like other identities needing ownership and access control
-- [ ] Replacing MX records for email delivery
-- [ ] A Safe Attachments policy template
-- [ ] A SharePoint hub site template
+Agent ID is the agent's identity, with its own lifecycle. A shared Global Administrator password is standing privilege, not an agent identity. A mail contact cannot sign in. A sensitivity label classifies content and is not an account.
+</Quiz>
 
-Manage lifecycle workflows for agent identities using Microsoft Entra Agent ID is a first-class AB-650 skill.
+<Quiz id="ab650-d8-q2" shuffle={true}>
+A developer finished an agent and wants the whole company to use it. An administrator must be able to approve or reject it before it is published. Where does that happen?
 
-[Source: Microsoft Entra Agent ID overview](https://learn.microsoft.com/en-us/entra/agent-id/overview)
+- [ ] On the company branding page, as custom text on the sign-in screen
+- [x] In the agent registry, where you review the agent and then publish or reject it
+- [ ] In Password Protection, by adding the agent's display name to the banned list
+- [ ] In attack simulation, by sending the developer a campaign about the agent
+
+The registry is the inventory and the approval point for what is published, rejected, or blocked. Company branding, the banned password list, and attack simulation do not review an agent.
+</Quiz>
+
+<Quiz id="ab650-d8-q3" shuffle={true}>
+A published agent should be available only to Finance, and that access should be requestable and removable when people change roles. What should you use?
+
+- [ ] A mail flow rule that drops any message mentioning the agent
+- [ ] Service health notifications sent only to the Finance distribution list
+- [x] An access package that grants use of the agent to Finance
+- [ ] A custom banned password list that is shared with the Finance team
+
+An access package is how you grant and later remove use of the agent. A transport rule, a service health mail, and Password Protection do not assign that access.
+</Quiz>
+
+<Quiz id="ab650-d8-q4" shuffle={true}>
+The agent identity should be blocked from signing in from outside your country. Your users' own sign-ins must not all be blocked by the same rule. What should you target?
+
+- [ ] A country name typed into the organizational profile street-address field
+- [ ] A Safe Links policy that includes the country code in the URL pattern
+- [ ] DSPM for AI, which enforces the network location of agent sign-ins
+- [x] A Conditional Access policy targeted at that agent identity, using location
+
+Conditional Access can target the agent identity and use location, without wrapping every user in the same block. The organizational profile, Safe Links, and DSPM for AI do not make that sign-in decision.
+</Quiz>
+
+<Quiz id="ab650-d8-q5" shuffle={true}>
+Choose two. An agent is waiting for an administrator to decide whether it can be published. After publication, only Finance should be able to use it. Which two actions match?
+
+- [x] Review the agent in the registry before you publish it
+- [ ] Assign standing Global Administrator to every member of Finance
+- [x] Grant use of the published agent through an access package for Finance
+- [ ] Replace the agent with a mail contact so it shows in the address book
+
+The registry review is the publish decision. The access package is who may use the agent afterward. Global Administrator is not agent access, and a mail contact is not the agent identity or the grant.
+</Quiz>
+
+<Quiz id="ab650-d8-q6" shuffle={true}>
+Each production agent needs a person who is accountable for it. That person is not the agent's own identity. What should you assign?
+
+- [ ] A second agent identity that reuses the first agent's credentials
+- [x] An owner on the agent, separate from the agent identity
+- [ ] A service health notification whose subject is the agent's name
+- [ ] A Safe Attachments policy named after the agent
+
+The owner is the accountability assignment on the agent. It is a different object from the agent identity. A second identity that shares credentials, a health alert, and a threat policy do not record that owner.
 </Quiz>
 
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-
-
-Agents are not just bots in a gallery — they have identities. Manage lifecycle (create, own, sponsor, retire), secure access with access packages and Conditional Access, and manage owners. When an owner leaves, governance must cover transfer/disable patterns.
+Agent ID is the identity. The registry is where you approve, reject, or block what gets published. Access packages decide who can use a published agent, and Conditional Access can target the agent identity. An owner is the accountable person, not a second copy of the agent.
 
 </details>
-
-<Quiz id="d8q2">
-The agent registry is used to:
-
-- [x] Discover, review, publish/reject, install, block, or control access to Microsoft and third-party agents (including uploading custom agents)
-- [ ] Store only DNS PTR records
-- [ ] Replace Purview audit logs
-- [ ] Host Exchange hybrid free/busy only
-
-AB-650 lists discover/manage agents in the registry, review requests, publish/reject, install/block/control access, and upload custom agents.
-
-[Source: AB-650 study guide — agent registry skills](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Treat the agent registry as the inventory and control plane: what agents exist, what is pending approval, what is published, what is blocked, and who can use them. Also configure agent settings: allowed agent types, sharing, templates, and user access.
-
-</details>
-
-<Quiz id="d8q3">
-Securing agent access with access packages and Conditional Access implies agents are treated as:
-
-- [x] Identities that can be granted least-privilege, time-bound, policy-governed access to resources
-- [ ] Unmanageable external websites that cannot be governed
-- [ ] Only physical devices in Autopilot
-- [ ] Only shared mailboxes
-
-Skills measured explicitly include securing agent access with access packages and Conditional Access.
-
-[Source: Entitlement management / access packages overview](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-overview)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Combine identity governance (access packages, reviews) with Conditional Access targeted at agent identities. Think: just enough access, auditable assignments, and policy enforcement similar in spirit to human privileged access — adapted to agents.
-
-</details>
-
-<Quiz id="d8q4">
-Agent 365 governance skills include monitoring activity, protecting sensitive data, and:
-
-- [x] Evaluating compliance gaps using Agent 365
-- [ ] Disabling Microsoft Graph permanently for all humans
-- [ ] Removing all sensitivity labels tenant-wide
-- [ ] Turning off MFA for Global Administrators
-
-Secure and govern agents by using Agent 365 includes monitor activity, protect sensitive data, and evaluate compliance gaps.
-
-[Source: Microsoft Agent 365](https://learn.microsoft.com/en-us/microsoft-agent-365/)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Beyond build/publish: operate agents. Monitor agent activity, apply data protection, evaluate compliance gaps, and manage tools available to agents in Agent 365. This is governance/ops, not just enablement.
-
-</details>
-

@@ -46,365 +46,97 @@ videoTip: No new theory. Rewatch only sections tied to questions you miss in the
 
 import { Quiz } from 'starlight-quiz/components';
 
-Answer from memory. Open a study note only if you miss.
+<Quiz id="ab650-d10-q1" shuffle={true}>
+You have limited study time left and you want to spend the most of it on the largest AB-650 domain. Which weighting should drive that choice?
 
-<Quiz id="d10q1">
-Which AB-650 domain carries the largest listed weight?
+- [x] Govern and secure about 40–45 percent, AI services about 35–40 percent, tenant and workloads about 20–25 percent
+- [ ] Tenant and workloads about 40–45 percent, govern and secure about 20–25 percent, and AI services unmeasured
+- [ ] Endpoint and Cloud Apps about 40–45 percent, Copilot about 10 percent, and identity work covering the rest
+- [ ] Each of the three domains about one third, so extra days on agents do not change the plan
 
-- [x] Govern and secure Microsoft 365 tenants and workloads (40–45%)
-- [ ] Configure and manage Microsoft 365 tenants and workloads (20–25%)
-- [ ] Hybrid Exchange classic public folders (90–95%)
-- [ ] On-premises WSUS only (50–55%)
+The study guide puts govern and secure first, then AI services, then tenant and workloads. Hybrid sync depth, full endpoint administration, and Cloud Apps are not where that weight sits, and the domains are not equal. [Study guide for Exam AB-650](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650)
+</Quiz>
 
-Official skills at a glance list govern/secure at 40–45%, AI services 35–40%, tenant/workloads 20–25%.
+<Quiz id="ab650-d10-q2" shuffle={true}>
+Copilot quoted a salary file. The person who asked is allowed to open that file today. Copilot must stop using the file, and the person must still open it. What should you change?
 
-[Source: AB-650 skills at a glance](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650)
+- [ ] The user's authentication methods, so Copilot can no longer sign in as them
+- [x] Discovery or the search scope for that file, not a new identity design
+- [ ] Entra Connect sync, because the file is being grounded through hybrid identity
+- [ ] A Global Administrator role for the user, so they can opt out of grounding
+
+The user can already open the file, so the symptom is grounding and discovery, not a missing identity design. Changing authentication methods, adding Entra Connect, or granting Global Administrator does not take that file out of Copilot while leaving it open for the user.
+</Quiz>
+
+<Quiz id="ab650-d10-q3" shuffle={true}>
+Five administrators hold standing Global Administrator and use it only a few times a month. What is the better design?
+
+- [ ] Add a sixth standing Global Administrator so one person is always signed in
+- [ ] Replace the directory role with a sensitivity label named Global Administrator
+- [ ] Put a report-only Conditional Access policy in front of every admin sign-in and stop there
+- [x] Make the role eligible in PIM and have them activate it only for the task that needs it
+
+Standing privilege is the problem PIM is meant to shrink. An eligible assignment is activated for the task and then ends. Another standing admin makes the problem larger. A sensitivity label is not a role. Report-only mode does not remove the standing assignment, and it would not block the sign-in either.
+</Quiz>
+
+<Quiz id="ab650-d10-q4" shuffle={true}>
+You need a measured phishing exercise for the sales team and follow-up training for people who click. Which product does that?
+
+- [x] Attack simulation training in Defender for Office 365
+- [ ] A Purview retention policy whose default subject line mentions phishing
+- [ ] Copilot web search pointed at a known phishing URL
+- [ ] Network connectivity insights for the office where sales sits
+
+Attack simulation training runs the campaign against the group you choose and assigns training from the outcome. Retention, web search, and network insights do not send the exercise or track who clicked.
+</Quiz>
+
+<Quiz id="ab650-d10-q5" shuffle={true}>
+Passport numbers must be blocked when someone pastes them into a Copilot prompt. You already know who has been using Copilot. What is the control that enforces the block?
+
+- [ ] The Copilot usage report, filtered to people who typed a passport number
+- [x] A DLP policy that includes the Copilot location and detects that sensitive info type
+- [ ] DSPM for AI, with the recommendation left as a suggestion and no policy behind it
+- [ ] The Teams meeting policy that allows transcription
+
+DLP is what can block the sensitive prompt. The usage report and DSPM for AI tell you about activity and posture. They do not enforce this block on their own. A meeting transcription setting does not inspect Copilot prompts.
+</Quiz>
+
+<Quiz id="ab650-d10-q6" shuffle={true}>
+An agent is built and waiting. Nobody in the company should use it until an administrator approves publication. Which control is that approval?
+
+- [ ] Giving the builder standing Global Administrator so they can self-approve
+- [ ] Enabling Microsoft 365 Backup on a mailbox created for the agent
+- [ ] Adding a Safe Links exception for the URL where the agent is hosted
+- [x] The agent registry review that publishes, rejects, or blocks the agent
+
+The registry is the approval gate before publication. A standing Global Administrator role, Backup, and a Safe Links exception do not review or publish the agent.
+</Quiz>
+
+<Quiz id="ab650-d10-q7" shuffle={true}>
+Choose two. A confidential site appears in Copilot for people who can already open it, and a regional help desk must manage only the users in one country. Which two actions match those two problems?
+
+- [x] Restrict discovery of the site, or narrow permission if those people should not open it
+- [ ] Turn off every Conditional Access policy so Copilot can reindex the site
+- [ ] Install Entra Connect and filter the SharePoint site by the user's country
+- [x] Scope the help-desk role to an administrative unit that contains that country
+
+Discovery or permissions is the Copilot fix. If people must keep opening the file, restrict discovery rather than deleting their access. The help desk is limited by scoping the role to the administrative unit. Disabling Conditional Access and adding Entra Connect do not solve either request.
+</Quiz>
+
+<Quiz id="ab650-d10-q8" shuffle={true}>
+Yesterday's SharePoint site must be restored for the project team. Contracts must also be kept for seven years. Which pairing is right?
+
+- [ ] Backup keeps the contracts for seven years, and a retention label restores yesterday's site
+- [ ] Attack simulation restores the site, and DSPM for AI is what keeps the contracts
+- [x] Microsoft 365 Backup restores the site, and a retention label or policy keeps the contracts
+- [ ] Service health restores the site, and company branding is what keeps the contracts
+
+Backup is the operational restore of the deleted site. Retention is the control that keeps the contracts for the compliance period. Swapping those two tools, or substituting attack simulation, DSPM for AI, service health, or branding, misses one of the jobs or both.
 </Quiz>
 
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-Memorize the three domain weights. Even as an MS-102 holder, do not under-study AI (35–40%). Governance/security remains the single largest block.
+Match the symptom to the control. Govern and secure is the largest domain, then AI services, then tenant and workloads. Oversharing is permissions or discovery, not a new identity design. Standing Global Administrator is a PIM problem. Backup restores. Retention keeps. DLP blocks. The registry approves an agent.
 
 </details>
-
-<Quiz id="d10q2">
-Copilot returns content from a SharePoint site that should still be under permissions review. Which response is most aligned with AB-650?
-
-- [x] Apply SharePoint restriction/exclusion controls and remediate oversharing/permissions
-- [ ] Disable Entra ID MFA tenant-wide
-- [ ] Delete Service health
-- [ ] Convert the site to a public anonymous FTP server
-
-Data readiness and SharePoint controls for Copilot grounding are core AB-650 themes.
-
-[Source: Restricted Content Discovery](https://learn.microsoft.com/en-us/sharepoint/restricted-content-discovery)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Scenario pattern: Copilot surfaces sensitive drafts → fix discovery/permissions, not identity fundamentals unrelated to the symptom.
-
-</details>
-
-<Quiz id="d10q3">
-Just-in-time elevation for Global Reader vs standing Global Administrator is primarily a job for:
-
-- [x] Microsoft Entra Privileged Identity Management (PIM)
-- [ ] Safe Links policies
-- [ ] Microsoft 365 Backup
-- [ ] Teams meeting templates only
-
-PIM governs eligible privileged role activation.
-
-[Source: Privileged Identity Management](https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-configure)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Standing privileged roles are a governance smell. PIM eligible assignments with activation controls match AB-650 identity governance expectations.
-
-</details>
-
-<Quiz id="d10q4">
-Which security product family is explicitly centered in AB-650 “Secure Microsoft 365 workloads” bullets?
-
-- [x] Microsoft Defender for Office 365
-- [ ] Only Defender for Identity sensor tuning on DCs
-- [ ] Only Defender for Cloud Apps Shadow IT discovery deep-dives
-- [ ] Only Microsoft Endpoint Configuration Manager ADR rules
-
-AB-650 lists Defender for Office 365 alerts, policies, investigation, and attack simulation.
-
-[Source: Defender for Office 365](https://learn.microsoft.com/en-us/defender-office-365/mdo-about)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Do not sink limited study time into full MS-102 XDR breadth. Be excellent at Defender for Office 365 collaboration threats.
-
-</details>
-
-<Quiz id="d10q5">
-DSPM for AI helps you:
-
-- [x] Monitor and secure AI activity / posture in Microsoft Purview
-- [ ] Configure MX priority values
-- [ ] Create Entra administrative units
-- [ ] Replace Conditional Access
-
-DSPM for AI is the Purview capability called out for AI activity monitoring/security.
-
-[Source: DSPM for AI](https://learn.microsoft.com/en-us/purview/dspm-for-ai)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Connect Purview classic controls (DLP/labels/retention requirements) to AI-specific posture with DSPM for AI.
-
-</details>
-
-<Quiz id="d10q6">
-An agent is pending approval before organization-wide use. Which control plane is most relevant?
-
-- [x] Agent registry review to publish or reject the agent
-- [ ] Exchange inbox rules on a shared mailbox only
-- [ ] Company branding logo upload only
-- [ ] SSPR registration campaign only
-
-Registry workflows include reviewing requests and publishing or rejecting agents.
-
-[Source: AB-650 agent registry objectives](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Registry = inventory + approval + block/install controls for Microsoft, third-party, and custom agents.
-
-</details>
-
-<Quiz id="d10q7">
-Group-based licensing is preferred for large Copilot rollouts because:
-
-- [x] License assignment follows group membership with less manual per-user churn
-- [ ] It disables the need for any Entra authentication
-- [ ] It automatically remediates phishing emails
-- [ ] It publishes agents without registry approval
-
-AB-650 measures group-based licensing for Microsoft 365 and AI licenses.
-
-[Source: Assign licenses to a group](https://learn.microsoft.com/en-us/entra/identity/users/licensing-groups-assign)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Operational pattern: security/M365 groups drive license assignment for Copilot and related AI SKUs at scale.
-
-</details>
-
-<Quiz id="d10q8">
-Conditional Access can protect agent access by:
-
-- [x] Applying policy conditions/controls to agent identities similar to other identities needing governance
-- [ ] Rewriting SPF records automatically
-- [ ] Detonating attachments in Safe Attachments
-- [ ] Creating retention labels
-
-Secure agent access including Conditional Access is explicitly measured.
-
-[Source: Conditional Access overview](https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Extend your CA mental model from humans to agents: who/what the agent is, which apps/resources, which grant controls.
-
-</details>
-
-<Quiz id="d10q9">
-Microsoft 365 Backup on AB-650 is about:
-
-- [x] Setup, restore, and monitor for operational recovery scenarios
-- [ ] Replacing Defender threat policies
-- [ ] Replacing sensitivity labels
-- [ ] Only backing up on-premises file servers via SMB
-
-Configure and use Microsoft 365 Backup including setup, restore, and monitor is a tenant skill.
-
-[Source: Microsoft 365 Backup overview](https://learn.microsoft.com/en-us/microsoft-365/backup/backup-overview)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Distinguish Backup (operational restore) from Purview retention (compliance) and from Defender (threats).
-
-</details>
-
-<Quiz id="d10q10">
-Web search management for Copilot controls grounding on:
-
-- [x] Public web content versus tenant-only grounding behaviors per admin configuration
-- [ ] Only intranet DHCP scopes
-- [ ] Only Windows Hello for Business PIN length
-- [ ] Only Autopilot JSON profiles
-
-Manage web search for Copilot and Copilot Chat is an enablement-domain skill.
-
-[Source: Manage web access for Copilot](https://learn.microsoft.com/en-us/microsoft-365-copilot/manage-web-access)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Expect scenario questions: restrict web grounding for a population vs leave it enabled for research scenarios.
-
-</details>
-
-<Quiz id="d10q11">
-Administrative units help you:
-
-- [x] Scope admin permissions to a subset of directory objects
-- [ ] Create Safe Attachments policies
-- [ ] Configure Copilot image generation toggles
-- [ ] Host the agent registry exclusively
-
-Create and manage administrative units is an Entra identity bullet on AB-650.
-
-[Source: Administrative units](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/administrative-units)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Delegation pattern for regional/divisional admins without Global Administrator sprawl.
-
-</details>
-
-<Quiz id="d10q12">
-Attack simulation training is part of:
-
-- [x] Defender for Office 365 security skills on AB-650
-- [ ] SharePoint hub navigation design only
-- [ ] Entra company branding only
-- [ ] DNSSEC key rotation only
-
-Configure and manage attack simulations, including training campaigns, is listed under Secure Microsoft 365 workloads.
-
-[Source: Attack simulation training](https://learn.microsoft.com/en-us/defender-office-365/attack-simulation-training-get-started)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Simulations measure susceptibility and drive training — governance of human risk for email threats.
-
-</details>
-
-<Quiz id="d10q13">
-Copilot connectors typically expand Copilot grounding by:
-
-- [x] Indexing external sources into Microsoft Graph with governed access
-- [ ] Removing the need for user licenses
-- [ ] Disabling Purview auditing
-- [ ] Replacing PIM
-
-Configure Copilot connectors is measured under Enable and manage Microsoft 365 Copilot.
-
-[Source: Graph connectors overview](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/overview-graph-connector)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Connectors are extensibility + governance: what data is indexed, who can see it, how Copilot uses it.
-
-</details>
-
-<Quiz id="d10q14">
-Monitoring AI service health and adoption together is most associated with:
-
-- [x] Copilot Control System (plus admin center usage reports)
-- [ ] Only Offline Domain Join blobs
-- [ ] Only WSUS computer groups
-- [ ] Only print server queues
-
-AB-650 monitoring skills cite admin center Copilot usage reports and Copilot Control System usage/adoption/health.
-
-[Source: Copilot Control System](https://learn.microsoft.com/en-us/copilot/control-system/overview)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Operations layer for AI: are people using it, is it healthy, what does it cost, what must admins change.
-
-</details>
-
-<Quiz id="d10q15">
-Which topic should an MS-102 holder treat as net-new priority for AB-650?
-
-- [x] Agent identities, agent registry/Agent 365, Copilot admin governance, DSPM for AI, AI cost monitoring
-- [ ] Only adding a second MX backup record
-- [ ] Only classic public folder migration mechanics
-- [ ] Only Skype for Business hybrid edge
-
-Roughly 35–40% of AB-650 is AI services content that MS-102 did not measure the same way.
-
-[Source: AB-650 study guide — AI domain](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Your MS-102 foundation covers much of identity/security/compliance refresh. Spend scarce hours on Copilot + agents + DSPM/cost — that is where AB-650 diverges.
-
-</details>
-
-<Quiz id="d10q16">
-Sensitivity labels vs DLP — which mapping is most accurate at requirements level?
-
-- [x] Labels classify/protect content; DLP detects/prevents sensitive data scenarios across locations (including Copilot where configured)
-- [ ] Labels replace DNS; DLP replaces MFA
-- [ ] Labels are only for guests; DLP is only for PIM
-- [ ] Both are Defender Safe Attachments synonyms
-
-AB-650 asks you to identify requirements for information protection and for DLP across Microsoft 365 and Copilot.
-
-[Source: Microsoft Purview Information Protection](https://learn.microsoft.com/en-us/purview/information-protection)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Exam language is often “which control meets the requirement?” — map classify/protect → labels; prevent exfiltration/use scenarios → DLP; keep/delete → retention.
-
-</details>
-
-<Quiz id="d10q17">
-Bulk identity operations at scale on AB-650 point you toward:
-
-- [x] Microsoft Graph PowerShell / Graph APIs
-- [ ] Only manual GUI clicks one-by-one with no automation path
-- [ ] Only Copilot Chat drafting emails
-- [ ] Only attack simulation payloads
-
-Perform bulk management, including Microsoft Graph PowerShell, is measured under Entra identities.
-
-[Source: Microsoft Graph PowerShell](https://learn.microsoft.com/en-us/powershell/microsoftgraph/overview)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-You do not need to memorize every cmdlet — know Graph PowerShell is the toolclass for bulk user/group operations.
-
-</details>
-
-<Quiz id="d10q18">
-Managing agent owners matters because:
-
-- [x] Ownership/accountability is part of agent lifecycle and governance when agents access organizational data
-- [ ] Owners only exist for SharePoint hub sites
-- [ ] Owners replace the need for licenses
-- [ ] Owners disable Conditional Access automatically
-
-Manage agent owners is an explicit Implement and manage agents skill.
-
-[Source: AB-650 — manage agent owners](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-Unowned agents are a governance failure mode. Know owner responsibilities and what happens when ownership must transfer.
-
-</details>
-

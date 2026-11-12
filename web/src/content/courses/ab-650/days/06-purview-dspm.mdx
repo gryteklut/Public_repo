@@ -45,92 +45,75 @@ videoTip: Watch Purview for DLP / labels / retention requirements and alert resp
 
 import { Quiz } from 'starlight-quiz/components';
 
+<Quiz id="ab650-d6-q1" shuffle={true}>
+Staff must be stopped from pasting credit-card numbers into Microsoft 365 Copilot prompts. Classifying a document later is not enough. What should you configure?
 
-<Quiz id="d6q1">
-AB-650 Purview objectives emphasize that you can:
+- [ ] A sensitivity label that a user may apply by hand to a finished document
+- [ ] A retention policy that keeps Copilot prompts and responses for seven years
+- [x] A DLP policy that includes the Microsoft 365 Copilot location and that card type
+- [ ] The DSPM for AI recommendations page, with no blocking policy behind it
 
-- [x] Identify requirements for DLP, information protection, and data lifecycle management across Microsoft 365 and Copilot
-- [ ] Only configure on-premises file server quotas
-- [ ] Replace all Conditional Access with retention labels
-- [ ] Disable Graph PowerShell permanently as a compliance control
+A DLP policy can evaluate Copilot prompts and block or restrict sensitive info such as credit-card numbers. A sensitivity label classifies an item. It does not by itself stop the prompt. Retention keeps content. DSPM for AI shows posture and recommendations. It is not the policy that blocks.
+</Quiz>
 
-Skills measured use “identify requirements” for DLP, information protection, and retention — including Copilot locations — plus review DLP alerts and DSPM for AI.
+<Quiz id="ab650-d6-q2" shuffle={true}>
+You created a sensitivity label named Confidential. Users do not see it in Word. The label exists in Purview. What is missing?
 
-[Source: AB-650 study guide — Purview skills](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650)
+- [ ] A DLP rule that uses the label name as its only sensitive information type
+- [ ] An attack simulation that teaches every user the label's display name
+- [ ] Company branding text that lists Confidential on the sign-in page
+- [x] A label policy that publishes Confidential to those users or groups
+
+A label stays invisible in Office until a label policy publishes it. A DLP rule can act on content. It does not put the label on the Word button. Attack simulation and company branding do not publish labels.
+</Quiz>
+
+<Quiz id="ab650-d6-q3" shuffle={true}>
+Contracts in one SharePoint library must be kept for seven years, and a reviewer must decide what happens when that period ends. Other libraries are out of scope. What should you use?
+
+- [x] A retention label published to that library, with a disposition review at the end
+- [ ] Microsoft 365 Backup on a seven-year schedule, used as the compliance record
+- [ ] A Teams meeting policy that retains meeting transcripts for seven years
+- [ ] Safe Attachments with a seven-year delay before a file is detonated
+
+A retention label can target that library's items, keep them for the period, and start a disposition review. Backup is how you restore data, not the retention decision. A meeting policy and Safe Attachments do not keep contract files in that library.
+</Quiz>
+
+<Quiz id="ab650-d6-q4" shuffle={true}>
+Security wants to see Copilot prompts, the sensitive data those interactions touched, and recommended actions. This view itself must not block a prompt. What should they open?
+
+- [ ] Defender for Office 365 Threat Explorer, filtered to Copilot senders
+- [x] DSPM for AI in Microsoft Purview
+- [ ] Network connectivity insights for the offices that use Copilot
+- [ ] The Entra Password Protection custom banned password list
+
+DSPM for AI is the view of AI activity, oversharing, and recommended controls. Opening it does not block a prompt. Blocking is a DLP policy. Threat Explorer investigates mail. Network insights and Password Protection are unrelated to prompt content.
+</Quiz>
+
+<Quiz id="ab650-d6-q5" shuffle={true}>
+Choose two. Credit-card numbers must be detectable in content, and Finance must see a label they can apply in Office. Which two pieces meet those needs?
+
+- [ ] A retention policy, because it both detects card numbers and shows the label in Word
+- [x] A sensitive information type or classifier that detects credit-card numbers
+- [x] A sensitivity label that a label policy publishes to the Finance group
+- [ ] An administrative unit named Finance, which publishes labels to its members
+
+A sensitive information type detects the card pattern. The label classifies the item, and the label policy is what makes that label appear for Finance. A retention policy keeps content and does neither of those jobs. An administrative unit scopes admin roles. It does not publish labels.
+</Quiz>
+
+<Quiz id="ab650-d6-q6" shuffle={true}>
+A DLP alert fired because a user emailed a spreadsheet that matched the credit-card sensitive information type. You need to understand the match before you change any policy. What should you review?
+
+- [ ] The user's eligible PIM roles, because a DLP alert cannot be opened until a role is activated
+- [ ] Service health for Exchange Online, because each DLP alert is a service incident
+- [ ] The user's attack-simulation click rate from the last phishing campaign
+- [x] The matched sensitive info, the user, and the activity that triggered the alert
+
+Triage starts with what matched, who did it, and which activity triggered the policy. From there you notify, mark a false positive, or escalate. PIM activation, service health, and a phishing click rate do not explain this match. Deleting the policy is not the first response.
 </Quiz>
 
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-
-
-Know when to recommend DLP policies (Exchange, SharePoint, OneDrive, Teams, endpoints, Copilot), sensitivity information types/labels/policies, and retention labels vs retention policies. You may not always be asked to click every blade — you must map business requirements to the right Purview control.
+DLP acts on sensitive data, including in Copilot locations. A sensitive information type detects. A sensitivity label classifies, and a label policy publishes it. Retention keeps content for a period. DSPM for AI shows AI activity and recommendations. It is not the blocking policy.
 
 </details>
-
-<Quiz id="d6q2">
-Which Purview capability is specifically highlighted for monitoring and securing AI activity?
-
-- [x] Data Security Posture Management (DSPM) for AI
-- [ ] Attack simulation training
-- [ ] Entra Password Protection
-- [ ] Teams channel naming policies
-
-Monitor and secure AI activity by using Microsoft Purview DSPM for AI is an explicit AB-650 bullet.
-
-[Source: Data Security Posture Management for AI](https://learn.microsoft.com/en-us/purview/dspm-for-ai)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-DSPM for AI helps you see AI usage posture: prompts/responses as data, oversharing risks, and recommended controls. Pair with DLP for Copilot interactions. This is a high-value AB-650-new topic for MS-102 holders.
-
-</details>
-
-<Quiz id="d6q3">
-Sensitivity labels primarily help you:
-
-- [x] Classify and protect content (and related containers) according to information protection policies
-- [ ] Assign Copilot licenses to security groups
-- [ ] Verify custom DNS domains
-- [ ] Run Safe Attachments detonation exclusively
-
-Information protection requirements include sensitive information types, sensitivity labels, and label policies.
-
-[Source: Learn about sensitivity labels](https://learn.microsoft.com/en-us/purview/sensitivity-labels)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Identify requirements for information protection: SITs detect sensitive data; sensitivity labels apply classification/protection; label policies publish labels to users/groups. Understand auto-labeling concepts at requirement level for exam scenarios.
-
-</details>
-
-<Quiz id="d6q4">
-A DLP policy alerts on sensitive content leaving via Microsoft 365. What should admins be able to do per AB-650?
-
-- [x] Review and respond to DLP alerts for Microsoft 365 and AI services
-- [ ] Ignore alerts because Copilot bypasses DLP by design
-- [ ] Convert DLP alerts into Exchange MX records
-- [ ] Use DLP alerts to create Entra administrative units
-
-Reviewing and responding to DLP alerts for Microsoft 365 and AI services is explicitly measured.
-
-[Source: Get started with the DLP alert management dashboard](https://learn.microsoft.com/en-us/purview/dlp-alerts-dashboard-get-started)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-DLP alert management: triage alert severity, matched SITs, user/activity context, and respond (notify, confirm false positive, escalate). Include AI services in your mental model — prompts/responses and Copilot interactions can be in scope depending on policy design.
-
-</details>
-

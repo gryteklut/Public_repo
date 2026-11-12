@@ -55,92 +55,75 @@ videoTip: "Start with the short AB-650 vs MS-102 intro once, then the tenant sec
 
 import { Quiz } from 'starlight-quiz/components';
 
+<Quiz id="ab650-d1-q1" shuffle={true}>
+Contoso wants the company logo and a custom background on the Microsoft 365 sign-in page. The street address and technical contact must stay in the organizational profile. What should you configure for the logo and background?
 
-<Quiz id="d1q1">
-You need company branding (logo, sign-in background, and theme) to appear for users signing in to Microsoft 365. Where do you primarily configure this?
+- [ ] Microsoft 365 admin center, Settings, Org settings, Organization profile
+- [x] Microsoft Entra admin center, Company branding for the sign-in page
+- [ ] SharePoint admin center, Settings, then the site theme and logo
+- [ ] Exchange admin center, Organization, then Organization sharing
 
-- [x] Microsoft Entra admin center — Company branding
-- [ ] Exchange admin center — Organization
-- [ ] Microsoft Purview portal — Settings
-- [ ] SharePoint admin center — Branding
+Entra company branding paints the sign-in page, including the logo, background, and theme. The organizational profile in the Microsoft 365 admin center stores the address and technical contact, and it does not theme sign-in. SharePoint branding applies to sites. Exchange organization sharing does not control the sign-in page.
+</Quiz>
 
-Sign-in and company branding for the Microsoft 365 experience is configured in Microsoft Entra ID (Company branding), not in workload admin centers.
+<Quiz id="ab650-d1-q2" shuffle={true}>
+Northwind added contoso.com, and the domain now shows as verified. Mailboxes still cannot send or receive as @contoso.com. What should you do next?
 
-[Source: Add company branding to your sign-in page](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-customize-branding)
+- [ ] Assign every mailbox a Microsoft 365 Copilot license before mail routing can start
+- [ ] Create a Conditional Access policy that requires MFA for Exchange Online
+- [x] Add the Exchange DNS records, including MX, and finish email setup for the domain
+- [ ] Turn on Microsoft 365 Backup and restore the domain from a backup point
+
+Verification only proves you own the DNS zone. Exchange still needs the service records, especially MX, before that domain carries mail. A Copilot license does not publish DNS. Conditional Access can challenge a sign-in, and Backup restores mailbox content. Neither one makes a new domain routable.
+</Quiz>
+
+<Quiz id="ab650-d1-q3" shuffle={true}>
+Fabrikam must give Microsoft 365 Copilot to about 2,000 people in Finance and remove it when they leave that department. What should you configure?
+
+- [ ] Turn on pay-as-you-go and do not assign any per-user Copilot license
+- [ ] Assign the Copilot license to the Finance shared mailbox so the department inherits it
+- [ ] Let each person buy Copilot from the Microsoft 365 self-service store
+- [x] Assign the Copilot license to a group that contains the Finance users
+
+Group-based licensing adds and removes the user license with group membership. Pay-as-you-go can cover some consumption charges, and it does not replace the Microsoft 365 Copilot license for the people who use Copilot. A shared mailbox is not a person using Copilot. Self-service purchase does not stay aligned with department membership.
+</Quiz>
+
+<Quiz id="ab650-d1-q4" shuffle={true}>
+The operations team must be emailed when Exchange Online or Microsoft Teams has a service incident, without watching the admin center all day. What should you configure?
+
+- [x] Service health notification settings in the Microsoft 365 admin center
+- [ ] A Microsoft Purview DLP policy that emails the team on credit-card matches
+- [ ] An attack simulation campaign that emails the operations team each week
+- [ ] Company branding custom text that mentions the current service incident
+
+Service health in the Microsoft 365 admin center is where you review incidents and configure notifications. A DLP policy notifies on sensitive-data activity. Attack simulation sends a training exercise. Company branding is static sign-in text, not a live health alert.
+</Quiz>
+
+<Quiz id="ab650-d1-q5" shuffle={true}>
+Choose two. Litware needs two outcomes: staff must see the company logo at sign-in, and the help desk must be emailed when a Microsoft 365 service is degraded. Which two configurations meet those outcomes?
+
+- [ ] Publish a sensitivity label so the logo is stored as classified content
+- [x] Configure company branding in the Microsoft Entra admin center
+- [ ] Enable Restricted SharePoint Search so the logo is hidden from Copilot
+- [x] Configure service health notifications in the Microsoft 365 admin center
+
+Company branding supplies the sign-in logo. Service health notifications send the degradation mail. A sensitivity label classifies content and does not theme sign-in. Restricted SharePoint Search limits which sites search and Copilot can use. It does not place a logo on the sign-in page.
+</Quiz>
+
+<Quiz id="ab650-d1-q6" shuffle={true}>
+Users in one office report poor Teams calls. The Microsoft 365 service health page shows no incident. You need evidence about that office's path to Microsoft 365. What should you review?
+
+- [ ] Defender for Office 365 alerts for malware detections in that office
+- [x] Network connectivity insights in the Microsoft 365 admin center
+- [ ] DSPM for AI recommendations about Copilot prompts from that office
+- [ ] The organizational profile, to confirm the office street address
+
+Network connectivity insights describe how a location reaches Microsoft 365. A clear service health page does not prove the office network is healthy. Defender alerts, DSPM for AI, and the street address in the org profile do not measure that path.
 </Quiz>
 
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-
-
-AB-650 expects you to configure tenant branding including logo, company URL, themes, and backgrounds. For Microsoft Entra sign-in experiences, use Entra admin center → Company branding. Organizational profile details (name, address, technical contact) live under Microsoft 365 admin center → Settings → Org settings. Know which portal owns which setting — exam questions often test portal selection.
+Sign-in branding is Entra company branding. The organizational profile, service health, and network connectivity insights live in the Microsoft 365 admin center. A verified domain still needs workload DNS, such as MX, before mail works. Group-based licensing assigns Copilot to people. Pay-as-you-go does not replace that user license.
 
 </details>
-
-<Quiz id="d1q2">
-A custom domain was added but users cannot use it for email yet. What must typically be true before the domain is fully usable for Exchange Online?
-
-- [x] The domain must be verified (DNS TXT/MX as required) and set up for services
-- [ ] You must enable Conditional Access for all users
-- [ ] You must create an administrative unit for the domain
-- [ ] You must enable Microsoft 365 Backup for the tenant
-
-Custom domains require DNS verification and service setup (including MX for mail) before they are fully usable. CA, AUs, and Backup are unrelated to domain readiness.
-
-[Source: Add a domain to Microsoft 365](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/add-domain)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Implementing domains on AB-650 includes adding a domain in the Microsoft 365 admin center, verifying ownership with DNS records, and configuring required records (for example MX, CNAME, TXT) so workloads like Exchange and Teams can use the domain. A domain can be verified but still incomplete for a workload until the right records exist.
-
-</details>
-
-<Quiz id="d1q3">
-You must assign Microsoft 365 Copilot licenses to 2,000 users with minimal ongoing admin work. Which approach best matches AB-650 licensing objectives?
-
-- [x] Use group-based licensing so membership drives license assignment
-- [ ] Ask each user to buy a self-service license from the Microsoft Store
-- [ ] Create one shared mailbox and assign the Copilot license to it
-- [ ] Enable pay-as-you-go only — named Copilot licenses are never assigned
-
-Group-based licensing scales assignment and removal with group membership. Shared mailboxes are not the model for Copilot user licensing; pay-as-you-go complements but does not replace user license assignment patterns tested on the exam.
-
-[Source: Assign licenses to a group](https://learn.microsoft.com/en-us/entra/identity/users/licensing-groups-assign)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-AB-650 explicitly measures managing Microsoft 365 licenses including group-based licensing and pay-as-you-go, plus AI service licenses (Copilot, Agent 365, Copilot Studio). For large populations, assign licenses via groups in Entra ID. Also know that AI services may involve usage-based billing you monitor separately from named seats.
-
-</details>
-
-<Quiz id="d1q4">
-You want admins notified when Exchange Online has an active incident. Which Microsoft 365 capability should you configure?
-
-- [x] Service health notifications in the Microsoft 365 admin center
-- [ ] Defender for Office 365 attack simulation
-- [ ] Microsoft Purview retention policies
-- [ ] SharePoint site exclusions for Copilot
-
-Service health (and its notification preferences) is how you monitor Microsoft 365 service incidents and advisories at tenant level.
-
-[Source: How to check Microsoft 365 service health](https://learn.microsoft.com/en-us/microsoft-365/enterprise/view-service-health)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Monitor Microsoft 365 service health in the admin center, including configuring notifications. Pair this with network connectivity insights when diagnosing client connectivity issues. These are classic tenant-admin skills that remain on AB-650 under “configure and manage a Microsoft 365 tenant.”
-
-</details>
-

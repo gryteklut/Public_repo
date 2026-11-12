@@ -48,92 +48,75 @@ videoTip: AB-650 centers on Defender for Office 365. Skim XDR reports lightly; s
 
 import { Quiz } from 'starlight-quiz/components';
 
+<Quiz id="ab650-d5-q1" shuffle={true}>
+Users get email whose URL looks safe at delivery and turns malicious later. You want the link checked again when someone clicks it. Which control does that?
 
-<Quiz id="d5q1">
-Compared with classic MS-102, how is security coverage framed on AB-650?
+- [ ] Safe Attachments, because it detonates the message body in a sandbox at delivery
+- [x] Safe Links, because it checks the URL again at the time of the click
+- [ ] A sensitivity label that encrypts every inbound message before it is delivered
+- [ ] Microsoft 365 Backup, because it can restore the mailbox after a bad click
 
-- [x] Threat protection objectives center on Defender for Office 365 for email and collaboration
-- [ ] You must exclusively configure Defender for Endpoint onboarding policies
-- [ ] Security is removed entirely from the exam
-- [ ] Only on-premises antimalware is tested
+Safe Links checks the URL when the user clicks it, which catches a link that changed reputation after delivery. Safe Attachments detonates files. A sensitivity label encrypts or marks content. Backup restores data. None of those repeat a URL reputation check at click time.
+</Quiz>
 
-AB-650 skills measured list Defender for Office 365 alerts, threat policies, investigation, and attack simulations — not the full prior XDR breadth.
+<Quiz id="ab650-d5-q2" shuffle={true}>
+You are turning on Defender for Office 365 for the first time and want a supported baseline for anti-phishing, Safe Links, and Safe Attachments. What is the better starting point?
 
-[Source: Microsoft Defender for Office 365](https://learn.microsoft.com/en-us/defender-office-365/mdo-about)
+- [ ] A Purview DLP policy that blocks every message containing any URL
+- [ ] A Conditional Access policy that requires MFA before Outlook opens
+- [x] A preset security policy, Standard or Strict, which you then adjust if needed
+- [ ] An administrative unit that contains only the security operations team
+
+A preset security policy applies a Microsoft baseline of Defender for Office 365 protections, including the link and attachment defenses. DLP looks for sensitive data. Conditional Access decides sign-in. An administrative unit scopes directory admins. None of those build the threat-policy baseline.
+</Quiz>
+
+<Quiz id="ab650-d5-q3" shuffle={true}>
+Security wants a controlled phishing exercise for the sales group, plus training for the people who click the payload. What should you configure?
+
+- [ ] A Purview DLP policy that notifies sales when a credit-card number is mailed outside the company
+- [ ] A service health notification that uses a phishing subject line each Monday
+- [ ] Company branding text on the sign-in page that warns users about phishing
+- [x] An attack simulation campaign targeted at sales, with training assigned from the results
+
+Attack simulation training sends the controlled payload to the group you pick and can assign training from who clicked. A DLP policy, a service health mail, and sign-in branding do not run that exercise.
+</Quiz>
+
+<Quiz id="ab650-d5-q4" shuffle={true}>
+Defender for Office 365 alerts that a delivered message contains malware. The message is still in the recipients' mailboxes. What should you do first?
+
+- [x] Investigate the alert and remediate the message, for example by soft-deleting it
+- [ ] Isolate every recipient device in Defender for Endpoint before reading the alert
+- [ ] Delete the anti-malware policy so this same alert cannot be raised again
+- [ ] Move the recipients into another administrative unit and clear the alert
+
+The AB-650 response for a mail threat is in Defender for Office 365: read the alert and remediate the message. Isolating devices is an endpoint action and is outside this exam's mail workflow. Deleting the policy removes protection. An administrative unit does not clean the mailbox.
+</Quiz>
+
+<Quiz id="ab650-d5-q5" shuffle={true}>
+Choose two. One finance user clicked a URL that was safe yesterday and is malicious today. A spreadsheet attached to a different message was detonated and found to be malware. Which two controls match those protections?
+
+- [x] Safe Links, for the check that runs when the user clicks the URL
+- [ ] Self-service password reset, so the finance user can replace a stolen password
+- [x] Safe Attachments, for detonation of the spreadsheet before or around delivery
+- [ ] A retention label on the finance mailbox, so the malware is kept for seven years
+
+Safe Links covers the URL at click time. Safe Attachments covers the file. Self-service password reset changes a password and does not inspect either threat. A retention label keeps content. It does not detonate a file or recheck a URL.
+</Quiz>
+
+<Quiz id="ab650-d5-q6" shuffle={true}>
+A user reports a suspicious message with the built-in report button in Outlook. You need the investigation view for that message and for messages like it. Where should you work?
+
+- [ ] The Microsoft Entra company branding page, where reported mail is listed
+- [ ] The organizational profile in the Microsoft 365 admin center
+- [x] The Microsoft Defender portal, on the submission or the email entity
+- [ ] The Copilot connector catalog, filtered to the user's mailbox
+
+User-reported messages and the email investigation live in the Defender portal. Company branding, the organizational profile, and the connector catalog do not investigate mail. This task stays in Defender for Office 365, not in endpoint or Cloud Apps administration.
 </Quiz>
 
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-
-
-Secure Microsoft 365 workloads on AB-650 means: manage alerts in Defender for Office 365; configure threat policies and rules; investigate/respond to email and collaboration threats; configure attack simulations including training campaigns. Broad Defender XDR literacy helps contextually, but exam bullets are Office 365-centric.
+AB-650 security work here is Defender for Office 365: alerts, threat policies, Safe Links, Safe Attachments, and attack simulation. Safe Links checks a URL at click time. Safe Attachments detonates files. Full Defender for Endpoint or Cloud Apps administration is a different product surface.
 
 </details>
-
-<Quiz id="d5q2">
-Safe Links and Safe Attachments are examples of:
-
-- [x] Defender for Office 365 threat protection policies
-- [ ] Purview retention label settings
-- [ ] Entra administrative unit templates
-- [ ] Copilot connector authentication methods
-
-Safe Links/Safe Attachments are core Defender for Office 365 threat policies protecting email and collaboration content.
-
-[Source: Safe Attachments in Microsoft Defender for Office 365](https://learn.microsoft.com/en-us/defender-office-365/safe-attachments-about)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Threat policies include anti-phishing, anti-spam, anti-malware, Safe Links, Safe Attachments, and related presets. Know who policies apply to, priority/order concepts at a high level, and how overrides/allow/block lists can affect outcomes.
-
-</details>
-
-<Quiz id="d5q3">
-Security team wants to measure user susceptibility to phishing and assign training. Which capability fits?
-
-- [x] Attack simulation training campaigns in Defender for Office 365
-- [ ] Microsoft 365 Backup restore jobs
-- [ ] SharePoint hub site association
-- [ ] Entra company branding themes
-
-Attack simulation training (including campaigns) is an explicit AB-650 Defender for Office 365 objective.
-
-[Source: Get started using Attack simulation training](https://learn.microsoft.com/en-us/defender-office-365/attack-simulation-training-get-started)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Configure and manage attack simulations, including training campaigns: select payloads, target groups, schedule simulations, and assign training based on results. This is both a security control and a measured exam skill.
-
-</details>
-
-<Quiz id="d5q4">
-An alert indicates a user clicked a malicious link in email. Where do you primarily investigate email/collaboration threats?
-
-- [x] Microsoft Defender portal — email & collaboration investigation / alerts / Explorer (as licensed)
-- [ ] Only the Word desktop File menu
-- [ ] Only DNS TXT records for the tenant domain
-- [ ] Only the Copilot Studio topic designer
-
-Investigation and response for email/collaboration threats is done in the Defender portal experiences for Office 365.
-
-[Source: Email security in Microsoft Defender](https://learn.microsoft.com/en-us/defender-office-365/email-security-in-microsoft-defender)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Investigate and respond using alerts, incidents (where correlated), Email entity pages, Threat Explorer/Real-time detections (Plan dependent), and remediation actions (soft delete, etc.). Tie alerts management to triage workflow.
-
-</details>
-

@@ -44,92 +44,75 @@ videoTip: Full watch — this section maps cleanly to AB-650 authentication and 
 
 import { Quiz } from 'starlight-quiz/components';
 
+<Quiz id="ab650-d4-q1" shuffle={true}>
+You created a Conditional Access policy that requires MFA for Exchange Online. Its state is Report-only. A user still opens Outlook on the web with only a password. Why?
 
-<Quiz id="d4q1">
-Which statement best describes Microsoft Entra Conditional Access?
+- [x] Report-only evaluates and logs the policy, and it does not enforce the grant
+- [ ] Password Protection replaced the policy and now allows any password sign-in
+- [ ] Self-service password reset automatically counts as the MFA grant
+- [ ] Company branding must be turned on before Conditional Access can block anyone
 
-- [x] It evaluates signals and enforces controls such as MFA or blocking access based on policy conditions
-- [ ] It is a Purview retention label type
-- [ ] It replaces DNS verification for custom domains
-- [ ] It is only available for on-premises Active Directory Domain Services
+Report-only is for impact. The policy records what it would have done and does not block or require MFA. Password Protection and self-service password reset are separate controls. Company branding does not turn enforcement on.
+</Quiz>
 
-Conditional Access is the policy engine that uses conditions (user, app, location, risk, device) to grant, require MFA, or block.
+<Quiz id="ab650-d4-q2" shuffle={true}>
+A user was blocked from SharePoint. You need to see which Conditional Access policy applied to that sign-in. What should you use?
 
-[Source: What is Conditional Access?](https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview)
+- [ ] The custom banned password list, to see whether the password text was rejected
+- [x] The sign-in log for that attempt, or the Conditional Access What If tool
+- [ ] DSPM for AI, because a blocked SharePoint sign-in is an AI activity insight
+- [ ] Attack simulation results, compared with the user's phish click rate
+
+Sign-in logs show the policies that applied to the attempt. What If predicts the result for a user, an app, and conditions. The banned password list, DSPM for AI, and attack simulation do not explain this SharePoint block.
+</Quiz>
+
+<Quiz id="ab650-d4-q3" shuffle={true}>
+Cloud users in a pilot group should reset forgotten passwords themselves, and each reset must require two registered methods. What should you configure?
+
+- [ ] A Conditional Access session control that forces a password change at every sign-in
+- [ ] Microsoft Entra Password Protection with only the global banned list enabled
+- [x] Self-service password reset for the pilot group, requiring two authentication methods
+- [ ] A Safe Links policy so password-reset mail is rewritten when the user clicks
+
+Self-service password reset has its own scope and its own method requirement. Conditional Access can require MFA or block a sign-in. It is not the reset-registration feature. Password Protection bans weak passwords. Safe Links does not register methods.
+</Quiz>
+
+<Quiz id="ab650-d4-q4" shuffle={true}>
+People are choosing passwords that contain the company name. Those passwords must be rejected when they are set or reset in the cloud. What should you configure?
+
+- [ ] A Conditional Access named location that uses the company name as the location
+- [ ] A sensitivity label named with the company name and published to every user
+- [ ] An anti-phishing policy that treats the company domain as an impersonation
+- [x] A custom banned password list in Microsoft Entra Password Protection
+
+The custom banned list in Password Protection rejects terms such as the company name during password set and reset. Conditional Access does not read the password string. A label classifies items. Anti-phishing looks for spoofed mail.
+</Quiz>
+
+<Quiz id="ab650-d4-q5" shuffle={true}>
+Choose two. You want to see what a new MFA policy would have done before anyone is challenged, and you want passwords that contain the company name to be rejected. Which two configurations match?
+
+- [ ] Set the Conditional Access policy to On so the first week of sign-ins is blocked
+- [x] Leave the Conditional Access policy in Report-only while you review the impact
+- [ ] Enable self-service password reset and require zero methods to complete a reset
+- [x] Add the company name to the Entra Password Protection custom banned list
+
+Report-only collects what the MFA policy would have done without enforcing it. The custom banned list rejects the company name in passwords. Setting the policy to On enforces it now. Self-service password reset does not ban password terms, and requiring zero methods would weaken resets.
+</Quiz>
+
+<Quiz id="ab650-d4-q6" shuffle={true}>
+Sign-ins that Microsoft Entra ID Protection marks as high user risk must require a password change. Ordinary sign-ins must stay as they are. What should you configure?
+
+- [x] A Conditional Access policy with user risk as the condition and password change as the grant
+- [ ] A service health notification that emails a user whenever ID Protection marks them high risk
+- [ ] Restricted SharePoint Search so high-risk users no longer appear in search results
+- [ ] A retention policy that deletes the user's mailbox when user risk becomes high
+
+User risk is a Conditional Access condition, and password change is a grant you use with ID Protection. Service health, Restricted SharePoint Search, and retention do not respond to that risk signal. People who are not high risk stay outside this policy.
 </Quiz>
 
 <details class="study-collapse">
 <summary>Study this topic</summary>
 
-
-
-AB-650 includes implementing Conditional Access policies, including Microsoft Entra ID Protection and multifactor authentication. Master assignments (users/groups/roles), cloud apps, conditions, grant controls, session controls, and report-only mode. Know how ID Protection risk states feed CA.
+Conditional Access decides the sign-in. Report-only logs the result and does not enforce it. Use sign-in logs or What If to see which policy applied. Password Protection bans password terms. Self-service password reset is a separate control with its own methods and scope.
 
 </details>
-
-<Quiz id="d4q2">
-Users must reset forgotten passwords without a helpdesk ticket. Which capability do you configure?
-
-- [x] Self-service password reset (SSPR)
-- [ ] Microsoft 365 Backup restore
-- [ ] Attack simulation training
-- [ ] SharePoint site exclusions
-
-SSPR lets users reset passwords after registering authentication methods — an explicit AB-650 objective.
-
-[Source: How it works: Microsoft Entra self-service password reset](https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-howitworks)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Configure SSPR: who is in scope, which authentication methods are required for reset, registration campaign, and writeback considerations if hybrid existed (remember hybrid is de-emphasized on AB-650). Also know how to investigate authentication issues from sign-in logs.
-
-</details>
-
-<Quiz id="d4q3">
-Microsoft Entra Password Protection helps primarily by:
-
-- [x] Blocking banned/weak passwords and enforcing custom banned password lists
-- [ ] Encrypting SharePoint files at rest with customer keys automatically
-- [ ] Assigning Copilot licenses via groups
-- [ ] Publishing agents in the agent registry
-
-Password Protection detects and blocks known weak/banned passwords for cloud (and optionally hybrid) scenarios.
-
-[Source: Eliminate bad passwords using Microsoft Entra Password Protection](https://learn.microsoft.com/en-us/entra/identity/authentication/concept-password-ban-bad)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Implement and manage Microsoft Entra Password Protection: global banned password list, custom banned passwords, and how it applies to change/reset flows. This is a discrete bullet under authentication skills.
-
-</details>
-
-<Quiz id="d4q4">
-A user cannot complete MFA. Which admin artifact is most useful first when investigating authentication issues?
-
-- [x] Microsoft Entra sign-in logs for the user (failure reason / MFA detail)
-- [ ] SharePoint site usage reports only
-- [ ] Exchange message trace for a week-old newsletter
-- [ ] Copilot adoption reports by workload
-
-Sign-in logs provide failure reasons, CA results, and MFA details needed to troubleshoot authentication issues.
-
-[Source: Sign-in logs in Microsoft Entra ID](https://learn.microsoft.com/en-us/entra/identity/monitoring-health/concept-sign-ins)
-</Quiz>
-
-<details class="study-collapse">
-<summary>Study this topic</summary>
-
-
-
-Investigate and resolve authentication issues using Entra sign-in logs, authentication methods registration, CA “What If” / report-only results, and MFA prompt errors. Exam questions often describe a symptom and expect the correct diagnostic location.
-
-</details>
-
